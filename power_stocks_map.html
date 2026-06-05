@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026电力板块全景图 · 从发电到用电的完整产业链</title>
+<style>
+:root {
+  --c-coal: #64748b;
+  --c-hydro: #06b6d4;
+  --c-nuclear: #8b5cf6;
+  --c-wind: #10b981;
+  --c-solar: #f59e0b;
+  --c-grid: #ef4444;
+  --c-storage: #ec4899;
+  --c-equip: #6366f1;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #1e293b;
+  line-height: 1.6;
+  padding-bottom: 40px;
+}
+
+/* Hero with animation */
+.hero {
+  background: linear-gradient(135deg, rgba(239,68,68,0.9), rgba(249,115,22,0.9));
+  padding: 60px 20px 80px;
+  text-align: center;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '⚡';
+  position: absolute;
+  font-size: 200px;
+  opacity: 0.1;
+  top: -50px;
+  right: 100px;
+  animation: pulse-bolt 3s infinite;
+}
+@keyframes pulse-bolt {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.1; }
+  50% { transform: scale(1.1) rotate(10deg); opacity: 0.2; }
+}
+.hero h1 {
+  font-size: 42px;
+  margin-bottom: 16px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+.hero .subtitle {
+  font-size: 18px;
+  opacity: 0.95;
+  max-width: 700px;
+  margin: 0 auto 30px;
+}
+.hero .tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.hero .tag {
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(10px);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+.container {
+  max-width: 1400px;
+  margin: -40px auto 0;
+  padding: 0 20px;
+}
+.intro-box {
+  background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(245,158,11,0.1));
+  border: 2px solid rgba(251,191,36,0.3);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 40px;
+  backdrop-filter: blur(10px);
+  background-color: rgba(255,255,255,0.95);
+}
+.intro-box h2 { color: #f59e0b; font-size: 24px; margin-bottom: 16px; }
+.intro-box p { color: #475569; font-size: 16px; line-height: 1.8; }
+.section-title {
+  font-size: 32px;
+  color: #f8fafc;
+  text-align: center;
+  margin: 60px 0 40px;
+}
+.section-title small {
+  display: block;
+  font-size: 16px;
+  color: #94a3b8;
+  margin-top: 8px;
+  font-weight: normal;
+}
+
+/* Flow Chart */
+.flow-chart {
+  background: rgba(255,255,255,0.95);
+  border-radius: 20px;
+  padding: 40px;
+  margin-bottom: 40px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+.flow-chart h3 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 30px;
+  color: #1e293b;
+}
+.flow-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+/* APPEND_1 */
+.flow-node {
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 20px;
+  min-width: 180px;
+  text-align: center;
+  transition: all 0.3s;
+}
+.flow-node:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+.flow-node .icon { font-size: 36px; margin-bottom: 8px; }
+.flow-node .title { font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 4px; }
+.flow-node .desc { font-size: 13px; color: #64748b; }
+.flow-arrow {
+  font-size: 32px;
+  color: #f59e0b;
+  animation: arrow-flow 2s infinite;
+}
+@keyframes arrow-flow {
+  0%, 100% { transform: translateX(0); opacity: 0.6; }
+  50% { transform: translateX(10px); opacity: 1; }
+}
+
+/* Sectors Grid */
+.sectors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+@media (max-width: 768px) {
+  .sectors-grid { grid-template-columns: 1fr; }
+}
+.sector-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  border-left: 5px solid;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.sector-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+.icon-big { font-size: 48px; margin-bottom: 16px; }
+.sector-card h3 { font-size: 26px; margin-bottom: 8px; color: #1e293b; }
+.en { font-size: 13px; color: #94a3b8; margin-bottom: 16px; font-style: italic; }
+.desc { color: #475569; font-size: 15px; margin-bottom: 20px; line-height: 1.8; }
+.desc b { color: #1e293b; }
+/* APPEND_2 */
+.stock-list { display: flex; flex-direction: column; gap: 10px; }
+.stock {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s;
+}
+.stock:hover {
+  background: linear-gradient(135deg, #e0f2fe, #dbeafe);
+  border-color: #3b82f6;
+  transform: translateX(5px);
+}
+.stock > span:first-child { display: flex; align-items: center; gap: 12px; }
+.stock-name { font-weight: 600; color: #1e293b; font-size: 16px; }
+.stock-code { font-size: 13px; color: #64748b; font-family: 'Courier New', monospace; }
+.stock-tag {
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 12px;
+  background: #e2e8f0;
+  color: #475569;
+  white-space: nowrap;
+}
+.stock-tag.king {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  color: #dc2626;
+  font-weight: 600;
+}
+.stock-tag.hot {
+  background: linear-gradient(135deg, #fed7aa, #fdba74);
+  color: #ea580c;
+  font-weight: 600;
+}
+.stock-tag.potential {
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  color: #059669;
+  font-weight: 600;
+}
+.c-coal { border-left-color: var(--c-coal); }
+.c-hydro { border-left-color: var(--c-hydro); }
+.c-nuclear { border-left-color: var(--c-nuclear); }
+.c-wind { border-left-color: var(--c-wind); }
+.c-solar { border-left-color: var(--c-solar); }
+.c-grid { border-left-color: var(--c-grid); }
+.c-storage { border-left-color: var(--c-storage); }
+.c-equip { border-left-color: var(--c-equip); }
+/* APPEND_3 */
+.driver-box {
+  background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(16,185,129,0.1));
+  border: 2px solid rgba(34,197,94,0.3);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 40px;
+  backdrop-filter: blur(10px);
+  background-color: rgba(255,255,255,0.95);
+}
+.driver-box h3 { color: #16a34a; font-size: 22px; margin-bottom: 20px; }
+.driver-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+.driver-item {
+  padding: 16px;
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+  border-radius: 12px;
+  border-left: 4px solid #16a34a;
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.7;
+}
+.driver-item b { color: #15803d; display: block; margin-bottom: 4px; }
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+.legend-item { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #e2e8f0; }
+.legend-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+.disclaimer {
+  background: rgba(255,255,255,0.95);
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid rgba(239,68,68,0.3);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+.disclaimer p { color: #64748b; font-size: 14px; margin-bottom: 8px; }
+.disclaimer b { color: #ef4444; }
+</style>
+</head>
+<body>
+<!-- BODY_PLACEHOLDER -->
+<div class="hero">
+  <h1>⚡ 2026电力板块全景图</h1>
+  <p class="subtitle">从煤电到新能源，从发电到配电，电力产业链完整解析</p>
+  <div class="tags">
+    <span class="tag">火电</span>
+    <span class="tag">水电</span>
+    <span class="tag">核电</span>
+    <span class="tag">风电</span>
+    <span class="tag">光伏</span>
+    <span class="tag">电网</span>
+    <span class="tag">储能</span>
+    <span class="tag">特高压</span>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="intro-box">
+  <h2>🔋 2026电力板块核心逻辑</h2>
+  <p><b>AI数据中心用电爆发 + 新能源装机加速</b>：2026年中国全社会用电量预计突破10万亿千瓦时，其中<b>AI数据中心用电占比达8%</b>（相当于新增2个三峡电站）。电力板块从"跑不赢GDP"的公用事业股转变为<b>"AI基建+能源转型"双主线</b>。</p>
+  <p style="margin-top:12px;">核心投资线索：<b>煤电容量电价</b>稳定火电现金流 → <b>核电审批加速</b>年均8-10台开工 → <b>风光装机</b>2026年新增300GW → <b>特高压</b>西电东送大通道 → <b>储能</b>新型电力系统刚需</p>
+</div>
+
+<h2 class="section-title">电力产业链流程图<small>从发电到用电的全过程</small></h2>
+
+<div class="flow-chart">
+  <h3>💡 电是怎么从电厂到你家的？</h3>
+  <div class="flow-row">
+    <div class="flow-node">
+      <div class="icon">🔥</div>
+      <div class="title">发电</div>
+      <div class="desc">火电/水电/核电/风光</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">
+      <div class="icon">📡</div>
+      <div class="title">升压</div>
+      <div class="desc">变压器升至50万伏</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">
+      <div class="icon">🌐</div>
+      <div class="title">输电</div>
+      <div class="desc">特高压/超高压电网</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">
+      <div class="icon">🏗️</div>
+      <div class="title">配电</div>
+      <div class="desc">降压到220V入户</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">
+      <div class="icon">💡</div>
+      <div class="title">用电</div>
+      <div class="desc">工业/居民/数据中心</div>
+    </div>
+  </div>
+  <p style="text-align:center;color:#64748b;font-size:14px;margin-top:20px;">
+    ⚡ <b>关键环节</b>：西部（新疆/内蒙风光大基地）发电 → 特高压输电 → 东部（长三角/珠三角）用电
+  </p>
+</div>
+
+<!-- 2026 驱动因素 -->
+<div class="driver-box">
+  <h3>🚀 2026年电力板块为什么火？五大催化剂</h3>
+  <div class="driver-grid">
+    <div class="driver-item"><b>AI数据中心用电井喷</b>2026年中国AI算力中心用电量预计达8000亿千瓦时，单个大型数据中心功率超50万千瓦（相当于中型火电厂）</div>
+    <div class="driver-item"><b>煤电容量电价全面落地</b>火电厂不再只赚"发电钱"，还能拿"备用费"，ROE从5%提升至8-10%</div>
+    <div class="driver-item"><b>核电审批大提速</b>2026年预计核准8-10台机组，在建核电装机突破7000万千瓦，向2030年2亿千瓦目标冲刺</div>
+    <div class="driver-item"><b>风光大基地放量</b>2026年新增风光装机300GW，沙戈荒大基地（新疆、内蒙、甘肃）进入收获期</div>
+    <div class="driver-item"><b>特高压密集开工</b>国网2026年特高压投资突破1000亿，"西电东送"大通道加速建设</div>
+    <div class="driver-item"><b>储能强配比例提升</b>2026年新能源强配储能比例提升至20%，储能装机新增50GW</div>
+  </div>
+</div>
+
+<h2 class="section-title">八大细分赛道龙头股<small>按产业链顺序排列</small></h2>
+
+<div class="legend">
+  <div class="legend-item"><span class="legend-dot" style="background:#dc2626;"></span>👑 行业龙头</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#ea580c;"></span>🔥 二线主力</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#059669;"></span>⚡ 弹性标的</div>
+</div>
+
+<div class="sectors-grid">
+<!-- SECTORS_PLACEHOLDER -->
+
+<!-- 1. 火电/煤电 -->
+<div class="sector-card c-coal">
+  <div class="icon-big">🔥</div>
+  <h3>火电 / 煤电</h3>
+  <div class="en">Thermal Power · 基荷电源，电网的"稳定器"</div>
+  <div class="desc">
+    中国电力结构中火电占比60%，是电网基荷（24小时稳定输出）主力。<b>2024年容量电价改革</b>：火电厂除了"发电收入"还能拿"容量补贴"（相当于备用费），彻底改变盈利模型。2026年煤价回落至800元/吨，煤电利润率修复至历史中枢。
+  </div>
+  <div class="stock-list">
+    <div class="stock"><span><span class="stock-name">华能国际</span><span class="stock-code">600011</span></span><span class="stock-tag king">👑 火电装机第一</span></div>
+    <div class="stock"><span><span class="stock-name">华电国际</span><span class="stock-code">600027</span></span><span class="stock-tag king">👑 五大发电集团之一</span></div>
+    <div class="stock"><span><span class="stock-name">国电电力</span><span class="stock-code">600795</span></span><span class="stock-tag hot">火电+水电+风电</span></div>
+    <div class="stock"><span><span class="stock-name">浙能电力</span><span class="stock-code">600023</span></span><span class="stock-tag hot">长三角火电龙头</span></div>
+    <div class="stock"><span><span class="stock-name">皖能电力</span><span class="stock-code">000543</span></span><span class="stock-tag">安徽火电</span></div>
+    <div class="stock"><span><span class="stock-name">申能股份</span><span class="stock-code">600642</span></span><span class="stock-tag">上海电力+燃气</span></div>
+    <div class="stock"><span><span class="stock-name">粤电力A</span><span class="stock-code">000539</span></span><span class="stock-tag">广东电力</span></div>
+  </div>
+</div>
+
+<!-- 2. 水电 -->
+<div class="sector-card c-hydro">
+  <div class="icon-big">💧</div>
+  <h3>水电</h3>
+  <div class="en">Hydropower · 现金奶牛，高股息代表</div>
+  <div class="desc">
+    水电是<b>最成熟的清洁能源</b>，建成后边际成本接近零，ROE稳定在10-15%。长江、金沙江、雅砻江、澜沧江四大流域水电开发接近尾声，存量资产进入<b>稳定分红期</b>。2026年来水偏丰，水电利用小时数回升至3600小时以上。
+  </div>
+  <div class="stock-list">
+    <div class="stock"><span><span class="stock-name">长江电力</span><span class="stock-code">600900</span></span><span class="stock-tag king">👑 全球最大水电公司</span></div>
+    <div class="stock"><span><span class="stock-name">川投能源</span><span class="stock-code">600674</span></span><span class="stock-tag king">👑 雅砻江水电股东</span></div>
+    <div class="stock"><span><span class="stock-name">国投电力</span><span class="stock-code">600886</span></span><span class="stock-tag hot">雅砻江+煤电组合</span></div>
+    <div class="stock"><span><span class="stock-name">桂冠电力</span><span class="stock-code">600236</span></span><span class="stock-tag hot">红水河梯级水电</span></div>
+    <div class="stock"><span><span class="stock-name">湖北能源</span><span class="stock-code">000883</span></span><span class="stock-tag">水电+风电</span></div>
+    <div class="stock"><span><span class="stock-name">黔源电力</span><span class="stock-code">002039</span></span><span class="stock-tag">贵州水电</span></div>
+  </div>
+</div>
+
+<!-- 3. 核电 -->
+<div class="sector-card c-nuclear">
+  <div class="icon-big">☢️</div>
+  <h3>核电</h3>
+  <div class="en">Nuclear Power · 碳中和王炸，年均8-10台核准</div>
+  <div class="desc">
+    核电是<b>唯一能24小时稳定输出的清洁能源</b>。2026年在建核电装机突破7000万千瓦，年均核准8-10台机组，向2030年2亿千瓦目标冲刺。<b>华龙一号</b>（三代核电）已批量化，<b>小堆、快堆、聚变</b>在路上。核电运营商ROE稳定在12%以上。
+  </div>
+  <div class="stock-list">
+    <div class="stock"><span><span class="stock-name">中国核电</span><span class="stock-code">601985</span></span><span class="stock-tag king">👑 核电运营第一股</span></div>
+    <div class="stock"><span><span class="stock-name">中国广核</span><span class="stock-code">003816</span></span><span class="stock-tag king">👑 在运装机全球前三</span></div>
+    <div class="stock"><span><span class="stock-name">中国核建</span><span class="stock-code">601611</span></span><span class="stock-tag hot">核电工程总包</span></div>
+    <div class="stock"><span><span class="stock-name">东方电气</span><span class="stock-code">600875</span></span><span class="stock-tag hot">核电主设备</span></div>
+    <div class="stock"><span><span class="stock-name">上海电气</span><span class="stock-code">601727</span></span><span class="stock-tag">核岛设备</span></div>
+    <div class="stock"><span><span class="stock-name">应流股份</span><span class="stock-code">603308</span></span><span class="stock-tag potential">核电核心铸件</span></div>
+  </div>
+</div>
+
+<!-- 4. 风电 -->
+<div class="sector-card c-wind">
+  <div class="icon-big">🌀</div>
+  <h3>风电</h3>
+  <div class="en">Wind Power · 陆风+海风双轮驱动</div>
+  <div class="desc">
+    2026年风电新增装机预计120GW，其中<b>海上风电</b>占比提升至25%。大基地模式：<b>陆上风电</b>单体项目突破1GW，<b>海上风电</b>单机容量达18MW（叶轮直径260米，扫风面积=8个足球场）。龙头整机厂毛利率回升至15%以上。
+  </div>
+  <div class="stock-list">
+    <div class="stock"><span><span class="stock-name">三峡能源</span><span class="stock-code">600905</span></span><span class="stock-tag king">👑 新能源运营龙头</span></div>
+    <div class="stock"><span><span class="stock-name">龙源电力</span><span class="stock-code">001289</span></span><span class="stock-tag king">👑 风电运营第一</span></div>
+    <div class="stock"><span><span class="stock-name">金风科技</span><span class="stock-code">002202</span></span><span class="stock-tag king">👑 风机制造全球第二</span></div>
+    <div class="stock"><span><span class="stock-name">明阳智能</span><span class="stock-code">601615</span></span><span class="stock-tag hot">海上风电龙头</span></div>
+    <div class="stock"><span><span class="stock-name">运达股份</span><span class="stock-code">300772</span></span><span class="stock-tag hot">风机整机</span></div>
+    <div class="stock"><span><span class="stock-name">天顺风能</span><span class="stock-code">002531</span></span><span class="stock-tag">风塔+叶片</span></div>
+    <div class="stock"><span><span class="stock-name">日月股份</span><span class="stock-code">603218</span></span><span class="stock-tag potential">风电铸件龙头</span></div>
+  </div>
+</div>
+
+<!-- 5. 光伏 -->
+<div class="sector-card c-solar">
+  <div class="icon-big">☀️</div>
+  <h3>光伏发电</h3>
+  <div class="en">Solar Power · 沙戈荒大基地主力</div>
+  <div class="desc">
+    2026年光伏新增装机预计180GW，<b>集中式地面电站</b>占比回升（大基地单体项目1-5GW）。组件价格降至0.8元/W以下，度电成本突破0.1元，<b>光伏已是最便宜的电</b>。分布式（工商业屋顶）+户用光伏双线并进。
+  </div>
+  <div class="stock-list">
+    <div class="stock"><span><span class="stock-name">晶科能源</span><span class="stock-code">688223</span></span><span class="stock-tag king">👑 组件出货全球第一</span></div>
+    <div class="stock"><span><span class="stock-name">隆基绿能</span><span class="stock-code">601012</span></span><span class="stock-tag king">👑 硅片+组件一体化</span></div>
+    <div class="stock"><span><span class="stock-name">阳光电源</span><span class="stock-code">300274</span></span><span class="stock-tag king">👑 逆变器+储能双龙头</span></div>
+    <div class="stock"><span><span class="stock-name">天合光能</span><span class="stock-code">688599</span></span><span class="stock-tag hot">210组件领导者</span></div>
+    <div class="stock"><span><span class="stock-name">TCL中环</span><span class="stock-code">002129</span></span><span class="stock-tag hot">硅片双雄</span></div>
+    <div class="stock"><span><span class="stock-name">通威股份</span><span class="stock-code">600438</span></span><span class="stock-tag">多晶硅+电池片</span></div>
+    <div class="stock"><span><span class="stock-name">福莱特</span><span class="stock-code">601865</span></span><span class="stock-tag">光伏玻璃龙头</span></div>
+  </div>
+</div>
+
+<!-- 6. 电网/特高压 -->
+<div class="sector-card c-grid">
+  <div class="icon-big">🌐</div>
+  <h3>电网 / 特高压</h3>
+  <div class="en">Power Grid · 西电东送大动脉</div>
+  <div class="desc">
+    <b>特高压</b>（±800kV直流/1000kV交流）是中国电网的"高速公路"，实现西部新能源电力3000公里无损输送。2026年国网特高压投资突破1000亿，<b>白鹤滩-江苏、白鹤滩-浙江</b>等大通道陆续投运。配电网智能化改造加速。
+  </div>
+  <div class="stock-list">
+    <div class="stock"><span><span class="stock-name">国电南瑞</span><span class="stock-code">600406</span></span><span class="stock-tag king">👑 电网自动化龙头</span></div>
+    <div class="stock"><span><span class="stock-name">许继电气</span><span class="stock-code">000400</span></span><span class="stock-tag king">👑 特高压换流阀</span></div>
+    <div class="stock"><span><span class="stock-name">平高电气</span><span class="stock-code">600312</span></span><span class="stock-tag hot">特高压开关</span></div>
+    <div class="stock"><span><span class="stock-name">中国西电</span><span class="stock-code">601179</span></span><span class="stock-tag hot">输变电设备</span></div>
+    <div class="stock"><span><span class="stock-name">特变电工</span><span class="stock-code">600089</span></span><span class="stock-tag">变压器+多晶硅</span></div>
+    <div class="stock"><span><span class="stock-name">思源电气</span><span class="stock-code">002028</span></span><span class="stock-tag">电力电子设备</span></div>
+  </div>
+</div>
+
+<!-- 7. 储能 -->
+<div class="sector-card c-storage">
+  <div class="icon-big">🔋</div>
+  <h3>储能系统</h3>
+  <div class="en">Energy Storage · 新型电力系统刚需</div>
+  <div class="desc">
+    风光发电"靠天吃饭"，<b>储能</b>是平滑波动的"蓄水池"。2026年新能源强配储能比例提升至20%（2小时），新增装机50GW。<b>电化学储能</b>（锂电池）成本降至0.8元/Wh，<b>抽水蓄能</b>在建规模1.2亿千瓦。独立储能电站开始盈利。
+  </div>
+  <div class="stock-list">
+    <div class="stock"><span><span class="stock-name">阳光电源</span><span class="stock-code">300274</span></span><span class="stock-tag king">👑 储能系统全球第一</span></div>
+    <div class="stock"><span><span class="stock-name">宁德时代</span><span class="stock-code">300750</span></span><span class="stock-tag king">👑 储能电池龙头</span></div>
+    <div class="stock"><span><span class="stock-name">海博思创</span><span class="stock-code">688411</span></span><span class="stock-tag hot">储能系统集成</span></div>
+    <div class="stock"><span><span class="stock-name">南都电源</span><span class="stock-code">300068</span></span><span class="stock-tag hot">铅炭+锂电储能</span></div>
+    <div class="stock"><span><span class="stock-name">科华数据</span><span class="stock-code">002335</span></span><span class="stock-tag">储能+IDC</span></div>
+    <div class="stock"><span><span class="stock-name">派能科技</span><span class="stock-code">688063</span></span><span class="stock-tag potential">户用储能出海</span></div>
+  </div>
+</div>
+
+<!-- 8. 电力设备 -->
+<div class="sector-card c-equip">
+  <div class="icon-big">⚙️</div>
+  <h3>电力设备 / 二次设备</h3>
+  <div class="en">Power Equipment · 电网的"神经系统"</div>
+  <div class="desc">
+    <b>一次设备</b>（变压器、开关）传输电力，<b>二次设备</b>（保护、自动化、计量）控制和监测。新能源并网对电网稳定性要求极高，<b>柔性直流、虚拟同步机、调相机</b>等新技术需求爆发。智能电表、充电桩纳入新基建。
+  </div>
+  <div class="stock-list">
+    <div class="stock"><span><span class="stock-name">国电南瑞</span><span class="stock-code">600406</span></span><span class="stock-tag king">👑 二次设备绝对龙头</span></div>
+    <div class="stock"><span><span class="stock-name">东方电气</span><span class="stock-code">600875</span></span><span class="stock-tag king">👑 发电设备三大动力</span></div>
+    <div class="stock"><span><span class="stock-name">上海电气</span><span class="stock-code">601727</span></span><span class="stock-tag hot">汽轮机+风机</span></div>
+    <div class="stock"><span><span class="stock-name">哈尔滨电气</span><span class="stock-code">01133.HK</span></span><span class="stock-tag hot">发电设备三大动力</span></div>
+    <div class="stock"><span><span class="stock-name">金盘科技</span><span class="stock-code">688676</span></span><span class="stock-tag potential">非晶合金变压器</span></div>
+    <div class="stock"><span><span class="stock-name">盛弘股份</span><span class="stock-code">300693</span></span><span class="stock-tag">电力电源</span></div>
+  </div>
+</div>
+
+</div>
+<!-- END_SECTORS -->
+
+<h2 class="section-title">投资主线与风险<small>2026电力板块怎么配置</small></h2>
+
+<div class="intro-box" style="background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(139,92,246,0.1)); border-color: rgba(59,130,246,0.3);">
+  <h2 style="color:#3b82f6;">🎯 三条主线，按确定性排序</h2>
+  <p><b style="color:#ef4444;">确定性主线 · 核电+水电+火电</b>：容量电价改革让火电ROE从5%提升至8-10%，核电年均8-10台审批节奏清晰，水电进入稳定分红期。这是<b>业绩确定性最强、波动最小</b>的防御组合，适合追求稳健收益的投资者。推荐：<b>长江电力、中国核电、华能国际</b>。</p>
+  <p style="margin-top:12px;"><b style="color:#f59e0b;">成长性主线 · 特高压+储能</b>：2026年特高压投资1000亿+，储能新增50GW，政策驱动明确。<b>国电南瑞</b>（电网自动化）、<b>阳光电源</b>（储能系统）是兼具成长性和盈利能力的优质标的。</p>
+  <p style="margin-top:12px;"><b style="color:#22c55e;">弹性主线 · 风光运营商</b>：三峡能源、龙源电力等新能源运营商，<b>在建项目多、未来装机增速快</b>，但受来风来光、电价波动影响大，适合风险偏好较高的投资者。</p>
+</div>
+
+<div class="disclaimer">
+  <p><b>⚠️ 风险提示</b></p>
+  <p>• <b>煤价波动</b>：火电盈利与煤价高度相关，若煤价反弹至1000元/吨以上，火电利润将被大幅挤压</p>
+  <p>• <b>电价市场化</b>：2026年电力现货市场试点扩大，电价波动加剧，运营商业绩不确定性上升</p>
+  <p>• <b>新能源消纳</b>：西部风光大基地发电能力强，但特高压输送通道建设滞后，存在弃风弃光风险</p>
+  <p>• <b>利率敏感</b>：电力运营商资产负债率普遍60%+，利率上行会增加财务成本，压制估值</p>
+  <p>• <b>政策变动</b>：容量电价、核电审批、储能补贴等政策若有调整，将直接影响板块预期</p>
+  <p>• <b>来水/来风不确定性</b>：水电、风电靠天吃饭，极端气候（干旱、台风）会导致发电量大幅波动</p>
+  <p style="margin-top:16px;color:#94a3b8;font-size:13px;">📌 本页面所有信息基于2026年6月公开资料整理，仅供产业链学习参考，<b style="color:#ef4444;">不构成任何投资建议</b>。电力板块属于公用事业，长期收益率通常跑输大盘，适合作为防御性配置。建议优先选择高股息、低估值的龙头标的。</p>
+</div>
+
+<div style="text-align:center;color:#94a3b8;font-size:12px;margin-top:30px;padding:20px;">
+  数据来源：国家能源局、电力规划设计总院、公司公告、Wind · 整理时间：2026-06-05
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.stock').forEach(stock => {
+  stock.addEventListener('click', () => {
+    stock.style.transition = 'transform 0.3s';
+    stock.style.transform = 'scale(1.05)';
+    setTimeout(() => stock.style.transform = '', 300);
+  });
+});
+document.querySelectorAll('.flow-node').forEach(node => {
+  node.addEventListener('mouseenter', () => {
+    node.style.borderColor = '#f59e0b';
+    node.style.borderWidth = '3px';
+  });
+  node.addEventListener('mouseleave', () => {
+    node.style.borderColor = '#e2e8f0';
+    node.style.borderWidth = '2px';
+  });
+});
+</script>
+
+</body>
+</html>
+</body>
+</html>
