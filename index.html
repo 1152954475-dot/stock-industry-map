@@ -340,24 +340,11 @@ async function getStockCode(input) {
     return 'sh' + code; // 默认上海
   }
 
-  // 尝试通过搜索API查找股票
+  // 尝试通过搜索API查找股票 - 使用JSONP方式避免CORS
   try {
-    // 使用东方财富搜索API
-    const searchUrl = `https://searchapi.eastmoney.com/api/suggest/get?input=${encodeURIComponent(input)}&type=14&token=D43BF722C8E33BDC906FB84D85E326E8&count=5`;
-    const response = await fetch(searchUrl);
-    const data = await response.json();
-
-    if (data && data.QuotationCodeTable && data.QuotationCodeTable.Data && data.QuotationCodeTable.Data.length > 0) {
-      const stock = data.QuotationCodeTable.Data[0];
-      const code = stock.Code;
-      const market = stock.MktNum;
-
-      // 1是沪市，0是深市
-      if (market === '1' || code.startsWith('60') || code.startsWith('68')) {
-        return 'sh' + code;
-      } else {
-        return 'sz' + code;
-      }
+    const result = await searchStockByName(input);
+    if (result) {
+      return result;
     }
   } catch (error) {
     console.error('搜索失败:', error);
@@ -366,38 +353,103 @@ async function getStockCode(input) {
   throw new Error('未找到该股票，请输入完整的6位股票代码');
 }
 
+// 使用JSONP方式搜索股票
+function searchStockByName(keyword) {
+  return new Promise((resolve, reject) => {
+    const callbackName = 'jsonp_callback_' + Date.now();
+    const script = document.createElement('script');
+    const timeout = setTimeout(() => {
+      cleanup();
+      reject(new Error('搜索超时'));
+    }, 5000);
+
+    window[callbackName] = (data) => {
+      cleanup();
+      try {
+        if (data && data.QuotationCodeTable && data.QuotationCodeTable.Data && data.QuotationCodeTable.Data.length > 0) {
+          const stock = data.QuotationCodeTable.Data[0];
+          const code = stock.Code;
+          const market = stock.MktNum;
+
+          // 1是沪市，0是深市
+          if (market === '1' || code.startsWith('60') || code.startsWith('68')) {
+            resolve('sh' + code);
+          } else {
+            resolve('sz' + code);
+          }
+        } else {
+          reject(new Error('未找到股票'));
+        }
+      } catch (e) {
+        reject(e);
+      }
+    };
+
+    function cleanup() {
+      clearTimeout(timeout);
+      delete window[callbackName];
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    }
+
+    script.src = `https://searchapi.eastmoney.com/api/suggest/get?input=${encodeURIComponent(keyword)}&type=14&token=D43BF722C8E33BDC906FB84D85E326E8&count=5&cb=${callbackName}`;
+    script.onerror = () => {
+      cleanup();
+      reject(new Error('搜索请求失败'));
+    };
+    document.body.appendChild(script);
+  });
+}
+
 // 获取股票实时数据
 async function fetchStockData(stockCode) {
   try {
-    // 由于CORS限制，使用备用方案：腾讯API
+    // 使用腾讯API - 需要处理字段映射
     const apiUrl = `https://qt.gtimg.cn/q=${stockCode}`;
     const res = await fetch(apiUrl);
     const text = await res.text();
 
     // 解析腾讯API返回的数据
     const match = text.match(/="(.+)"/);
-    if (!match) throw new Error('数据格式错误');
+    if (!match || match[1] === '') throw new Error('数据格式错误');
 
     const fields = match[1].split('~');
+
+    // 检查数据有效性
+    if (fields.length < 50 || !fields[1]) {
+      throw new Error('获取数据失败');
+    }
+
+    const price = parseFloat(fields[3]) || 0;
+    const lastClose = parseFloat(fields[4]) || 0;
+    const open = parseFloat(fields[5]) || 0;
+    const high = parseFloat(fields[33]) || 0;
+    const low = parseFloat(fields[34]) || 0;
+    const volume = parseInt(fields[6]) || 0;
+    const amount = parseFloat(fields[37]) || 0;
+    const turnover = parseFloat(fields[38]) || 0;
+    const pe = parseFloat(fields[39]) || 0;
+    const pb = parseFloat(fields[46]) || 0;
 
     return {
       name: fields[1],           // 股票名称
       code: fields[2],           // 股票代码
       marketCode: stockCode.toUpperCase().startsWith('SH') ? 'SH' : 'SZ', // 市场代码
-      price: parseFloat(fields[3]),     // 当前价
-      lastClose: parseFloat(fields[4]), // 昨收
-      open: parseFloat(fields[5]),      // 今开
-      high: parseFloat(fields[33]),     // 最高
-      low: parseFloat(fields[34]),      // 最低
-      volume: parseInt(fields[6]) / 100,     // 成交量（手）
-      amount: parseFloat(fields[37]) / 10000, // 成交额（万）
-      turnover: parseFloat(fields[38]),  // 换手率
-      pe: parseFloat(fields[39]),        // 市盈率
-      pb: parseFloat(fields[46]),        // 市净率
+      price: price,              // 当前价
+      lastClose: lastClose,      // 昨收
+      open: open,                // 今开
+      high: high,                // 最高
+      low: low,                  // 最低
+      volume: volume / 100,      // 成交量（手）
+      amount: amount / 10000,    // 成交额（万）
+      turnover: turnover,        // 换手率
+      pe: pe,                    // 市盈率
+      pb: pb,                    // 市净率
     };
   } catch (error) {
-    // 如果API失败，返回模拟数据用于演示
-    return getMockData(stockCode);
+    console.error('获取股票数据失败:', error);
+    throw new Error('获取股票数据失败，请稍后重试');
   }
 }
 
@@ -446,38 +498,38 @@ function displayStockInfo(data) {
   const html = `
     <div class="stock-header">
       <div class="stock-name-row">
-        <h3>${data.name}</h3>
-        <span class="stock-code">${data.code}</span>
+        <h3 style="word-break:keep-all;white-space:nowrap;">${data.name}</h3>
+        <span class="stock-code">${marketPrefix}${data.code}</span>
       </div>
       <div class="price-row">
-        <span class="current-price ${isUp ? 'up' : 'down'}">¥${data.price}</span>
+        <span class="current-price ${isUp ? 'up' : 'down'}">¥${data.price.toFixed(2)}</span>
         <span class="price-change ${isUp ? 'up' : 'down'}">
           ${isUp ? '+' : ''}${change} (${isUp ? '+' : ''}${changePercent}%)
         </span>
       </div>
       <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;">
-        <a href="${thsLink}" target="_blank" style="padding:8px 16px;background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;transition:all 0.3s;">📈 同花顺K线</a>
-        <a href="${eastmoneyLink}" target="_blank" style="padding:8px 16px;background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;transition:all 0.3s;">📊 东方财富</a>
-        <a href="${xueqiuLink}" target="_blank" style="padding:8px 16px;background:linear-gradient(135deg,#06b6d4,#0891b2);color:#fff;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;transition:all 0.3s;">❄️ 雪球行情</a>
+        <a href="${thsLink}" target="_blank" rel="noopener noreferrer" style="padding:8px 16px;background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;transition:all 0.3s;box-shadow:0 2px 8px rgba(239,68,68,0.3);">📈 同花顺K线</a>
+        <a href="${eastmoneyLink}" target="_blank" rel="noopener noreferrer" style="padding:8px 16px;background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;transition:all 0.3s;box-shadow:0 2px 8px rgba(59,130,246,0.3);">📊 东方财富</a>
+        <a href="${xueqiuLink}" target="_blank" rel="noopener noreferrer" style="padding:8px 16px;background:linear-gradient(135deg,#06b6d4,#0891b2);color:#fff;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;transition:all 0.3s;box-shadow:0 2px 8px rgba(6,182,212,0.3);">❄️ 雪球行情</a>
       </div>
     </div>
 
     <div class="metrics-grid">
       <div class="metric-item">
         <div class="metric-label">今开</div>
-        <div class="metric-value">¥${data.open}</div>
+        <div class="metric-value">¥${data.open.toFixed(2)}</div>
       </div>
       <div class="metric-item">
         <div class="metric-label">昨收</div>
-        <div class="metric-value">¥${data.lastClose}</div>
+        <div class="metric-value">¥${data.lastClose.toFixed(2)}</div>
       </div>
       <div class="metric-item">
         <div class="metric-label">最高</div>
-        <div class="metric-value">¥${data.high}</div>
+        <div class="metric-value">¥${data.high.toFixed(2)}</div>
       </div>
       <div class="metric-item">
         <div class="metric-label">最低</div>
-        <div class="metric-value">¥${data.low}</div>
+        <div class="metric-value">¥${data.low.toFixed(2)}</div>
       </div>
       <div class="metric-item">
         <div class="metric-label">成交量</div>
@@ -487,6 +539,23 @@ function displayStockInfo(data) {
         <div class="metric-label">成交额</div>
         <div class="metric-value">${formatNumber(data.amount)}万</div>
       </div>
+      <div class="metric-item">
+        <div class="metric-label">换手率</div>
+        <div class="metric-value">${data.turnover.toFixed(2)}%</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-label">量比</div>
+        <div class="metric-value">${volumeRatio}</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-label">市盈率</div>
+        <div class="metric-value">${data.pe > 0 ? data.pe.toFixed(2) : '-'}</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-label">市净率</div>
+        <div class="metric-value">${data.pb > 0 ? data.pb.toFixed(2) : '-'}</div>
+      </div>
+    </div>
       <div class="metric-item">
         <div class="metric-label">换手率</div>
         <div class="metric-value">${data.turnover}%</div>
