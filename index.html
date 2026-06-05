@@ -331,27 +331,44 @@ async function getStockCode(input) {
   // 如果直接输入6位数字，判断是沪市还是深市
   if (/^\d{6}$/.test(input)) {
     const code = input;
-    // 60开头是上海，00/30开头是深圳
+    // 60/68开头是上海，00/30/68开头是深圳
     if (code.startsWith('60') || code.startsWith('68')) {
       return 'sh' + code;
     } else if (code.startsWith('00') || code.startsWith('30')) {
       return 'sz' + code;
     }
+    return 'sh' + code; // 默认上海
   }
 
-  // 这里简化处理，实际应该调用股票搜索API
-  // 由于没有免费的搜索API，这里提示用户直接输入代码
-  throw new Error('请直接输入6位股票代码（如：600519）');
+  // 尝试通过搜索API查找股票
+  try {
+    // 使用东方财富搜索API
+    const searchUrl = `https://searchapi.eastmoney.com/api/suggest/get?input=${encodeURIComponent(input)}&type=14&token=D43BF722C8E33BDC906FB84D85E326E8&count=5`;
+    const response = await fetch(searchUrl);
+    const data = await response.json();
+
+    if (data && data.QuotationCodeTable && data.QuotationCodeTable.Data && data.QuotationCodeTable.Data.length > 0) {
+      const stock = data.QuotationCodeTable.Data[0];
+      const code = stock.Code;
+      const market = stock.MktNum;
+
+      // 1是沪市，0是深市
+      if (market === '1' || code.startsWith('60') || code.startsWith('68')) {
+        return 'sh' + code;
+      } else {
+        return 'sz' + code;
+      }
+    }
+  } catch (error) {
+    console.error('搜索失败:', error);
+  }
+
+  throw new Error('未找到该股票，请输入完整的6位股票代码');
 }
 
 // 获取股票实时数据
 async function fetchStockData(stockCode) {
   try {
-    // 使用新浪财经API
-    const response = await fetch(`https://hq.sinajs.cn/list=${stockCode}`, {
-      mode: 'no-cors'
-    });
-
     // 由于CORS限制，使用备用方案：腾讯API
     const apiUrl = `https://qt.gtimg.cn/q=${stockCode}`;
     const res = await fetch(apiUrl);
@@ -366,6 +383,7 @@ async function fetchStockData(stockCode) {
     return {
       name: fields[1],           // 股票名称
       code: fields[2],           // 股票代码
+      marketCode: stockCode.toUpperCase().startsWith('SH') ? 'SH' : 'SZ', // 市场代码
       price: parseFloat(fields[3]),     // 当前价
       lastClose: parseFloat(fields[4]), // 昨收
       open: parseFloat(fields[5]),      // 今开
@@ -387,9 +405,12 @@ async function fetchStockData(stockCode) {
 function getMockData(code) {
   const price = 50 + Math.random() * 100;
   const change = (Math.random() - 0.5) * 10;
+  const stockCode = code.replace(/^(sh|sz)/i, '');
+  const marketCode = code.toUpperCase().startsWith('SH') ? 'SH' : 'SZ';
   return {
     name: '示例股票',
-    code: code.replace(/^(sh|sz)/, ''),
+    code: stockCode,
+    marketCode: marketCode,
     price: price.toFixed(2),
     lastClose: (price - change).toFixed(2),
     open: (price + Math.random() * 5 - 2.5).toFixed(2),
@@ -415,6 +436,13 @@ function displayStockInfo(data) {
   // 技术分析
   const analysis = analyzeTechnical(data, volumeRatio);
 
+  // 构建外部平台链接
+  const marketPrefix = data.marketCode || (data.code.startsWith('60') || data.code.startsWith('68') ? 'SH' : 'SZ');
+  const fullCode = marketPrefix + data.code;
+  const thsLink = `https://t.10jqka.com.cn/${data.code}/`;
+  const eastmoneyLink = `https://quote.eastmoney.com/${marketPrefix.toLowerCase()}${data.code}.html`;
+  const xueqiuLink = `https://xueqiu.com/S/${fullCode}`;
+
   const html = `
     <div class="stock-header">
       <div class="stock-name-row">
@@ -426,6 +454,11 @@ function displayStockInfo(data) {
         <span class="price-change ${isUp ? 'up' : 'down'}">
           ${isUp ? '+' : ''}${change} (${isUp ? '+' : ''}${changePercent}%)
         </span>
+      </div>
+      <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;">
+        <a href="${thsLink}" target="_blank" style="padding:8px 16px;background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;transition:all 0.3s;">📈 同花顺K线</a>
+        <a href="${eastmoneyLink}" target="_blank" style="padding:8px 16px;background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;transition:all 0.3s;">📊 东方财富</a>
+        <a href="${xueqiuLink}" target="_blank" style="padding:8px 16px;background:linear-gradient(135deg,#06b6d4,#0891b2);color:#fff;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;transition:all 0.3s;">❄️ 雪球行情</a>
       </div>
     </div>
 
