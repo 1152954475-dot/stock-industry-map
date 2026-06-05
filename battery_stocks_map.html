@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A股电池板块产业链全景图 · 一图看懂</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, "Microsoft YaHei", "PingFang SC", sans-serif;
+  background: #0a1628;
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(34, 197, 94, 0.18) 0%, transparent 50%),
+    radial-gradient(circle at 85% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(234, 179, 8, 0.08) 0%, transparent 60%);
+  color: #e2e8f0;
+  min-height: 100vh;
+  padding: 24px;
+  line-height: 1.6;
+}
+.container { max-width: 1400px; margin: 0 auto; }
+
+/* ============ 标题区 ============ */
+.hero {
+  text-align: center;
+  padding: 40px 20px 50px;
+  position: relative;
+}
+.hero h1 {
+  font-size: 42px;
+  background: linear-gradient(135deg, #4ade80 0%, #22d3ee 50%, #facc15 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+.hero .subtitle { font-size: 18px; color: #94a3b8; margin-bottom: 24px; }
+.hero .tag {
+  display: inline-block;
+  padding: 6px 16px;
+  margin: 4px;
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  border-radius: 20px;
+  font-size: 13px;
+  color: #86efac;
+}
+
+/* ============ 电池动画 ============ */
+.battery-anim {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px 0;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.battery-shell {
+  position: relative;
+  width: 240px;
+  height: 110px;
+  border: 4px solid #4ade80;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.6);
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(74, 222, 128, 0.3);
+}
+.battery-shell::after {
+  content: '';
+  position: absolute;
+  right: -12px;
+  top: 30px;
+  width: 10px;
+  height: 40px;
+  background: #4ade80;
+  border-radius: 0 4px 4px 0;
+}
+.battery-fill {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 75%;
+  background: linear-gradient(90deg, #16a34a, #4ade80, #facc15);
+  animation: charge 4s ease-in-out infinite;
+}
+@keyframes charge {
+  0%, 100% { width: 30%; }
+  50% { width: 95%; }
+}
+.battery-bolt {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 50px;
+  color: #fff;
+  text-shadow: 0 0 20px #facc15;
+  animation: pulse-bolt 1.5s ease-in-out infinite;
+  z-index: 2;
+}
+@keyframes pulse-bolt {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
+  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+}
+.battery-info {
+  text-align: left;
+  font-size: 14px;
+  color: #cbd5e1;
+}
+.battery-info b { color: #facc15; display: block; font-size: 18px; margin-bottom: 6px; }
+
+/* ============ 比喻说明 ============ */
+.metaphor-box {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(59, 130, 246, 0.08));
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 40px;
+  backdrop-filter: blur(10px);
+}
+.metaphor-box h2 {
+  font-size: 22px;
+  color: #facc15;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.metaphor-box h2::before { content: "🔋"; font-size: 24px; }
+.metaphor-box p { color: #cbd5e1; font-size: 15px; margin-bottom: 10px; }
+.metaphor-box .highlight { color: #facc15; font-weight: 600; }
+.metaphor-box .pop-key { color: #4ade80; font-weight: 700; }
+
+/* ============ 区块标题 ============ */
+.section-title {
+  font-size: 26px;
+  margin: 40px 0 24px;
+  padding-left: 16px;
+  border-left: 4px solid #4ade80;
+  color: #f1f5f9;
+}
+.section-title small {
+  font-size: 14px;
+  color: #94a3b8;
+  font-weight: 400;
+  margin-left: 12px;
+}
+
+/* ============ 电池工作原理图 ============ */
+.cell-diagram {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 16px;
+  padding: 30px 20px;
+  margin-bottom: 40px;
+}
+.cell-diagram h3 {
+  text-align: center;
+  color: #4ade80;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+.cell-svg-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.cell-svg-wrap svg { max-width: 100%; height: auto; }
+@keyframes ion-flow {
+  from { offset-distance: 0%; }
+  to { offset-distance: 100%; }
+}
+.ion-particle {
+  fill: #facc15;
+  filter: drop-shadow(0 0 4px #facc15);
+}
+.cell-legend {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  font-size: 13px;
+  color: #94a3b8;
+}
+.cell-legend-item { display: flex; align-items: center; gap: 8px; }
+.cell-legend-dot { width: 14px; height: 14px; border-radius: 3px; }
+
+/* ============ 金字塔产业链 ============ */
+.pyramid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 50px;
+}
+.layer {
+  display: flex;
+  align-items: stretch;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+.layer:hover { transform: translateY(-3px); }
+.layer-label {
+  flex: 0 0 130px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px 8px;
+  font-weight: 700;
+  font-size: 16px;
+}
+.layer-label small {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  margin-top: 4px;
+  opacity: 0.85;
+}
+.layer-content {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 18px;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-left: none;
+}
+.chip {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.chip:hover {
+  background: rgba(34, 197, 94, 0.25);
+  border-color: #4ade80;
+  transform: scale(1.03);
+}
+.chip strong { display: block; color: #fff; margin-bottom: 2px; }
+.chip span { color: #94a3b8; font-size: 11px; }
+
+.layer-app .layer-label { background: linear-gradient(135deg, #3b82f6, #60a5fa); color: #fff; }
+.layer-cell .layer-label { background: linear-gradient(135deg, #16a34a, #4ade80); color: #fff; }
+.layer-mat .layer-label { background: linear-gradient(135deg, #eab308, #facc15); color: #1e1b4b; }
+.layer-up .layer-label { background: linear-gradient(135deg, #06b6d4, #22d3ee); color: #fff; }
+
+/* ============ 板块卡片 ============ */
+.sectors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+.sector-card {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 16px;
+  padding: 22px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.sector-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--accent, #4ade80);
+}
+.sector-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(34, 197, 94, 0.2);
+  border-color: rgba(74, 222, 128, 0.5);
+}
+.sector-card .icon { font-size: 32px; margin-bottom: 8px; }
+.sector-card h3 { font-size: 20px; color: #fff; margin-bottom: 4px; }
+.sector-card .en { font-size: 12px; color: #94a3b8; margin-bottom: 12px; letter-spacing: 1px; }
+.sector-card .desc {
+  font-size: 13px;
+  color: #cbd5e1;
+  margin-bottom: 14px;
+  padding: 10px 12px;
+  background: rgba(34, 197, 94, 0.08);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  line-height: 1.55;
+}
+.sector-card .desc b { color: #facc15; }
+.stock-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.stock {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 12px;
+  background: rgba(30, 41, 59, 0.6);
+  border-radius: 8px;
+  font-size: 13px;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+.stock:hover {
+  border-color: var(--accent);
+  background: rgba(30, 41, 59, 0.9);
+}
+.stock-name { color: #fff; font-weight: 600; }
+.stock-code { color: #64748b; font-size: 11px; margin-left: 6px; font-family: 'Consolas', monospace; }
+.stock-tag {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: rgba(250, 204, 21, 0.15);
+  color: #facc15;
+  border: 1px solid rgba(250, 204, 21, 0.3);
+}
+.stock-tag.king { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border-color: rgba(239, 68, 68, 0.4); }
+.stock-tag.hot { background: rgba(74, 222, 128, 0.2); color: #86efac; border-color: rgba(74, 222, 128, 0.4); }
+
+.c-cell { --accent: #16a34a; }
+.c-pos { --accent: #f59e0b; }
+.c-neg { --accent: #06b6d4; }
+.c-ele { --accent: #a855f7; }
+.c-sep { --accent: #ec4899; }
+.c-mat { --accent: #8b5cf6; }
+.c-li { --accent: #facc15; }
+.c-eq { --accent: #14b8a6; }
+.c-store { --accent: #3b82f6; }
+.c-new { --accent: #f43f5e; }
+.c-rec { --accent: #84cc16; }
+.c-foil { --accent: #d946ef; }
+
+/* ============ 三大主线驱动盒子 ============ */
+.driver-box {
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.12), rgba(59, 130, 246, 0.1));
+  border: 1px solid rgba(74, 222, 128, 0.4);
+  border-radius: 14px;
+  padding: 22px;
+  margin: 30px 0;
+}
+.driver-box h3 {
+  color: #4ade80;
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+.driver-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+.driver-item {
+  background: rgba(15, 23, 42, 0.6);
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #cbd5e1;
+}
+.driver-item b { color: #facc15; display: block; margin-bottom: 4px; font-size: 14px; }
+
+/* ============ 涨价链动画 ============ */
+.price-flow {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(250, 204, 21, 0.3);
+  border-radius: 16px;
+  padding: 26px;
+  margin-bottom: 40px;
+}
+.price-flow h3 {
+  color: #facc15;
+  font-size: 18px;
+  margin-bottom: 18px;
+  text-align: center;
+}
+.price-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.price-node {
+  background: linear-gradient(135deg, rgba(250, 204, 21, 0.2), rgba(245, 158, 11, 0.15));
+  border: 1px solid rgba(250, 204, 21, 0.5);
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fde68a;
+  text-align: center;
+  min-width: 110px;
+}
+.price-node small { display: block; font-size: 10px; color: #94a3b8; font-weight: 400; margin-top: 3px; }
+.price-arrow {
+  font-size: 22px;
+  color: #facc15;
+  animation: arrow-pulse 2s infinite;
+}
+@keyframes arrow-pulse {
+  0%, 100% { opacity: 0.6; transform: translateX(0); }
+  50% { opacity: 1; transform: translateX(4px); }
+}
+
+/* ============ 风险提示 ============ */
+.disclaimer {
+  margin-top: 50px;
+  padding: 20px;
+  background: rgba(239, 68, 68, 0.08);
+  border-left: 4px solid #ef4444;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #fca5a5;
+}
+.disclaimer b { color: #fecaca; }
+.legend {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: #94a3b8;
+}
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+
+@media (max-width: 768px) {
+  .hero h1 { font-size: 28px; }
+  .layer { flex-direction: column; }
+  .layer-label { flex: none; padding: 10px; }
+  .layer-content { border-left: 1px solid rgba(148, 163, 184, 0.15); }
+}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="hero">
+  <h1>A股电池板块产业链全景图</h1>
+  <p class="subtitle">动力电池 · 储能 · 固态电池 · 钠电池 一图看懂</p>
+  <div>
+    <span class="tag">#新能源车</span>
+    <span class="tag">#储能爆发</span>
+    <span class="tag">#固态电池</span>
+    <span class="tag">#钠电量产</span>
+    <span class="tag">#数据更新至 2026.06</span>
+  </div>
+
+  <div class="battery-anim">
+    <div class="battery-shell">
+      <div class="battery-fill"></div>
+      <div class="battery-bolt">⚡</div>
+    </div>
+    <div class="battery-info">
+      <b>2026 年关键词</b>
+      锂价剑指 25 万 / 吨<br>
+      宁德钠电 Q4 量产<br>
+      储能投资破千亿美元<br>
+      固态电池路试启动
+    </div>
+  </div>
+</div>
+
+<!-- 比喻说明 -->
+<div class="metaphor-box">
+  <h2>把"电池产业链"想成一桶能反复使用的"电力果汁"</h2>
+  <p>电池本质是<span class="pop-key">把电存起来反复用</span>的容器。想象一个果汁桶：</p>
+  <p><span class="highlight">正极</span>是<b>果汁原浆罐</b>（决定能量密度和电压）、<span class="highlight">负极</span>是<b>空罐子</b>（充电时接收锂离子）、<span class="highlight">电解液</span>是<b>输送管道</b>（让锂离子来回跑）、<span class="highlight">隔膜</span>是<b>安全阀</b>（防止正负极接触爆炸）。</p>
+  <p>充电时，锂离子从正极"游"过电解液、穿过隔膜、住进负极；放电时反着来——这一来一回就是一次<span class="pop-key">充放循环</span>。</p>
+  <p style="margin-top:12px;color:#facc15;">📌 这一轮电池行情的核心逻辑：<b>新能源车 + 储能 + AI 数据中心配储</b> 三大需求共振，叠加 <b>锂价上涨</b>带动整条链涨价、<b>钠电/固态</b>新技术放量。</p>
+</div>
+
+<!-- 电池工作原理图 -->
+<h2 class="section-title">一、电池是怎么工作的<small>看锂离子从正极游到负极</small></h2>
+
+<div class="cell-diagram">
+  <h3>🔋 锂电池充电过程示意（锂离子在正负极之间穿梭）</h3>
+  <div class="cell-svg-wrap">
+    <svg viewBox="0 0 700 280" width="700">
+      <!-- 外壳 -->
+      <rect x="20" y="40" width="660" height="200" rx="12" fill="rgba(15,23,42,0.6)" stroke="#475569" stroke-width="2"/>
+
+      <!-- 正极 -->
+      <rect x="50" y="60" width="140" height="160" rx="8" fill="url(#posGrad)" stroke="#f59e0b" stroke-width="2"/>
+      <text x="120" y="100" fill="#fff" font-size="16" font-weight="700" text-anchor="middle">正极 ⊕</text>
+      <text x="120" y="125" fill="#fde68a" font-size="12" text-anchor="middle">磷酸铁锂 / 三元</text>
+      <text x="120" y="145" fill="#cbd5e1" font-size="10" text-anchor="middle">湖南裕能</text>
+      <text x="120" y="160" fill="#cbd5e1" font-size="10" text-anchor="middle">容百科技</text>
+      <text x="120" y="195" fill="#facc15" font-size="11" text-anchor="middle" font-weight="600">「能量原浆罐」</text>
+
+      <!-- 隔膜 -->
+      <rect x="200" y="60" width="40" height="160" fill="rgba(236,72,153,0.15)" stroke="#ec4899" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <text x="220" y="50" fill="#f9a8d4" font-size="11" text-anchor="middle">隔膜</text>
+      <text x="220" y="240" fill="#f9a8d4" font-size="10" text-anchor="middle">恩捷股份</text>
+
+      <!-- 电解液（中间区域） -->
+      <rect x="240" y="60" width="220" height="160" fill="rgba(168,85,247,0.08)"/>
+      <text x="350" y="55" fill="#c4b5fd" font-size="12" text-anchor="middle" font-weight="600">电解液（锂离子通道）· 天赐材料</text>
+
+      <!-- 隔膜2 -->
+      <rect x="460" y="60" width="40" height="160" fill="rgba(236,72,153,0.15)" stroke="#ec4899" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <text x="480" y="50" fill="#f9a8d4" font-size="11" text-anchor="middle">隔膜</text>
+      <text x="480" y="240" fill="#f9a8d4" font-size="10" text-anchor="middle">星源材质</text>
+
+      <!-- 负极 -->
+      <rect x="510" y="60" width="140" height="160" rx="8" fill="url(#negGrad)" stroke="#06b6d4" stroke-width="2"/>
+      <text x="580" y="100" fill="#fff" font-size="16" font-weight="700" text-anchor="middle">负极 ⊖</text>
+      <text x="580" y="125" fill="#a5f3fc" font-size="12" text-anchor="middle">石墨 / 硅碳</text>
+      <text x="580" y="145" fill="#cbd5e1" font-size="10" text-anchor="middle">贝特瑞</text>
+      <text x="580" y="160" fill="#cbd5e1" font-size="10" text-anchor="middle">杉杉股份</text>
+      <text x="580" y="195" fill="#22d3ee" font-size="11" text-anchor="middle" font-weight="600">「锂离子的家」</text>
+
+      <!-- 锂离子动画（充电时从正极→负极） -->
+      <circle r="8" fill="#facc15" filter="url(#glow)">
+        <animate attributeName="cx" values="180;520" dur="3s" repeatCount="indefinite"/>
+        <animate attributeName="cy" values="90;90" dur="3s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite"/>
+      </circle>
+      <text font-size="10" fill="#1e293b" font-weight="700">
+        <animate attributeName="x" values="174;514" dur="3s" repeatCount="indefinite"/>
+        <animate attributeName="y" values="93;93" dur="3s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite"/>
+        Li⁺
+      </text>
+
+      <circle r="8" fill="#facc15" filter="url(#glow)">
+        <animate attributeName="cx" values="180;520" dur="3s" begin="0.6s" repeatCount="indefinite"/>
+        <animate attributeName="cy" values="140;140" dur="3s" begin="0.6s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0;1;1;0" dur="3s" begin="0.6s" repeatCount="indefinite"/>
+      </circle>
+      <text font-size="10" fill="#1e293b" font-weight="700">
+        <animate attributeName="x" values="174;514" dur="3s" begin="0.6s" repeatCount="indefinite"/>
+        <animate attributeName="y" values="143;143" dur="3s" begin="0.6s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0;1;1;0" dur="3s" begin="0.6s" repeatCount="indefinite"/>
+        Li⁺
+      </text>
+
+      <circle r="8" fill="#facc15" filter="url(#glow)">
+        <animate attributeName="cx" values="180;520" dur="3s" begin="1.2s" repeatCount="indefinite"/>
+        <animate attributeName="cy" values="180;180" dur="3s" begin="1.2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0;1;1;0" dur="3s" begin="1.2s" repeatCount="indefinite"/>
+      </circle>
+      <text font-size="10" fill="#1e293b" font-weight="700">
+        <animate attributeName="x" values="174;514" dur="3s" begin="1.2s" repeatCount="indefinite"/>
+        <animate attributeName="y" values="183;183" dur="3s" begin="1.2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0;1;1;0" dur="3s" begin="1.2s" repeatCount="indefinite"/>
+        Li⁺
+      </text>
+
+      <!-- 充电方向箭头 -->
+      <text x="350" y="265" fill="#4ade80" font-size="13" text-anchor="middle" font-weight="700">⬆ 充电时锂离子方向 ⬆</text>
+
+      <!-- 渐变定义 -->
+      <defs>
+        <linearGradient id="posGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#dc2626" stop-opacity="0.7"/>
+          <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.5"/>
+        </linearGradient>
+        <linearGradient id="negGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#0891b2" stop-opacity="0.5"/>
+          <stop offset="100%" stop-color="#1e40af" stop-opacity="0.7"/>
+        </linearGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="2.5" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+    </svg>
+  </div>
+  <div class="cell-legend">
+    <div class="cell-legend-item"><div class="cell-legend-dot" style="background:#f59e0b;"></div>正极（决定能量上限）</div>
+    <div class="cell-legend-item"><div class="cell-legend-dot" style="background:#06b6d4;"></div>负极（储锂仓库）</div>
+    <div class="cell-legend-item"><div class="cell-legend-dot" style="background:#a855f7;"></div>电解液（运输管道）</div>
+    <div class="cell-legend-item"><div class="cell-legend-dot" style="background:#ec4899;"></div>隔膜（安全阀门）</div>
+    <div class="cell-legend-item"><div class="cell-legend-dot" style="background:#facc15;"></div>锂离子 Li⁺（搬运工）</div>
+  </div>
+</div>
+
+<!-- 二、产业链金字塔 -->
+<h2 class="section-title">二、电池产业链分层<small>从锂矿到电动车，谁在哪个位置</small></h2>
+
+<div class="pyramid">
+
+  <div class="layer layer-app">
+    <div class="layer-label">下游应用<small>需求场景</small></div>
+    <div class="layer-content">
+      <div class="chip"><strong>新能源车</strong><span>动力电池主战场</span></div>
+      <div class="chip"><strong>储能电站</strong><span>2026 千亿赛道</span></div>
+      <div class="chip"><strong>AI 数据中心配储</strong><span>新增量</span></div>
+      <div class="chip"><strong>电动两轮车</strong><span>钠电首发</span></div>
+      <div class="chip"><strong>消费电子</strong><span>3C 锂电</span></div>
+      <div class="chip"><strong>电动工具</strong><span>圆柱电池</span></div>
+      <div class="chip"><strong>低空飞行器 eVTOL</strong><span>高能量密度</span></div>
+    </div>
+  </div>
+
+  <div style="text-align:center;font-size:24px;color:#3b82f6;">⬆ 拉动需求 ⬆</div>
+
+  <div class="layer layer-cell">
+    <div class="layer-label">中游电池<small>电芯/PACK</small></div>
+    <div class="layer-content">
+      <div class="chip"><strong>动力电池</strong><span>磷酸铁锂/三元</span></div>
+      <div class="chip"><strong>储能电池</strong><span>314Ah 大电芯</span></div>
+      <div class="chip"><strong>钠离子电池</strong><span>2026 量产</span></div>
+      <div class="chip"><strong>固态电池</strong><span>2027-2030 路试</span></div>
+      <div class="chip"><strong>圆柱电池</strong><span>4680/46105</span></div>
+      <div class="chip"><strong>BMS 电池管理</strong><span>电池"大脑"</span></div>
+    </div>
+  </div>
+
+  <div style="text-align:center;font-size:24px;color:#22c55e;">⬆ 由它制造 ⬆</div>
+
+  <div class="layer layer-mat">
+    <div class="layer-label">上游四大主材<small>核心原料</small></div>
+    <div class="layer-content">
+      <div class="chip"><strong>正极材料</strong><span>磷酸铁锂/三元</span></div>
+      <div class="chip"><strong>负极材料</strong><span>石墨/硅碳</span></div>
+      <div class="chip"><strong>电解液</strong><span>六氟磷酸锂</span></div>
+      <div class="chip"><strong>隔膜</strong><span>湿法/干法</span></div>
+      <div class="chip"><strong>铜箔</strong><span>4.5μm 极薄铜箔</span></div>
+      <div class="chip"><strong>铝箔</strong><span>电池铝箔</span></div>
+      <div class="chip"><strong>结构件</strong><span>科达利</span></div>
+    </div>
+  </div>
+
+  <div style="text-align:center;font-size:24px;color:#facc15;">⬆ 用它做出 ⬆</div>
+
+  <div class="layer layer-up">
+    <div class="layer-label">最上游资源/设备<small>矿山/设备</small></div>
+    <div class="layer-content">
+      <div class="chip"><strong>锂矿/锂盐</strong><span>碳酸锂/氢氧化锂</span></div>
+      <div class="chip"><strong>钴/镍</strong><span>三元前驱体</span></div>
+      <div class="chip"><strong>电池设备</strong><span>先导智能</span></div>
+      <div class="chip"><strong>电池回收</strong><span>城市矿山</span></div>
+      <div class="chip"><strong>钠资源</strong><span>纯碱/普鲁士蓝</span></div>
+      <div class="chip"><strong>固态电解质</strong><span>硫化锂/氧化物</span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- 2026 三大主驱动 -->
+<div class="driver-box">
+  <h3>🚀 2026 年电池板块为啥这么火？三大引擎共振</h3>
+  <div class="driver-grid">
+    <div class="driver-item"><b>新能源车渗透率突破 60%</b>2026 年中国新能源车销量预计 1500 万辆，单车带电量持续提升</div>
+    <div class="driver-item"><b>储能爆发：千亿美元投资</b>AI 数据中心配储 + 风光大基地，全球储能装机翻倍</div>
+    <div class="driver-item"><b>锂价反转：从 7 万到 25 万</b>碳酸锂在 2025 年触底反弹，2026 年继续上行，全产业链涨价传导</div>
+    <div class="driver-item"><b>钠电池 Q4 量产</b>宁德时代第二代钠电交付，两轮车/储能率先放量</div>
+    <div class="driver-item"><b>固态电池路试启动</b>蔚来/比亚迪/广汽半固态车型上路，全固态 2027 中试</div>
+    <div class="driver-item"><b>欧美市场打开</b>美国 IRA 补贴 + 欧洲电池法案落地，中国电池厂出海订单暴增</div>
+  </div>
+</div>
+
+<!-- 三、涨价传导链 -->
+<h2 class="section-title">三、锂价上涨怎么传导<small>从锂矿一路涨到电动车</small></h2>
+
+<div class="price-flow">
+  <h3>💰 一颗锂离子的涨价之旅（碳酸锂 7万 → 25万 / 吨）</h3>
+  <div class="price-row">
+    <div class="price-node">锂矿/锂盐<small>赣锋/天齐</small></div>
+    <div class="price-arrow">→</div>
+    <div class="price-node">正极材料<small>湖南裕能</small></div>
+    <div class="price-arrow">→</div>
+    <div class="price-node">电池电芯<small>宁德时代</small></div>
+    <div class="price-arrow">→</div>
+    <div class="price-node">车企/储能商<small>比亚迪/阳光</small></div>
+    <div class="price-arrow">→</div>
+    <div class="price-node" style="background:linear-gradient(135deg,#16a34a,#4ade80);border-color:#16a34a;color:#fff;">最终消费者<small style="color:#dcfce7;">车价/电费</small></div>
+  </div>
+  <p style="text-align:center;color:#94a3b8;font-size:13px;margin-top:14px;">📌 越靠近锂矿端，涨价弹性越大；越靠下游，传导越慢但量更大。<b style="color:#facc15;">受益排序：锂矿 > 正极 > 电池 > 电解液 > 隔膜 > 负极</b></p>
+</div>
+
+<!-- 四、A 股各板块龙头 -->
+<h2 class="section-title">四、A 股电池产业链龙头<small>每个细分赛道的"扛把子"</small></h2>
+
+<div class="legend">
+  <div class="legend-item"><span class="legend-dot" style="background:#ef4444;"></span>👑 绝对龙头</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#f59e0b;"></span>🔥 二线主力</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#22c55e;"></span>⚡ 弹性/新方向</div>
+</div>
+
+<div class="sectors-grid">
+
+  <!-- 锂电池整车厂 -->
+  <div class="sector-card c-cell">
+    <div class="icon">🔋</div>
+    <h3>动力/储能电池</h3>
+    <div class="en">Battery Cell · 整个产业链的核心</div>
+    <div class="desc">把四大主材组装成"能存电的盒子"。<b>动力电池</b>装车、<b>储能电池</b>放到电站。宁德时代全球市占率超 35%，是当之无愧的"电池茅"。</div>
+    <div class="stock-list">
+      <div class="stock"><span><span class="stock-name">宁德时代</span><span class="stock-code">300750</span></span><span class="stock-tag king">👑 全球电池一哥</span></div>
+      <div class="stock"><span><span class="stock-name">比亚迪</span><span class="stock-code">002594</span></span><span class="stock-tag king">👑 车+电池一体化</span></div>
+      <div class="stock"><span><span class="stock-name">亿纬锂能</span><span class="stock-code">300014</span></span><span class="stock-tag hot">动力+储能+消费</span></div>
+      <div class="stock"><span><span class="stock-name">国轩高科</span><span class="stock-code">002074</span></span><span class="stock-tag hot">大众参股</span></div>
+      <div class="stock"><span><span class="stock-name">欣旺达</span><span class="stock-code">300207</span></span><span class="stock-tag">消费+动力</span></div>
+      <div class="stock"><span><span class="stock-name">孚能科技</span><span class="stock-code">688567</span></span><span class="stock-tag">软包电池</span></div>
+      <div class="stock"><span><span class="stock-name">瑞浦兰钧</span><span class="stock-code">港股</span></span><span class="stock-tag">青山系储能</span></div>
+    </div>
+  </div>
+
+  <!-- 正极材料 -->
+  <div class="sector-card c-pos">
+    <div class="icon">🧪</div>
+    <h3>正极材料</h3>
+    <div class="en">Cathode · 决定电池能量密度上限</div>
+    <div class="desc">电池里的"<b>能量原浆</b>"，正极用什么材料决定了电压和续航。<b>磷酸铁锂</b>(成本低、安全) 占储能 90%、动力 70%；<b>三元</b>(NCM/NCA) 用于高端长续航车型。锂价上涨直接推升正极售价。</div>
+    <div class="stock-list">
+      <div class="stock"><span><span class="stock-name">湖南裕能</span><span class="stock-code">301358</span></span><span class="stock-tag king">👑 铁锂正极龙头</span></div>
+      <div class="stock"><span><span class="stock-name">容百科技</span><span class="stock-code">688005</span></span><span class="stock-tag king">👑 三元正极龙头</span></div>
+      <div class="stock"><span><span class="stock-name">德方纳米</span><span class="stock-code">300769</span></span><span class="stock-tag hot">铁锂二线</span></div>
+      <div class="stock"><span><span class="stock-name">厦钨新能</span><span class="stock-code">688778</span></span><span class="stock-tag">三元+钴酸锂</span></div>
+      <div class="stock"><span><span class="stock-name">当升科技</span><span class="stock-code">300073</span></span><span class="stock-tag">高镍三元</span></div>
+      <div class="stock"><span><span class="stock-name">长远锂科</span><span class="stock-code">688779</span></span><span class="stock-tag">三元材料</span></div>
+      <div class="stock"><span><span class="stock-name">龙蟠科技</span><span class="stock-code">603906</span></span><span class="stock-tag">铁锂出海</span></div>
+    </div>
+  </div>
+
+  <!-- 负极材料 -->
+  <div class="sector-card c-neg">
+    <div class="icon">🪵</div>
+    <h3>负极材料</h3>
+    <div class="en">Anode · 锂离子的"家"</div>
+    <div class="desc">充电时锂离子住进来的"<b>蜂窝状仓库</b>"。主流是<b>人造石墨</b>，下一代是<b>硅碳负极</b>(容量提升 3 倍，但膨胀难题)。固态电池将用<b>金属锂负极</b>。</div>
+    <div class="stock-list">
+      <div class="stock"><span><span class="stock-name">贝特瑞</span><span class="stock-code">835185</span></span><span class="stock-tag king">👑 全球负极一哥</span></div>
+      <div class="stock"><span><span class="stock-name">璞泰来</span><span class="stock-code">603659</span></span><span class="stock-tag king">👑 人造石墨</span></div>
+      <div class="stock"><span><span class="stock-name">杉杉股份</span><span class="stock-code">600884</span></span><span class="stock-tag hot">负极+偏光片</span></div>
+      <div class="stock"><span><span class="stock-name">中科电气</span><span class="stock-code">300035</span></span><span class="stock-tag">负极+磁电</span></div>
+      <div class="stock"><span><span class="stock-name">尚太科技</span><span class="stock-code">001301</span></span><span class="stock-tag">一体化负极</span></div>
+    </div>
+  </div>
+
+  <!-- 电解液 -->
+  <div class="sector-card c-ele">
+    <div class="icon">💧</div>
+    <h3>电解液</h3>
+    <div class="en">Electrolyte · 锂离子的"输送管道"</div>
+    <div class="desc">让锂离子在正负极之间"游来游去"的液体。核心成分是<b>六氟磷酸锂(LiPF6)</b>，2025 年价格已从底部翻倍，弹性极大。</div>
+    <div class="stock-list">
+      <div class="stock"><span><span class="stock-name">天赐材料</span><span class="stock-code">002709</span></span><span class="stock-tag king">👑 电解液一哥</span></div>
+      <div class="stock"><span><span class="stock-name">新宙邦</span><span class="stock-code">300037</span></span><span class="stock-tag king">👑 全球前三</span></div>
+      <div class="stock"><span><span class="stock-name">多氟多</span><span class="stock-code">002407</span></span><span class="stock-tag hot">六氟磷酸锂</span></div>
+      <div class="stock"><span><span class="stock-name">永太科技</span><span class="stock-code">002326</span></span><span class="stock-tag">锂电添加剂</span></div>
+      <div class="stock"><span><span class="stock-name">瑞泰新材</span><span class="stock-code">301238</span></span><span class="stock-tag">电解液二线</span></div>
+    </div>
+  </div>
+
+  <!-- 隔膜 -->
+  <div class="sector-card c-sep">
+    <div class="icon">🧻</div>
+    <h3>隔膜</h3>
+    <div class="en">Separator · 防爆炸的"安全阀"</div>
+    <div class="desc">夹在正负极之间的薄膜，<b>只让锂离子过、不让电子过</b>。一旦破裂电池就短路爆炸。湿法基膜技术壁垒最高，恩捷股份全球市占率 30%+。</div>
+    <div class="stock-list">
+      <div class="stock"><span><span class="stock-name">恩捷股份</span><span class="stock-code">002812</span></span><span class="stock-tag king">👑 全球隔膜龙头</span></div>
+      <div class="stock"><span><span class="stock-name">星源材质</span><span class="stock-code">300568</span></span><span class="stock-tag king">👑 干湿法双布局</span></div>
+      <div class="stock"><span><span class="stock-name">中材科技</span><span class="stock-code">002080</span></span><span class="stock-tag hot">湿法二线</span></div>
+      <div class="stock"><span><span class="stock-name">沧州明珠</span><span class="stock-code">002108</span></span><span class="stock-tag">干法隔膜</span></div>
+    </div>
+  </div>
+
+  <!-- 锂矿/锂盐 -->
+  <div class="sector-card c-li">
+    <div class="icon">⛏️</div>
+    <h3>锂矿 / 锂盐资源</h3>
+    <div class="en">Lithium · 整条产业链的"心脏"</div>
+    <div class="desc">没有锂就没有锂电池。锂资源主要是<b>盐湖锂</b>(成本低)和<b>锂辉石</b>(品质高)。锂价从 2025 年 7 万底部反弹至 2026 年 25 万 / 吨，资源股弹性最大。</div>
+    <div class="stock-list">
+      <div class="stock"><span><span class="stock-name">赣锋锂业</span><span class="stock-code">002460</span></span><span class="stock-tag king">👑 全球锂业一哥</span></div>
+      <div class="stock"><span><span class="stock-name">天齐锂业</span><span class="stock-code">002466</span></span><span class="stock-tag king">👑 锂矿龙头</span></div>
+      <div class="stock"><span><span class="stock-name">华友钴业</span><span class="stock-code">603799</span></span><span class="stock-tag hot">钴镍锂一体化</span></div>
+      <div class="stock"><span><span class="stock-name">盛新锂能</span><span class="stock-code">002240</span></span><span class="stock-tag hot">锂辉石</span></div>
+      <div class="stock"><span><span class="stock-name">藏格矿业</span><span class="stock-code">000408</span></span><span class="stock-tag">盐湖锂</span></div>
+      <div class="stock"><span><span class="stock-name">永兴材料</span><span class="stock-code">002756</span></span><span class="stock-tag">云母提锂</span></div>
+      <div class="stock"><span><span class="stock-name">中矿资源</span><span class="stock-code">002738</span></span><span class="stock-tag">海外锂矿</span></div>
+    </div>
+  </div>
+
+  <!-- 铜箔/铝箔 -->
+  <div class="sector-card c-foil">
+    <div class="icon">📜</div>
+    <h3>铜箔 / 铝箔</h3>
+    <div class="en">Foil · 电池的"集流体"</div>
+    <div class="desc">正负极活性材料要刷在<b>金属箔</b>上才能导电。<b>铜箔</b>给负极用、<b>铝箔</b>给正极用，越薄越好(减重提密度)，4.5μm 极薄铜箔是当前主流。</div>
+    <div class="stock-list">
+      <div class="stock"><span><span class="stock-name">嘉元科技</span><span class="stock-code">688388</span></span><span class="stock-tag king">👑 极薄铜箔龙头</span></div>
+      <div class="stock"><span><span class="stock-name">诺德股份</span><span class="stock-code">600110</span></span><span class="stock-tag hot">锂电铜箔</span></div>
+      <div class="stock"><span><span class="stock-name">铜冠铜箔</span><span class="stock-code">301217</span></span><span class="stock-tag">PCB+锂电</span></div>
+      <div class="stock"><span><span class="stock-name">鼎胜新材</span><span class="stock-code">603876</span></span><span class="stock-tag king">👑 电池铝箔龙头</span></div>
+      <div class="stock"><span><span class="stock-name">万顺新材</span><span class="stock-code">300057</span></span><span class="stock-tag">铝箔二线</span></div>
+    </div>
+  </div>
+
+  <!-- 储能 -->
+  <div class="sector-card c-store">
+    <div class="icon">🏗️</div>
+    <h3>储能系统集成</h3>
+    <div class="en">Energy Storage · 2026 千亿赛道</div>
+    <div class="desc">把电池组装成<b>大型储能电站</b>，配套 PCS(变流器) + EMS(能量管理)。AI 数据中心、风光大基地、户用储能三轮驱动，逻辑最强主线之一。</div>
+    <div class="stock-list">
+      <div class="stock"><span><span class="stock-name">阳光电源</span><span class="stock-code">300274</span></span><span class="stock-tag king">👑 储能+逆变器一哥</span></div>
+      <div class="stock"><span><span class="stock-name">海博思创</span><span class="stock-code">688411</span></span><span class="stock-tag king">👑 储能集成龙头</span></div>
+      <div class="stock"><span><span class="stock-name">科华数据</span><span class="stock-code">002335</span></span><span class="stock-tag hot">储能+IDC 双主业</span></div>
+      <div class="stock"><span><span class="stock-name">南都电源</span><span class="stock-code">300068</span></span><span class="stock-tag">铅炭+锂电储能</span></div>
+      <div class="stock"><span><span class="stock-name">派能科技</span><span class="stock-code">688063</span></span><span class="stock-tag">户用储能</span></div>
+      <div class="stock"><span><span class="stock-name">德业股份</span><span class="stock-code">605117</span></span><span class="stock-tag hot">储能逆变器</span></div>
+      <div class="stock"><span><span class="stock-name">禾迈股份</span><span class="stock-code">688032</span></span><span class="stock-tag">微逆+储能</span></div>
+    </div>
+  </div>
+
+  <!-- 钠离子电池 -->
+  <div class="sector-card c-new">
+    <div class="icon">🧂</div>
+    <h3>钠离子电池</h3>
+    <div class="en">Sodium-ion · 锂电的"备胎"补位</div>
+    <div class="desc">用<b>钠</b>替代<b>锂</b>，资源丰富(海水里都有)、低温性能好、成本目标 0.4 元/Wh 以下。<b>2026 Q4 宁德钠电量产</b>，先上两轮车和储能。</div>
+    <div class="stock-list">
+      <div class="stock"><span><span class="stock-name">华阳股份</span><span class="stock-code">600348</span></span><span class="stock-tag king">👑 钠电正极+电芯</span></div>
+      <div class="stock"><span><span class="stock-name">传艺科技</span><span class="stock-code">002866</span></span><span class="stock-tag hot">钠电池跨界</span></div>
+      <div class="stock"><span><span class="stock-name">维科技术</span><span class="stock-code">600152</span></span><span class="stock-tag hot">钠电池量产</span></div>
+      <div class="stock"><span><span class="stock-name">中科海钠</span><span class="stock-code">未上市</span></span><span class="stock-tag">中科院系</span></div>
+      <div class="stock"><span><span class="stock-name">山东章鼓</span><span class="stock-code">002598</span></span><span class="stock-tag">普鲁士蓝正极</span></div>
+      <div class="stock"><span><span class="stock-name">百川股份</span><span class="stock-code">002455</span></span><span class="stock-tag">钠电硬碳负极</span></div>
+    </div>
+  </div>
+
+  <!-- 固态电池 -->
+  <div class="sector-card c-new">
+    <div class="icon">💎</div>
+    <h3>固态电池</h3>
+    <div class="en">Solid-State · 下一代电池技术</div>
+    <div class="desc">把"会漏的电解液"换成<b>固态电解质</b>，能量密度翻倍、不会燃烧爆炸。<b>2027-2030 全固态量产</b>，半固态车型 2026 已上路(蔚来 ET7/广汽昊铂)。</div>
+    <div class="stock-list">
+      <div class="stock"><span><span class="stock-name">鹏辉能源</span><span class="stock-code">300438</span></span><span class="stock-tag king">👑 固态电池中试</span></div>
+      <div class="stock"><span><span class="stock-name">三祥新材</span><span class="stock-code">603663</span></span><span class="stock-tag hot">氧化锆电解质</span></div>
+      <div class="stock"><span><span class="stock-name">东方锆业</span><span class="stock-code">002167</span></span><span class="stock-tag hot">锆基材料</span></div>
+      <div class="stock"><span><span class="stock-name">上海洗霸</span><span class="stock-code">603200</span></span><span class="stock-tag">硫化锂概念</span></div>
+      <div class="stock"><span><span class="stock-name">紫江企业</span><span class="stock-code">600210</span></span><span class="stock-tag">铝塑膜</span></div>
+      <div class="stock"><span><span class="stock-name">当升科技</span><span class="stock-code">300073</span></span><span class="stock-tag">固态正极</span></div>
+      <div class="stock"><span><span class="stock-name">先导智能</span><span class="stock-code">300450</span></span><span class="stock-tag">固态产线</span></div>
+    </div>
+  </div>
+
+  <!-- 电池设备 -->
+  <div class="sector-card c-eq">
+    <div class="icon">🛠️</div>
+    <h3>电池设备 / 结构件</h3>
+    <div class="en">Equipment · 造电池的"机床"</div>
+    <div class="desc">前段(涂布、辊压)+中段(卷绕、叠片)+后段(化成、分容)三段设备。<b>结构件</b>是电池的"外壳和盖板"，关乎安全。</div>
+    <div class="stock-list">
+      <div class="stock"><span><span class="stock-name">先导智能</span><span class="stock-code">300450</span></span><span class="stock-tag king">👑 锂电设备一哥</span></div>
+      <div class="stock"><span><span class="stock-name">科达利</span><span class="stock-code">002850</span></span><span class="stock-tag king">👑 结构件龙头</span></div>
+      <div class="stock"><span><span class="stock-name">杭可科技</span><span class="stock-code">688006</span></span><span class="stock-tag hot">后段设备</span></div>
+      <div class="stock"><span><span class="stock-name">利元亨</span><span class="stock-code">688499</span></span><span class="stock-tag">中段设备</span></div>
+      <div class="stock"><span><span class="stock-name">联赢激光</span><span class="stock-code">688518</span></span><span class="stock-tag">激光焊接</span></div>
+    </div>
+  </div>
+
+  <!-- 电池回收 -->
+  <div class="sector-card c-rec">
+    <div class="icon">♻️</div>
+    <h3>电池回收</h3>
+    <div class="en">Recycling · "城市矿山"再起航</div>
+    <div class="desc">第一批新能源车电池开始<b>大规模退役</b>(2026 起每年退役量超 80 万吨)，回收提炼出锂/镍/钴二次利用，是<b>资源端的隐形巨头</b>。</div>
+    <div class="stock-list">
+      <div class="stock"><span><span class="stock-name">格林美</span><span class="stock-code">002340</span></span><span class="stock-tag king">👑 电池回收一哥</span></div>
+      <div class="stock"><span><span class="stock-name">华友钴业</span><span class="stock-code">603799</span></span><span class="stock-tag hot">回收+前驱体</span></div>
+      <div class="stock"><span><span class="stock-name">天奇股份</span><span class="stock-code">002009</span></span><span class="stock-tag">退役回收</span></div>
+      <div class="stock"><span><span class="stock-name">光华科技</span><span class="stock-code">002741</span></span><span class="stock-tag">湿法回收</span></div>
+      <div class="stock"><span><span class="stock-name">旺能环境</span><span class="stock-code">002034</span></span><span class="stock-tag">环保+回收</span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- 五、投资逻辑 -->
+<h2 class="section-title">五、记住这条主线<small>2026 年电池板块的投资逻辑</small></h2>
+
+<div class="metaphor-box" style="background:linear-gradient(135deg,rgba(74,222,128,0.12),rgba(59,130,246,0.1));border-color:rgba(74,222,128,0.4);">
+  <h2 style="color:#facc15;">🎯 三条主线，按强弱排序</h2>
+  <p><b style="color:#ef4444;">强主线 1 · 锂价上涨链(弹性最大)</b>：碳酸锂 7万 → 25万 / 吨 → <span class="pop-key">锂矿(赣锋/天齐) + 正极(湖南裕能/容百) + 电解液(天赐/新宙邦)</span> 全产业链涨价传导。这是<span class="highlight">业绩弹性王</span>。</p>
+  <p><b style="color:#f59e0b;">强主线 2 · 储能爆发(确定性最强)</b>：AI 数据中心配储 + 风光大基地 → <span class="pop-key">阳光电源 + 海博思创 + 宁德时代储能板块</span>。订单可见、政策护航。</p>
+  <p><b style="color:#22c55e;">强主线 3 · 新技术弯道超车(想象空间最大)</b>：<span class="pop-key">钠电池(华阳/传艺) + 固态电池(鹏辉/三祥) + 4680 圆柱</span>。短期题材为主，长期看量产兑现。</p>
+  <p style="margin-top:14px;color:#94a3b8;font-size:14px;">📍 三大主线的共同特征：<b style="color:#facc15;">需求确定 + 供给紧张 + 国产领先全球</b>。中国电池产业链全球市占率超 70%，是少有的"<b>全栈国产替代成功</b>"赛道。</p>
+</div>
+
+<!-- 风险提示 -->
+<div class="disclaimer">
+  <p><b>⚠️ 风险提示：</b></p>
+  <p>• 本页面所有信息基于 2026 年 6 月公开资料整理，仅供产业链学习参考，<b>不构成任何投资建议</b>。</p>
+  <p>• 电池板块波动较大，受锂价、政策、新技术路线影响显著。锂价大起大落会让上下游业绩出现剧烈波动。</p>
+  <p>• 主要风险点：新能源车销量不及预期、锂价二次回调、产能严重过剩、固态/钠电池量产不及预期、欧美贸易壁垒。</p>
+  <p>• 建议先研究清楚每家公司的主业和现金流，再决定是否配置；龙头比题材股更稳健，分散持有比押注单一标的更安全。</p>
+</div>
+
+<div style="text-align:center;color:#475569;font-size:12px;margin-top:30px;padding:20px;">
+  数据来源：公司公告、券商研报、Wind、起点研究院 · 整理时间：2026-06-05
+</div>
+
+<script>
+// 卡片点击微动效
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    chip.style.transition = 'transform 0.4s';
+    chip.style.transform = 'scale(1.1) rotate(-2deg)';
+    setTimeout(() => chip.style.transform = '', 400);
+  });
+});
+</script>
+</div>
+</body>
+</html>
