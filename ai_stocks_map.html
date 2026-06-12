@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 AI应用全景图 · 大模型 · Agent · 具身智能</title>
+<style>
+:root {
+  --c-model: #a855f7;
+  --c-chip: #06b6d4;
+  --c-agent: #ec4899;
+  --c-vision: #f59e0b;
+  --c-saas: #3b82f6;
+  --c-edu: #10b981;
+  --c-medical: #ef4444;
+  --c-finance: #eab308;
+  --c-game: #8b5cf6;
+  --c-data: #14b8a6;
+  --c-robot: #f43f5e;
+  --c-search: #6366f1;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #0a0e27;
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(168, 85, 247, 0.18) 0%, transparent 50%),
+    radial-gradient(circle at 85% 80%, rgba(6, 182, 212, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.08) 0%, transparent 60%);
+  color: #e2e8f0;
+  min-height: 100vh;
+  padding-bottom: 40px;
+  line-height: 1.6;
+}
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, rgba(168,85,247,0.9), rgba(6,182,212,0.85), rgba(236,72,153,0.8));
+  padding: 60px 20px 80px;
+  text-align: center;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '🤖';
+  position: absolute;
+  font-size: 220px;
+  opacity: 0.08;
+  top: -40px;
+  right: 60px;
+  animation: ai-float 4s infinite ease-in-out;
+}
+.hero::after {
+  content: '✨';
+  position: absolute;
+  font-size: 120px;
+  opacity: 0.1;
+  bottom: 0;
+  left: 80px;
+  animation: ai-twinkle 3s infinite;
+}
+@keyframes ai-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(5deg); }
+}
+@keyframes ai-twinkle {
+  0%, 100% { opacity: 0.05; transform: scale(1); }
+  50% { opacity: 0.2; transform: scale(1.1); }
+}
+.hero h1 {
+  font-size: 44px;
+  margin-bottom: 16px;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  position: relative;
+  z-index: 2;
+}
+.hero .subtitle {
+  font-size: 18px;
+  opacity: 0.95;
+  max-width: 760px;
+  margin: 0 auto 30px;
+  position: relative;
+  z-index: 2;
+}
+.hero .tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+.hero .tag {
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(10px);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+.container {
+  max-width: 1400px;
+  margin: -40px auto 0;
+  padding: 0 20px;
+  position: relative;
+  z-index: 3;
+}
+
+/* 介绍盒子 */
+.intro-box {
+  background: rgba(255,255,255,0.95);
+  border: 2px solid rgba(168,85,247,0.3);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 40px;
+  color: #1e293b;
+  box-shadow: 0 8px 32px rgba(168,85,247,0.15);
+}
+.intro-box h2 {
+  color: #a855f7;
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+.intro-box p {
+  color: #475569;
+  font-size: 16px;
+  line-height: 1.8;
+}
+.intro-box b { color: #1e293b; }
+
+.section-title {
+  font-size: 32px;
+  color: #f8fafc;
+  text-align: center;
+  margin: 60px 0 40px;
+}
+.section-title small {
+  display: block;
+  font-size: 16px;
+  color: #94a3b8;
+  margin-top: 8px;
+  font-weight: normal;
+}
+
+/* AI 产业链流程图 */
+.flow-chart {
+  background: rgba(255,255,255,0.95);
+  border-radius: 20px;
+  padding: 40px;
+  margin-bottom: 40px;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.2);
+}
+.flow-chart h3 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 30px;
+  color: #1e293b;
+}
+.flow-pyramid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.flow-layer {
+  display: flex;
+  align-items: stretch;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+.flow-layer:hover { transform: translateX(5px); }
+.flow-layer-label {
+  flex: 0 0 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px 8px;
+  font-weight: 700;
+  font-size: 16px;
+  color: #fff;
+}
+.flow-layer-label small {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  margin-top: 4px;
+  opacity: 0.85;
+}
+.flow-layer-content {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 20px;
+  background: #f8fafc;
+  align-items: center;
+}
+.flow-chip {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #475569;
+  font-weight: 600;
+}
+.flow-chip b { color: #1e293b; }
+
+.layer-app .flow-layer-label { background: linear-gradient(135deg, #ec4899, #db2777); }
+.layer-agent .flow-layer-label { background: linear-gradient(135deg, #a855f7, #9333ea); }
+.layer-model .flow-layer-label { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+.layer-frame .flow-layer-label { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+.layer-chip .flow-layer-label { background: linear-gradient(135deg, #f59e0b, #d97706); }
+
+.flow-arrow-row {
+  text-align: center;
+  font-size: 24px;
+  color: #a855f7;
+  animation: arrow-down 2s infinite;
+}
+@keyframes arrow-down {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50% { transform: translateY(8px); opacity: 1; }
+}
+
+/* 驱动因素盒子 */
+.driver-box {
+  background: linear-gradient(135deg, rgba(168,85,247,0.15), rgba(236,72,153,0.1));
+  border: 2px solid rgba(168,85,247,0.4);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 40px;
+  background-color: rgba(255,255,255,0.96);
+}
+.driver-box h3 {
+  color: #a855f7;
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+.driver-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+.driver-item {
+  padding: 18px;
+  background: linear-gradient(135deg, #faf5ff, #f3e8ff);
+  border-radius: 12px;
+  border-left: 4px solid #a855f7;
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.7;
+}
+.driver-item b { color: #7c3aed; display: block; margin-bottom: 4px; }
+
+/* 板块卡片 */
+.sectors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+@media (max-width: 768px) {
+  .sectors-grid { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 30px; }
+}
+.sector-card {
+  background: rgba(15, 23, 42, 0.95);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  border-top: 5px solid;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.sector-card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, var(--accent-color, #a855f7) 0%, transparent 70%);
+  opacity: 0.15;
+  pointer-events: none;
+}
+.sector-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 50px rgba(168,85,247,0.3);
+}
+.icon-big { font-size: 48px; margin-bottom: 14px; }
+.sector-card h3 { font-size: 24px; margin-bottom: 6px; color: #f1f5f9; }
+.en {
+  font-size: 13px;
+  color: #94a3b8;
+  margin-bottom: 16px;
+  font-style: italic;
+  letter-spacing: 0.5px;
+}
+.desc {
+  color: #cbd5e1;
+  font-size: 14px;
+  margin-bottom: 18px;
+  line-height: 1.75;
+  padding: 12px 14px;
+  background: rgba(168,85,247,0.08);
+  border-left: 3px solid var(--accent-color, #a855f7);
+  border-radius: 6px;
+}
+.desc b { color: #fde68a; }
+
+.stock-list { display: flex; flex-direction: column; gap: 9px; }
+.stock {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 14px;
+  background: rgba(30, 41, 59, 0.7);
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  transition: all 0.3s;
+}
+.stock:hover {
+  background: rgba(30, 41, 59, 1);
+  border-color: var(--accent-color, #a855f7);
+  transform: translateX(4px);
+}
+.stock > span:first-child { display: flex; align-items: center; gap: 12px; }
+.stock-name { font-weight: 600; color: #f1f5f9; font-size: 15px; }
+.stock-code { font-size: 12px; color: #64748b; font-family: 'Consolas', monospace; }
+.stock-tag {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 10px;
+  background: rgba(148, 163, 184, 0.15);
+  color: #cbd5e1;
+  white-space: nowrap;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+.stock-tag.king {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border-color: rgba(239, 68, 68, 0.4);
+  font-weight: 600;
+}
+.stock-tag.hot {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fcd34d;
+  border-color: rgba(245, 158, 11, 0.4);
+  font-weight: 600;
+}
+.stock-tag.potential {
+  background: rgba(34, 197, 94, 0.2);
+  color: #86efac;
+  border-color: rgba(34, 197, 94, 0.4);
+  font-weight: 600;
+}
+
+.c-model { border-top-color: var(--c-model); --accent-color: var(--c-model); }
+.c-chip { border-top-color: var(--c-chip); --accent-color: var(--c-chip); }
+.c-agent { border-top-color: var(--c-agent); --accent-color: var(--c-agent); }
+.c-vision { border-top-color: var(--c-vision); --accent-color: var(--c-vision); }
+.c-saas { border-top-color: var(--c-saas); --accent-color: var(--c-saas); }
+.c-edu { border-top-color: var(--c-edu); --accent-color: var(--c-edu); }
+.c-medical { border-top-color: var(--c-medical); --accent-color: var(--c-medical); }
+.c-finance { border-top-color: var(--c-finance); --accent-color: var(--c-finance); }
+.c-game { border-top-color: var(--c-game); --accent-color: var(--c-game); }
+.c-data { border-top-color: var(--c-data); --accent-color: var(--c-data); }
+.c-robot { border-top-color: var(--c-robot); --accent-color: var(--c-robot); }
+.c-search { border-top-color: var(--c-search); --accent-color: var(--c-search); }
+
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+.legend-item { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #cbd5e1; }
+.legend-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+
+/* 投资主线 */
+.summary-box {
+  background: rgba(255,255,255,0.95);
+  border: 2px solid rgba(168,85,247,0.3);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 40px;
+  color: #1e293b;
+}
+.summary-box h2 {
+  color: #a855f7;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+.summary-box p { color: #475569; line-height: 1.9; margin-bottom: 12px; }
+
+.disclaimer {
+  background: rgba(255,255,255,0.95);
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid rgba(239,68,68,0.3);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  color: #475569;
+}
+.disclaimer p { color: #64748b; font-size: 14px; margin-bottom: 8px; }
+.disclaimer b { color: #ef4444; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🤖 2026 AI应用全景图</h1>
+  <p class="subtitle">从大模型到具身智能，从Agent到AI应用，A股AI产业链一图看懂</p>
+  <div class="tags">
+    <span class="tag">大模型</span>
+    <span class="tag">AI算力</span>
+    <span class="tag">AI Agent</span>
+    <span class="tag">具身智能</span>
+    <span class="tag">AI视频</span>
+    <span class="tag">AI办公</span>
+    <span class="tag">AI医疗</span>
+    <span class="tag">AI教育</span>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="intro-box">
+  <h2>💡 2026 AI应用爆发核心逻辑</h2>
+  <p><b>从"模型竞赛"到"应用落地"</b>：2025年是AI大模型基础能力收敛的转折点（GPT-5/Claude 4.7/Gemini 3发布），2026年成为<b>AI应用爆发元年</b>。Agent取代Chat成为新交互范式，<b>"千行百业+AI"</b>从概念走向规模化商业化。</p>
+  <p style="margin-top:12px;">三条投资主线：<b>算力基建</b>（光模块+AI芯片）持续放量 → <b>大模型+Agent</b>（科大讯飞/金山办公）变现兑现 → <b>具身智能</b>（人形机器人）从实验室走向工厂。中国AI产业市占率全球第二，<b>"国产替代+应用爆发"</b>双轮驱动。</p>
+</div>
+
+<h2 class="section-title">AI产业链金字塔<small>从底层算力到上层应用，谁在哪个位置</small></h2>
+
+<div class="flow-chart">
+  <h3>🏗️ AI产业链五层结构</h3>
+  <div class="flow-pyramid">
+
+    <div class="flow-layer layer-app">
+      <div class="flow-layer-label">🌟 应用层<small>End User</small></div>
+      <div class="flow-layer-content">
+        <div class="flow-chip"><b>AI办公</b> 金山WPS AI</div>
+        <div class="flow-chip"><b>AI视频</b> 万兴/美图</div>
+        <div class="flow-chip"><b>AI医疗</b> 卫宁/创业慧康</div>
+        <div class="flow-chip"><b>AI教育</b> 学大/讯飞星火</div>
+        <div class="flow-chip"><b>AI金融</b> 同花顺/恒生电子</div>
+        <div class="flow-chip"><b>AI游戏</b> 完美/三七</div>
+        <div class="flow-chip"><b>AI法律</b> 通达海</div>
+      </div>
+    </div>
+    <div class="flow-arrow-row">⬇</div>
+
+    <div class="flow-layer layer-agent">
+      <div class="flow-layer-label">🤖 Agent层<small>智能体</small></div>
+      <div class="flow-layer-content">
+        <div class="flow-chip"><b>通用Agent</b> 用友/拓尔思</div>
+        <div class="flow-chip"><b>办公Agent</b> 金山办公</div>
+        <div class="flow-chip"><b>客服Agent</b> 鼎捷数智</div>
+        <div class="flow-chip"><b>编程Agent</b> 中科创达</div>
+        <div class="flow-chip"><b>具身Agent</b> 拓斯达/埃斯顿</div>
+      </div>
+    </div>
+    <div class="flow-arrow-row">⬇</div>
+
+    <div class="flow-layer layer-model">
+      <div class="flow-layer-label">🧠 模型层<small>LLM/多模态</small></div>
+      <div class="flow-layer-content">
+        <div class="flow-chip"><b>讯飞星火</b> 科大讯飞</div>
+        <div class="flow-chip"><b>360智脑</b> 三六零</div>
+        <div class="flow-chip"><b>天工大模型</b> 昆仑万维</div>
+        <div class="flow-chip"><b>豆包</b> 字节(未上市)</div>
+        <div class="flow-chip"><b>通义千问</b> 阿里港股</div>
+        <div class="flow-chip"><b>Kimi</b> 月之暗面</div>
+      </div>
+    </div>
+    <div class="flow-arrow-row">⬇</div>
+
+    <div class="flow-layer layer-frame">
+      <div class="flow-layer-label">⚙️ 框架/数据<small>开发工具</small></div>
+      <div class="flow-layer-content">
+        <div class="flow-chip"><b>AI数据标注</b> 海天瑞声</div>
+        <div class="flow-chip"><b>开发框架</b> 中科创达</div>
+        <div class="flow-chip"><b>向量数据库</b> 星环科技</div>
+        <div class="flow-chip"><b>MLOps平台</b> 拓尔思</div>
+      </div>
+    </div>
+    <div class="flow-arrow-row">⬇</div>
+
+    <div class="flow-layer layer-chip">
+      <div class="flow-layer-label">💎 算力层<small>芯片/服务器</small></div>
+      <div class="flow-layer-content">
+        <div class="flow-chip"><b>AI芯片</b> 寒武纪/海光信息</div>
+        <div class="flow-chip"><b>AI服务器</b> 浪潮/中科曙光</div>
+        <div class="flow-chip"><b>光模块</b> 中际旭创/新易盛</div>
+        <div class="flow-chip"><b>液冷</b> 英维克</div>
+        <div class="flow-chip"><b>IDC</b> 润泽科技</div>
+      </div>
+    </div>
+
+  </div>
+  <p style="text-align:center;color:#64748b;font-size:14px;margin-top:24px;">
+    📌 <b>关键传导</b>：算力（芯片+服务器+光模块）→ 框架 → 模型 → Agent → 应用 → 用户
+  </p>
+</div>
+
+<!-- 五大驱动因素 -->
+<div class="driver-box">
+  <h3>🚀 2026 AI板块为什么火？六大催化剂</h3>
+  <div class="driver-grid">
+    <div class="driver-item"><b>大模型能力质变</b>GPT-5/Claude 4.7/Gemini 3达到博士水平推理，多模态原生融合，AI从"工具"升级为"协作者"</div>
+    <div class="driver-item"><b>Agent取代Chat</b>2026年Agent成为主流交互形态，自主完成多步任务，企业级应用快速渗透</div>
+    <div class="driver-item"><b>算力需求爆发</b>全球AI算力投资突破1.5万亿美元，光模块/服务器/液冷确定性最强</div>
+    <div class="driver-item"><b>具身智能商业化</b>特斯拉Optimus 2026 Q4量产，国产人形机器人(宇树/智元)进入工厂试用</div>
+    <div class="driver-item"><b>国产替代加速</b>美国出口管制升级，华为昇腾/寒武纪/海光生态完善，国产算力市占率突破40%</div>
+    <div class="driver-item"><b>政策强力支持</b>"人工智能+"行动深入推进，AI写入十五五规划，专项资金倾斜</div>
+  </div>
+</div>
+
+<h2 class="section-title">十二大AI细分赛道龙头股<small>每个赛道的"扛把子"</small></h2>
+
+<div class="legend">
+  <div class="legend-item"><span class="legend-dot" style="background:#fca5a5;"></span>👑 行业龙头</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#fcd34d;"></span>🔥 二线主力</div>
+  <div class="legend-item"><span class="legend-dot" style="background:#86efac;"></span>⚡ 弹性标的</div>
+</div>
+
+<div class="sectors-grid">
+
+<!-- 1. 大模型 -->
+<div class="sector-card c-model">
+  <div class="icon-big">🧠</div>
+  <h3>大模型 / LLM</h3>
+  <div class="en">Large Language Model · AI的"大脑"</div>
+  <div class="desc">
+    AI产业的"<b>操作系统</b>"，决定整条产业链的发展速度。中国互联网三巨头(BAT)+科大讯飞+月之暗面+智谱形成<b>"五梯队"</b>。2026年讯飞星火X1.5达到GPT-4.5水平，<b>开源模型</b>(Qwen3/DeepSeek V4)能力追平闭源，行业大模型百花齐放。
+  </div>
+  <div class="stock-list">
+    <div class="stock"><span><span class="stock-name">科大讯飞</span><span class="stock-code">002230</span></span><span class="stock-tag king">👑 国产大模型A股一哥</span></div>
+    <div class="stock"><span><span class="stock-name">三六零</span><span class="stock-code">601360</span></span><span class="stock-tag king">👑 360智脑+搜索AI</span></div>
+    <div class="stock"><span><span class="stock-name">昆仑万维</span><span class="stock-code">300418</span></span><span class="stock-tag hot">天工大模型+AI视频</span></div>
+    <div class="stock"><span><span class="stock-name">拓尔思</span><span class="stock-code">300229</span></span><span class="stock-tag hot">行业大模型+NLP</span></div>
+    <div class="stock"><span><span class="stock-name">汉王科技</span><span class="stock-code">002362</span></span><span class="stock-tag">古汉语大模型</span></div>
+    <div class="stock"><span><span class="stock-name">云从科技</span><span class="stock-code">688327</span></span><span class="stock-tag potential">从容大模型</span></div>
+    <div class="stock"><span><span class="stock-name">阿里巴巴-W</span><span class="stock-code">09988.HK</span></span><span class="stock-tag">通义千问·港股</span></div>
+  </div>
+</div>
+
+<!-- 2. AI芯片 -->
+<div class="sector-card c-chip">
+  <div class="icon-big">💎</div>
+  <h3>AI芯片 / 算力</h3>
+  <div class="en">AI Chip · GPU/NPU/TPU</div>
+  <div class="desc">
+    AI产业链的"<b>心脏</b>"，没有算力就没有AI。英伟达全球独大，国产以<b>华为昇腾、寒武纪、海光信息</b>为核心。2026年美国出口管制升级，<b>国产替代是A股最确定主线</b>。寒武纪营收3年20倍增长，海光DCU生态加速完善。
+  </div>
+  <div class="stock-list">
+    <div class="stock"><span><span class="stock-name">寒武纪</span><span class="stock-code">688256</span></span><span class="stock-tag king">👑 AI芯片A股第一股</span></div>
+    <div class="stock"><span><span class="stock-name">海光信息</span><span class="stock-code">688041</span></span><span class="stock-tag king">👑 GPU+CPU双线</span></div>
+    <div class="stock"><span><span class="stock-name">景嘉微</span><span class="stock-code">300474</span></span><span class="stock-tag hot">国产GPU军工背景</span></div>
+    <div class="stock"><span><span class="stock-name">龙芯中科</span><span class="stock-code">688047</span></span><span class="stock-tag hot">自主指令集CPU</span></div>
+    <div class="stock"><span><span class="stock-name">国芯科技</span><span class="stock-code">688262</span></span><span class="stock-tag">嵌入式AI芯片</span></div>
+    <div class="stock"><span><span class="stock-name">芯原股份</span><span class="stock-code">688521</span></span><span class="stock-tag potential">IP+定制芯片</span></div>
+    <div class="stock"><span><span class="stock-name">中芯国际</span><span class="stock-code">688981</span></span><span class="stock-tag">代工厂受益</span></div>
+  </div>
+</div>
+
+<!-- 3. AI算力基建 -->
+<div class="sector-card c-data">
+  <div class="icon-big">🌐</div>
+  <h3>AI算力基建（光模块/服务器/液冷）</h3>
+  <div class="en">AI Infrastructure · 卖水人逻辑</div>
+  <div class="desc">
+    无论哪家大模型胜出，<b>算力基建都是最大赢家</b>。<b>光模块</b>（800G/1.6T）是数据中心互联核心，订单能见度1-2年；<b>AI服务器</b>(H200/B200/昇腾)持续放量；<b>液冷</b>从风冷替代，渗透率从5%向30%加速。
+  </div>
+  <div class="stock-list">
+    <div class="stock"><span><span class="stock-name">中际旭创</span><span class="stock-code">300308</span></span><span class="stock-tag king">👑 全球光模块第一</span></div>
+    <div class="stock"><span><span class="stock-name">新易盛</span><span class="stock-code">300502</span></span><span class="stock-tag king">👑 800G光模块龙头</span></div>
+    <div class="stock"><span><span class="stock-name">天孚通信</span><span class="stock-code">300394</span></span><span class="stock-tag hot">光器件配套</span></div>
+    <div class="stock"><span><span class="stock-name">浪潮信息</span><span class="stock-code">000977</span></span><span class="stock-tag king">👑 AI服务器全球第二</span></div>
+    <div class="stock"><span><span class="stock-name">工业富联</span><span class="stock-code">601138</span></span><span class="stock-tag king">👑 英伟达代工核心</span></div>
+    <div class="stock"><span><span class="stock-name">中科曙光</span><span class="stock-code">603019</span></span><span class="stock-tag hot">国产服务器+液冷</span></div>
+    <div class="stock"><span><span class="stock-name">英维克</span><span class="stock-code">002837</span></span><span class="stock-tag hot">液冷温控龙头</span></div>
+    <div class="stock"><span><span class="stock-name">润泽科技</span><span class="stock-code">300442</span></span><span class="stock-tag potential">智算中心运营</span></div>
+  </div>
+</div>
+
+<!-- 4. AI Agent -->
+<div class="sector-card c-agent">
+  <div class="icon-big">🤖</div>
+  <h3>AI Agent / 智能体</h3>
+  <div class="en">AI Agent · 2026年新交互范式</div>
+  <div class="desc">
+    Agent是<b>"会自主完成任务"的AI</b>，从问答升级到执行。2026年企业级Agent爆发：<b>办公Agent</b>(WPS AI)、<b>客服Agent</b>(用友)、<b>编程Agent</b>(中科创达)、<b>营销Agent</b>(蓝色光标)。Manus等通用Agent概念点燃市场热情。
+  </div>
+  <div class="stock-list">
+    <div class="stock"><span><span class="stock-name">用友网络</span><span class="stock-code">600588</span></span><span class="stock-tag king">👑 企业Agent平台</span></div>
+    <div class="stock"><span><span class="stock-name">金山办公</span><span class="stock-code">688111</span></span><span class="stock-tag king">👑 办公Agent王者</span></div>
+    <div class="stock"><span><span class="stock-name">中科创达</span><span class="stock-code">300496</span></span><span class="stock-tag hot">智能座舱Agent</span></div>
+    <div class="stock"><span><span class="stock-name">汉得信息</span><span class="stock-code">300170</span></span><span class="stock-tag hot">企业级AI Agent</span></div>
+    <div class="stock"><span><span class="stock-name">鼎捷数智</span><span class="stock-code">300378</span></span><span class="stock-tag">ERP+Agent</span></div>
+    <div class="stock"><span><span class="stock-name">蓝色光标</span><span class="stock-code">300058</span></span><span class="stock-tag potential">营销Agent</span></div>
+    <div class="stock"><span><span class="stock-name">星环科技</span><span class="stock-code">688031</span></span><span class="stock-tag">数据Agent</span></div>
+  </div>
+</div>
+
+<!-- 5. AI视频/视觉 -->
+<div class="sector-card c-vision">
+  <div class="icon-big">🎬</div>
+  <h3>AI视频 / 视觉生成</h3>
+  <div class="en">AIGC Video · Sora类视频生成</div>
+  <div class="desc">
+    Sora 2/可灵2.0/Veo 3引爆<b>AI视频生成</b>赛道，从短视频到电影级长视频突破。<b>万兴科技</b>(Filmora AI)、<b>美图公司</b>(美图秀秀AI)C端付费用户激增，<b>昆仑万维</b>SkyReels对标海外。AI视频从"玩具"变"生产力工具"。
+  </div>
+  <div class="stock-list">
+    <div class="stock"><span><span class="stock-name">万兴科技</span><span class="stock-code">300624</span></span><span class="stock-tag king">👑 AI创作软件龙头</span></div>
+    <div class="stock"><span><span class="stock-name">美图公司</span><span class="stock-code">01357.HK</span></span><span class="stock-tag king">👑 AI修图+视频</span></div>
+    <div class="stock"><span><span class="stock-name">昆仑万维</span><span class="stock-code">300418</span></span><span class="stock-tag hot">SkyReels视频模型</span></div>
+    <div class="stock"><span><span class="stock-name">视觉中国</span><span class="stock-code">000681</span></span><span class="stock-tag hot">AI图库+版权</span></div>
+    <div class="stock"><span><span class="stock-name">天娱数科</span><span class="stock-code">002354</span></span><span class="stock-tag potential">数字人+AIGC</span></div>
+    <div class="stock"><span><span class="stock-name">易点天下</span><span class="stock-code">301171</span></span><span class="stock-tag">AI营销视频</span></div>
+    <div class="stock"><span><span class="stock-name">蓝色光标</span><span class="stock-code">300058</span></span><span class="stock-tag">广告视频AI</span></div>
+  </div>
+</div>
+
+<!-- 6. AI办公/SaaS -->
+<div class="sector-card c-saas">
+  <div class="icon-big">💼</div>
+  <h3>AI办公 / SaaS</h3>
+  <div class="en">AI SaaS · 企业级AI最先落地</div>
+  <div class="desc">
+    AI最先在<b>办公场景</b>规模化变现：写文档、做PPT、汇总会议、生成报表。<b>金山办公WPS AI</b>付费用户突破1亿，<b>福昕软件</b>PDF AI出海，<b>泛微</b>OA智能化。订阅制模式现金流稳定，是AI应用最确定的方向。
+  </div>
+  <div class="stock-list">
+    <div class="stock"><span><span class="stock-name">金山办公</span><span class="stock-code">688111</span></span><span class="stock-tag king">👑 WPS AI国民级</span></div>
+    <div class="stock"><span><span class="stock-name">福昕软件</span><span class="stock-code">688095</span></span><span class="stock-tag king">👑 PDF AI出海</span></div>
+    <div class="stock"><span><span class="stock-name">泛微网络</span><span class="stock-code">603039</span></span><span class="stock-tag hot">OA+AI智能办公</span></div>
+    <div class="stock"><span><span class="stock-name">致远互联</span><span class="stock-code">688369</span></span><span class="stock-tag hot">协同办公AI</span></div>
+    <div class="stock"><span><span class="stock-name">彩讯股份</span><span class="stock-code">300634</span></span><span class="stock-tag">企业邮箱AI</span></div>
+    <div class="stock"><span><span class="stock-name">广联达</span><span class="stock-code">002410</span></span><span class="stock-tag potential">建筑SaaS+AI</span></div>
+  </div>
+</div>
+
+<!-- 7. AI教育 -->
+<div class="sector-card c-edu">
+  <div class="icon-big">📚</div>
+  <h3>AI教育</h3>
+  <div class="en">AI Education · 1对1AI老师</div>
+  <div class="desc">
+    AI颠覆<b>"千人一面"</b>的传统教育：自适应学习、AI批改、虚拟老师。<b>科大讯飞</b>AI学习机销量突破300万台，<b>学大教育</b>转型AI辅导，<b>佳发教育</b>智慧考试系统全国推广。教育部"AI进课堂"试点扩大至100城。
+  </div>
+  <div class="stock-list">
+    <div class="stock"><span><span class="stock-name">科大讯飞</span><span class="stock-code">002230</span></span><span class="stock-tag king">👑 AI学习机龙头</span></div>
+    <div class="stock"><span><span class="stock-name">学大教育</span><span class="stock-code">000526</span></span><span class="stock-tag king">👑 K12 AI辅导</span></div>
+    <div class="stock"><span><span class="stock-name">佳发教育</span><span class="stock-code">300559</span></span><span class="stock-tag hot">智慧考试系统</span></div>
+    <div class="stock"><span><span class="stock-name">竞业达</span><span class="stock-code">003005</span></span><span class="stock-tag hot">智慧课堂</span></div>
+    <div class="stock"><span><span class="stock-name">视源股份</span><span class="stock-code">002841</span></span><span class="stock-tag">教育交互平板</span></div>
+    <div class="stock"><span><span class="stock-name">鸿合科技</span><span class="stock-code">002955</span></span><span class="stock-tag potential">智慧教室设备</span></div>
+  </div>
+</div>
+
+<!-- 8. AI医疗 -->
+<div class="sector-card c-medical">
+  <div class="icon-big">🏥</div>
+  <h3>AI医疗</h3>
+  <div class="en">AI Healthcare · AI辅助诊断+药研</div>
+  <div class="desc">
+    AI在医疗场景<b>三大方向</b>：影像辅助诊断（肺结节/眼底）、医院智慧化、新药研发。2026年AI辅助诊断纳入医保试点扩至30省。<b>万达信息/卫宁健康/创业慧康</b>三大医疗信息化龙头AI收入快速增长。
+  </div>
+  <div class="stock-list">
+    <div class="stock"><span><span class="stock-name">卫宁健康</span><span class="stock-code">300253</span></span><span class="stock-tag king">👑 医疗信息化第一</span></div>
+    <div class="stock"><span><span class="stock-name">创业慧康</span><span class="stock-code">300451</span></span><span class="stock-tag king">👑 AI医疗大模型</span></div>
+    <div class="stock"><span><span class="stock-name">万达信息</span><span class="stock-code">300168</span></span><span class="stock-tag hot">医保+健康AI</span></div>
+    <div class="stock"><span><span class="stock-name">东软集团</span><span class="stock-code">600718</span></span><span class="stock-tag hot">医疗+车联网AI</span></div>
+    <div class="stock"><span><span class="stock-name">嘉和美康</span><span class="stock-code">688246</span></span><span class="stock-tag">电子病历AI</span></div>
+    <div class="stock"><span><span class="stock-name">塞力医疗</span><span class="stock-code">603716</span></span><span class="stock-tag potential">检验AI</span></div>
+  </div>
+</div>
+
+<!-- 9. AI金融 -->
+<div class="sector-card c-finance">
+  <div class="icon-big">💰</div>
+  <h3>AI金融 / 量化</h3>
+  <div class="en">AI Finance · 智能投顾+风控</div>
+  <div class="desc">
+    金融是<b>AI变现最容易</b>的领域：量化交易、智能投顾、智能风控、智能客服。<b>同花顺i问财</b>AI投顾用户突破5000万，<b>恒生电子LightGPT</b>金融大模型落地多家券商，<b>顶点软件</b>资管AI崛起。
+  </div>
+  <div class="stock-list">
+    <div class="stock"><span><span class="stock-name">同花顺</span><span class="stock-code">300033</span></span><span class="stock-tag king">👑 i问财AI第一股</span></div>
+    <div class="stock"><span><span class="stock-name">恒生电子</span><span class="stock-code">600570</span></span><span class="stock-tag king">👑 金融科技龙头</span></div>
+    <div class="stock"><span><span class="stock-name">顶点软件</span><span class="stock-code">603383</span></span><span class="stock-tag hot">资管AI系统</span></div>
+    <div class="stock"><span><span class="stock-name">东方财富</span><span class="stock-code">300059</span></span><span class="stock-tag hot">妙想金融大模型</span></div>
+    <div class="stock"><span><span class="stock-name">财富趋势</span><span class="stock-code">688318</span></span><span class="stock-tag">通达信母公司</span></div>
+    <div class="stock"><span><span class="stock-name">京北方</span><span class="stock-code">002987</span></span><span class="stock-tag potential">银行AI外包</span></div>
+  </div>
+</div>
+
+<!-- 10. AI游戏 -->
+<div class="sector-card c-game">
+  <div class="icon-big">🎮</div>
+  <h3>AI游戏 / 数字内容</h3>
+  <div class="en">AI Game · NPC智能化+UGC</div>
+  <div class="desc">
+    AI给游戏带来<b>三大革命</b>：智能NPC（角色有"灵魂"）、AI生成关卡（无限内容）、AI美术降本（成本降50%）。<b>三七互娱</b>AI辅助美术、<b>完美世界</b>AI对话NPC、<b>巨人网络</b>AI数字人主播全面铺开。
+  </div>
+  <div class="stock-list">
+    <div class="stock"><span><span class="stock-name">三七互娱</span><span class="stock-code">002555</span></span><span class="stock-tag king">👑 AI游戏研发龙头</span></div>
+    <div class="stock"><span><span class="stock-name">完美世界</span><span class="stock-code">002624</span></span><span class="stock-tag king">👑 AI NPC布局深</span></div>
+    <div class="stock"><span><span class="stock-name">巨人网络</span><span class="stock-code">002558</span></span><span class="stock-tag hot">AI游戏+数字人</span></div>
+    <div class="stock"><span><span class="stock-name">恺英网络</span><span class="stock-code">002517</span></span><span class="stock-tag hot">AI游戏小厂</span></div>
+    <div class="stock"><span><span class="stock-name">汤姆猫</span><span class="stock-code">300459</span></span><span class="stock-tag">AI虚拟陪伴</span></div>
+    <div class="stock"><span><span class="stock-name">世纪华通</span><span class="stock-code">002602</span></span><span class="stock-tag potential">游戏+AIGC</span></div>
+  </div>
+</div>
+
+<!-- 11. 具身智能/人形机器人 -->
+<div class="sector-card c-robot">
+  <div class="icon-big">🦾</div>
+  <h3>具身智能 / 人形机器人</h3>
+  <div class="en">Embodied AI · AI + 物理世界</div>
+  <div class="desc">
+    AI与机器人结合的<b>终极形态</b>。特斯拉Optimus 2026 Q4量产、宇树H2进入工厂试用、智元机器人融资百亿估值。<b>核心零部件</b>(谐波减速器/丝杠/电机/视觉)先于整机受益，A股映射标的<b>业绩弹性最大</b>。
+  </div>
+  <div class="stock-list">
+    <div class="stock"><span><span class="stock-name">绿的谐波</span><span class="stock-code">688017</span></span><span class="stock-tag king">👑 谐波减速器龙头</span></div>
+    <div class="stock"><span><span class="stock-name">埃斯顿</span><span class="stock-code">002747</span></span><span class="stock-tag king">👑 工业机器人龙头</span></div>
+    <div class="stock"><span><span class="stock-name">汇川技术</span><span class="stock-code">300124</span></span><span class="stock-tag king">👑 工控+伺服系统</span></div>
+    <div class="stock"><span><span class="stock-name">鸣志电器</span><span class="stock-code">603728</span></span><span class="stock-tag hot">空心杯电机</span></div>
+    <div class="stock"><span><span class="stock-name">双林股份</span><span class="stock-code">300100</span></span><span class="stock-tag hot">滚柱丝杠</span></div>
+    <div class="stock"><span><span class="stock-name">拓斯达</span><span class="stock-code">300607</span></span><span class="stock-tag hot">机器人本体</span></div>
+    <div class="stock"><span><span class="stock-name">三花智控</span><span class="stock-code">002050</span></span><span class="stock-tag">特斯拉机器人执行器</span></div>
+    <div class="stock"><span><span class="stock-name">奥比中光</span><span class="stock-code">688322</span></span><span class="stock-tag potential">3D视觉传感</span></div>
+  </div>
+</div>
+
+<!-- 12. AI数据/标注 -->
+<div class="sector-card c-search">
+  <div class="icon-big">📊</div>
+  <h3>AI数据 / 标注 / 安全</h3>
+  <div class="en">AI Data · 模型的"粮食"</div>
+  <div class="desc">
+    "<b>有多少数据就有多智能的AI</b>"。高质量数据集是大模型训练核心壁垒。<b>海天瑞声</b>是A股稀缺AI数据标注龙头，<b>每日互动</b>数据要素第一股。AI安全（深度伪造检测/内容审核）成为新增长点。
+  </div>
+  <div class="stock-list">
+    <div class="stock"><span><span class="stock-name">海天瑞声</span><span class="stock-code">688787</span></span><span class="stock-tag king">👑 AI数据标注第一</span></div>
+    <div class="stock"><span><span class="stock-name">每日互动</span><span class="stock-code">300766</span></span><span class="stock-tag king">👑 数据要素龙头</span></div>
+    <div class="stock"><span><span class="stock-name">久远银海</span><span class="stock-code">002777</span></span><span class="stock-tag hot">政务数据AI</span></div>
+    <div class="stock"><span><span class="stock-name">山大地纬</span><span class="stock-code">688636</span></span><span class="stock-tag hot">数据安全</span></div>
+    <div class="stock"><span><span class="stock-name">奇安信</span><span class="stock-code">688561</span></span><span class="stock-tag">AI安全</span></div>
+    <div class="stock"><span><span class="stock-name">深信服</span><span class="stock-code">300454</span></span><span class="stock-tag potential">安全GPT大模型</span></div>
+  </div>
+</div>
+
+</div>
+
+<!-- 投资主线 -->
+<div class="summary-box">
+  <h2>🎯 三条主线，按确定性排序</h2>
+  <p><b style="color:#ef4444;">主线1 · 算力基建（确定性最强）</b>：AI算力是"卖水人"逻辑，无论哪家大模型胜出，算力需求都在指数级增长。<b>光模块（中际旭创/新易盛）</b>是受益最直接的环节，订单能见度1-2年，业绩兑现最稳。<b>AI服务器（浪潮信息/工业富联）</b>跟随算力投入持续放量。</p>
+  <p><b style="color:#f59e0b;">主线2 · 大模型+Agent（弹性最大）</b>：科大讯飞、金山办公等已实现AI收入快速增长，2026年Agent商业化进入兑现期。<b>金山办公WPS AI</b>付费用户突破1亿，<b>科大讯飞</b>教育/医疗/汽车多场景落地。</p>
+  <p><b style="color:#22c55e;">主线3 · 具身智能（想象空间最大）</b>：人形机器人2026年量产元年，<b>核心零部件（减速器/丝杠/电机）</b>先于整机受益。绿的谐波（谐波减速器）、鸣志电器（步进电机）、双林股份（丝杠）订单已开始放量。短期题材属性强，需把握节奏。</p>
+</div>
+
+<div class="disclaimer">
+  <p><b>⚠️ 风险提示</b></p>
+  <p>• <b>估值过高</b>：AI板块整体PE普遍80倍以上，部分概念股PS估值脱离基本面，存在大幅回调风险</p>
+  <p>• <b>商业化不及预期</b>：B端付费意愿、C端粘性、Agent准确率仍是落地核心障碍</p>
+  <p>• <b>大模型同质化</b>：国产模型能力趋同，差异化竞争优势减弱，价格战压缩利润空间</p>
+  <p>• <b>美国制裁加码</b>：高端GPU禁运扩大、光模块出口管制风险，可能影响国内算力升级节奏</p>
+  <p>• <b>具身智能技术瓶颈</b>：人形机器人量产成本、可靠性、应用场景仍待验证，2026-2027量产可能延期</p>
+  <p>• <b>题材股泡沫</b>：蹭AI概念但无实质业务的公司可能率先回调，建议聚焦真AI龙头</p>
+  <p style="margin-top:16px;color:#94a3b8;font-size:13px;">📌 本页面所有信息基于2026年6月公开资料整理，仅供产业链学习参考，<b style="color:#ef4444;">不构成任何投资建议</b>。AI板块波动较大，建议优先选择业绩可验证、技术壁垒高的真龙头标的，避免追高题材股。</p>
+</div>
+
+<div style="text-align:center;color:#64748b;font-size:12px;margin-top:30px;padding:20px;">
+  数据来源：公司公告、券商研报、Wind、IDC · 整理时间：2026-06-12
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.stock').forEach(stock => {
+  stock.addEventListener('click', () => {
+    stock.style.transition = 'transform 0.3s';
+    stock.style.transform = 'scale(1.04)';
+    setTimeout(() => stock.style.transform = '', 300);
+  });
+});
+</script>
+
+</body>
+</html>
