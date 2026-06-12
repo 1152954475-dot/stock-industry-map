@@ -76,6 +76,182 @@ h1 {
 .potential { background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1)); }
 .ai { background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(6, 182, 212, 0.15)); }
 
+/* Stock Calendar */
+.calendar-section {
+  background: rgba(255,255,255,0.95);
+  border-radius: 20px;
+  padding: 32px;
+  margin-bottom: 40px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.calendar-header h2 {
+  font-size: 26px;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.calendar-nav {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.calendar-nav button {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+.calendar-nav button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(102,126,234,0.4);
+}
+.calendar-nav .month-label {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+  min-width: 120px;
+  text-align: center;
+}
+.calendar-desc {
+  color: #64748b;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+.calendar-day-label {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748b;
+  padding: 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.calendar-day-label.weekend { color: #ef4444; }
+.calendar-cell {
+  aspect-ratio: 1;
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 2px solid transparent;
+  position: relative;
+  transition: all 0.3s;
+  min-height: 70px;
+}
+.calendar-cell.weekend {
+  background: #fef2f2;
+  opacity: 0.6;
+}
+.calendar-cell.empty {
+  background: transparent;
+}
+.calendar-cell.has-data {
+  background: linear-gradient(135deg, #fef3c7, #fed7aa);
+  cursor: pointer;
+  border-color: #f59e0b;
+}
+.calendar-cell.has-data:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(245,158,11,0.4);
+  border-color: #ef4444;
+}
+.calendar-cell.today {
+  background: linear-gradient(135deg, #ef4444, #f59e0b);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(239,68,68,0.4);
+  animation: pulse-today 2s infinite;
+}
+@keyframes pulse-today {
+  0%, 100% { box-shadow: 0 6px 16px rgba(239,68,68,0.4); }
+  50% { box-shadow: 0 6px 24px rgba(239,68,68,0.8); }
+}
+.calendar-cell .day-num {
+  font-size: 18px;
+  font-weight: 700;
+  color: #334155;
+}
+.calendar-cell.today .day-num,
+.calendar-cell.has-data .day-num { color: #1e293b; }
+.calendar-cell.today .day-num { color: #fff; }
+.calendar-cell .day-badge {
+  font-size: 9px;
+  font-weight: 600;
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.4);
+  color: #92400e;
+  text-align: center;
+  margin-top: auto;
+}
+.calendar-cell.today .day-badge {
+  background: rgba(255,255,255,0.3);
+  color: #fff;
+}
+.calendar-cell.has-data .day-badge {
+  background: #ef4444;
+  color: #fff;
+}
+.calendar-cell .market-pct {
+  font-size: 10px;
+  font-weight: 700;
+  font-family: 'Consolas', monospace;
+  margin-top: 2px;
+}
+.calendar-cell.today .market-pct { color: #fef3c7; }
+.calendar-cell.has-data .market-pct { color: #b91c1c; }
+.calendar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px dashed #e2e8f0;
+  font-size: 13px;
+  color: #64748b;
+}
+.legend-dot {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+@media (max-width: 768px) {
+  .calendar-section { padding: 20px; }
+  .calendar-cell { min-height: 56px; padding: 4px; }
+  .calendar-cell .day-num { font-size: 14px; }
+  .calendar-cell .day-badge { font-size: 8px; padding: 1px 3px; }
+  .calendar-cell .market-pct { font-size: 9px; }
+  .calendar-header h2 { font-size: 20px; }
+}
+
 /* Stock Query Section */
 .stock-query {
   background: rgba(255,255,255,0.95);
@@ -264,6 +440,26 @@ h1 {
     <div id="result"></div>
   </div>
 
+  <!-- Stock Calendar Section -->
+  <div class="calendar-section">
+    <div class="calendar-header">
+      <h2>📅 股市日历 · 每日复盘</h2>
+      <div class="calendar-nav">
+        <button onclick="changeMonth(-1)">‹</button>
+        <span class="month-label" id="monthLabel">2026年6月</span>
+        <button onclick="changeMonth(1)">›</button>
+      </div>
+    </div>
+    <p class="calendar-desc">点击带 🔥 标记的日期查看当日完整复盘报告（大盘+板块+资金+TOP3）</p>
+    <div class="calendar-grid" id="calendarGrid"></div>
+    <div class="calendar-legend">
+      <span><span class="legend-dot" style="background:#f8fafc;border:1px solid #e2e8f0;"></span>普通交易日</span>
+      <span><span class="legend-dot" style="background:#fef2f2;"></span>周末休市</span>
+      <span><span class="legend-dot" style="background:linear-gradient(135deg,#fef3c7,#fed7aa);border:1px solid #f59e0b;"></span>已发布复盘</span>
+      <span><span class="legend-dot" style="background:linear-gradient(135deg,#ef4444,#f59e0b);"></span>最新复盘</span>
+    </div>
+  </div>
+
   <div class="cards">
     <a href="ai_stocks_map.html" class="card ai">
       <div class="icon">🤖</div>
@@ -298,6 +494,75 @@ h1 {
 </div>
 
 <script>
+// ========== 股市日历 ==========
+const dailyReports = {
+  '2026-06-12': { url: 'daily_2026_06_12.html', pct: '+1.12%', label: '🔥' }
+};
+let calCurrentYear = 2026;
+let calCurrentMonth = 6;
+const TODAY_KEY = '2026-06-12';
+
+function renderCalendar(year, month) {
+  document.getElementById('monthLabel').textContent = `${year}年${month}月`;
+  const grid = document.getElementById('calendarGrid');
+  grid.innerHTML = '';
+
+  const weekDays = ['日','一','二','三','四','五','六'];
+  weekDays.forEach((d, i) => {
+    const lbl = document.createElement('div');
+    lbl.className = 'calendar-day-label' + ((i===0||i===6) ? ' weekend' : '');
+    lbl.textContent = d;
+    grid.appendChild(lbl);
+  });
+
+  const firstDay = new Date(year, month-1, 1).getDay();
+  const daysInMonth = new Date(year, month, 0).getDate();
+
+  for (let i = 0; i < firstDay; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'calendar-cell empty';
+    grid.appendChild(cell);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateKey = `${year}-${String(month).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const weekday = new Date(year, month-1, d).getDay();
+    const isWeekend = weekday === 0 || weekday === 6;
+    const report = dailyReports[dateKey];
+    const isToday = dateKey === TODAY_KEY;
+
+    const cell = document.createElement('div');
+    let classNames = ['calendar-cell'];
+    if (isToday) classNames.push('today');
+    else if (report) classNames.push('has-data');
+    else if (isWeekend) classNames.push('weekend');
+    cell.className = classNames.join(' ');
+
+    if (report) {
+      cell.onclick = () => window.location.href = report.url;
+      cell.innerHTML = `
+        <div class="day-num">${d}</div>
+        <div>
+          <div class="market-pct">${report.pct}</div>
+          <div class="day-badge">${report.label} 复盘</div>
+        </div>
+      `;
+    } else {
+      cell.innerHTML = `<div class="day-num">${d}</div>`;
+    }
+    grid.appendChild(cell);
+  }
+}
+
+function changeMonth(delta) {
+  calCurrentMonth += delta;
+  if (calCurrentMonth > 12) { calCurrentMonth = 1; calCurrentYear++; }
+  else if (calCurrentMonth < 1) { calCurrentMonth = 12; calCurrentYear--; }
+  renderCalendar(calCurrentYear, calCurrentMonth);
+}
+
+renderCalendar(calCurrentYear, calCurrentMonth);
+
 // 股票查询功能
 async function searchStock() {
   const input = document.getElementById('stockInput').value.trim();

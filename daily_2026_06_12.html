@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-12 A股复盘 · 真实数据版</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #0b1120;
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(239,68,68,0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 90%, rgba(34,197,94,0.12) 0%, transparent 50%);
+  color: #e2e8f0;
+  min-height: 100vh;
+  padding-bottom: 40px;
+  line-height: 1.6;
+}
+.hero {
+  background: linear-gradient(135deg, #ef4444, #f59e0b 50%, #eab308);
+  padding: 50px 20px 70px;
+  text-align: center;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '📈';
+  position: absolute;
+  font-size: 200px;
+  opacity: 0.1;
+  top: -30px; right: 40px;
+}
+.hero .date-pill {
+  display: inline-block;
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(10px);
+  padding: 6px 18px;
+  border-radius: 20px;
+  font-size: 13px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+.hero h1 { font-size: 36px; margin-bottom: 12px; text-shadow: 0 2px 16px rgba(0,0,0,0.3); }
+.hero .subtitle { font-size: 16px; opacity: 0.95; max-width: 700px; margin: 0 auto; }
+.data-source-tip {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 6px 14px;
+  background: rgba(34,197,94,0.25);
+  border: 1px solid rgba(34,197,94,0.5);
+  border-radius: 16px;
+  font-size: 12px;
+  color: #fff;
+}
+.container { max-width: 1200px; margin: -40px auto 0; padding: 0 16px; position: relative; z-index: 3; }
+
+/* ===== HOLDER ===== */
+.index-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin-bottom: 30px;
+}
+.index-card {
+  background: rgba(15,23,42,0.95);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid rgba(148,163,184,0.2);
+  border-top: 4px solid #ef4444;
+  transition: transform 0.3s;
+}
+.index-card:hover { transform: translateY(-4px); }
+.index-card .name { font-size: 14px; color: #94a3b8; margin-bottom: 6px; }
+.index-card .price { font-size: 26px; font-weight: 700; font-family: 'Consolas', monospace; margin-bottom: 6px; color: #fca5a5; }
+.index-card .change { font-size: 14px; font-weight: 600; color: #ef4444; }
+.index-card .meta { font-size: 12px; color: #64748b; margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(148,163,184,0.2); }
+.index-card .minute-chart {
+  width: 100%;
+  margin-top: 12px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid rgba(148,163,184,0.2);
+  display: block;
+}
+
+.section {
+  background: rgba(15,23,42,0.85);
+  border-radius: 18px;
+  padding: 26px;
+  margin-bottom: 24px;
+  border: 1px solid rgba(148,163,184,0.15);
+}
+.section h2 { font-size: 22px; color: #f1f5f9; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+.section .section-desc { color: #94a3b8; font-size: 14px; margin-bottom: 20px; }
+
+.market-summary {
+  background: linear-gradient(135deg, rgba(239,68,68,0.08), rgba(245,158,11,0.05));
+  border-left: 4px solid #ef4444;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 18px;
+  color: #cbd5e1;
+  font-size: 15px;
+  line-height: 1.85;
+}
+.market-summary b { color: #fde68a; }
+.market-summary .tag-up { color: #fca5a5; font-weight: 700; }
+.market-summary .tag-down { color: #86efac; font-weight: 700; }
+
+.sectors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 18px;
+}
+.sector-card {
+  background: rgba(30,41,59,0.7);
+  border-radius: 14px;
+  padding: 20px;
+  border-left: 4px solid;
+  transition: all 0.3s;
+}
+.sector-card:hover { background: rgba(30,41,59,1); transform: translateX(4px); }
+.sector-card.hot { border-left-color: #ef4444; }
+.sector-card.warm { border-left-color: #f59e0b; }
+.sector-card.cold { border-left-color: #22c55e; }
+.sector-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.sector-head h3 { font-size: 18px; color: #f1f5f9; }
+.sector-pct { font-size: 18px; font-weight: 700; font-family: 'Consolas', monospace; }
+.sector-pct.up { color: #ef4444; }
+.sector-pct.down { color: #22c55e; }
+.sector-desc { color: #cbd5e1; font-size: 13px; line-height: 1.7; margin-bottom: 12px; }
+.sector-desc b { color: #fde68a; }
+.leader-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.leader {
+  background: rgba(239,68,68,0.15);
+  color: #fca5a5;
+  border: 1px solid rgba(239,68,68,0.3);
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.leader.green { background: rgba(34,197,94,0.15); color: #86efac; border-color: rgba(34,197,94,0.3); }
+
+.flow-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.flow-card { background: rgba(30,41,59,0.7); border-radius: 12px; padding: 18px; border: 1px solid rgba(148,163,184,0.15); }
+.flow-card .label { font-size: 13px; color: #94a3b8; margin-bottom: 6px; }
+.flow-card .amount { font-size: 22px; font-weight: 700; font-family: 'Consolas', monospace; margin-bottom: 4px; }
+.flow-card .amount.in { color: #fca5a5; }
+.flow-card .amount.out { color: #86efac; }
+.flow-card .note { font-size: 12px; color: #64748b; }
+
+.flow-bars { margin-top: 16px; }
+.flow-bar-row {
+  display: grid;
+  grid-template-columns: 100px 1fr 80px;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px dashed rgba(148,163,184,0.15);
+}
+.flow-bar-row:last-child { border-bottom: none; }
+.flow-bar-name { font-size: 13px; color: #cbd5e1; font-weight: 600; }
+.flow-bar-track { height: 22px; background: rgba(15,23,42,0.6); border-radius: 6px; position: relative; overflow: hidden; }
+.flow-bar-fill { height: 100%; border-radius: 6px; transition: width 0.8s; }
+.flow-bar-fill.in { background: linear-gradient(90deg, #ef4444, #f87171); }
+.flow-bar-fill.out { background: linear-gradient(90deg, #22c55e, #4ade80); }
+.flow-bar-val { font-size: 13px; font-family: 'Consolas', monospace; font-weight: 600; text-align: right; }
+.flow-bar-val.in { color: #fca5a5; }
+.flow-bar-val.out { color: #86efac; }
+
+.top3-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 14px; }
+.top-card {
+  background: linear-gradient(135deg, rgba(239,68,68,0.12), rgba(245,158,11,0.08));
+  border: 2px solid rgba(239,68,68,0.4);
+  border-radius: 16px;
+  padding: 22px;
+  position: relative;
+  overflow: hidden;
+}
+.top-rank {
+  display: inline-block;
+  background: linear-gradient(135deg, #fbbf24, #ef4444);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+}
+.top-card h3 { font-size: 20px; color: #f1f5f9; margin-bottom: 6px; }
+.top-pct { font-size: 26px; font-weight: 700; color: #fca5a5; font-family: 'Consolas', monospace; margin-bottom: 10px; }
+.top-reason { color: #cbd5e1; font-size: 13px; line-height: 1.7; padding: 12px; background: rgba(15,23,42,0.6); border-radius: 8px; margin-bottom: 12px; }
+.top-reason b { color: #fde68a; }
+.top-stocks { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.advice-box {
+  background: linear-gradient(135deg, rgba(168,85,247,0.1), rgba(59,130,246,0.08));
+  border: 2px solid rgba(168,85,247,0.3);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+.advice-box h2 { color: #c4b5fd; margin-bottom: 16px; }
+.advice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+.advice-item {
+  background: rgba(15,23,42,0.6);
+  border-radius: 10px;
+  padding: 16px;
+  color: #cbd5e1;
+  font-size: 13px;
+  line-height: 1.75;
+  border-left: 3px solid #a855f7;
+}
+.advice-item b { color: #c4b5fd; }
+
+.risk-box {
+  background: rgba(239,68,68,0.08);
+  border: 1px solid rgba(239,68,68,0.3);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 20px;
+  color: #fca5a5;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.risk-box b { color: #fca5a5; }
+
+.back-btn-wrap { text-align: center; margin: 30px 0 10px; }
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 36px;
+  background: linear-gradient(135deg,#ef4444,#f59e0b);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  box-shadow: 0 6px 20px rgba(239,68,68,0.4);
+  transition: all 0.3s;
+}
+.back-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(239,68,68,0.6); }
+
+.minute-big {
+  width: 100%;
+  border-radius: 12px;
+  background: #fff;
+  margin: 16px 0;
+  border: 2px solid rgba(148,163,184,0.2);
+  display: block;
+}
+.chart-tabs { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.chart-tab {
+  padding: 8px 16px;
+  background: rgba(30,41,59,0.7);
+  color: #cbd5e1;
+  border: 1px solid rgba(148,163,184,0.2);
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+.chart-tab:hover, .chart-tab.active {
+  background: linear-gradient(135deg, #ef4444, #f59e0b);
+  color: #fff;
+  border-color: transparent;
+}
+
+@media (max-width: 768px) {
+  .hero h1 { font-size: 26px; }
+  .index-card .price { font-size: 22px; }
+  .sectors-grid { grid-template-columns: 1fr; }
+  .flow-bar-row { grid-template-columns: 80px 1fr 70px; gap: 8px; }
+  .flow-bar-name { font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="date-pill">📅 2026年6月12日 · 周五</span>
+  <h1>📊 A股每日复盘</h1>
+  <p class="subtitle">大盘走势 · 板块轮动 · 资金流向 · 最强Top3</p>
+  <div class="data-source-tip">✅ 真实数据 · 来源：新浪财经/东方财富/数据宝/Wind</div>
+</div>
+
+<div class="container">
+
+<!-- 四大指数 + 分时图 -->
+<div class="index-grid">
+  <div class="index-card">
+    <div class="name">上证指数</div>
+    <div class="price">4,031.51</div>
+    <div class="change">+44.66 (+1.12%)</div>
+    <img class="minute-chart" src="https://image.sinajs.cn/newchart/min/n/sh000001.gif" alt="上证指数分时图" onerror="this.style.display='none'">
+    <div class="meta">重回4000点 · 全天收带上影真阳线</div>
+  </div>
+  <div class="index-card">
+    <div class="name">深证成指</div>
+    <div class="price">14,963.41</div>
+    <div class="change">+111.77 (+0.75%)</div>
+    <img class="minute-chart" src="https://image.sinajs.cn/newchart/min/n/sz399001.gif" alt="深证成指分时图" onerror="this.style.display='none'">
+    <div class="meta">高开2%后震荡回落 · 高开低走阴线</div>
+  </div>
+  <div class="index-card">
+    <div class="name">创业板指</div>
+    <div class="price">3,830.35</div>
+    <div class="change">+19.07 (+0.50%)</div>
+    <img class="minute-chart" src="https://image.sinajs.cn/newchart/min/n/sz399006.gif" alt="创业板指分时图" onerror="this.style.display='none'">
+    <div class="meta">高开2.88%后回落 · 盘中曾涨超2%</div>
+  </div>
+  <div class="index-card">
+    <div class="name">科创50</div>
+    <div class="price">--</div>
+    <div class="change">微涨0.05%</div>
+    <img class="minute-chart" src="https://image.sinajs.cn/newchart/min/n/sh000688.gif" alt="科创50分时图" onerror="this.style.display='none'">
+    <div class="meta">高开后单边下行 · 半导体拖累</div>
+  </div>
+</div>
+
+<!-- 大盘解读 -->
+<div class="section">
+  <h2>📈 大盘走势解读</h2>
+  <p class="section-desc">三大指数集体收红，沪指重回4000点，但盘中冲高回落充满"内耗"</p>
+
+  <div class="market-summary">
+    <p><b>📍 盘面定调</b>：A股周五迎来<span class="tag-up">放量反弹</span>，受隔夜美伊接近达成和平协议提振，外围VIX恐慌指数暴跌12%、纳指涨2.54%、费城半导体一度飙升7.91%，A股三大指数<b>跳空高开</b>。但单边大幅上攻持续到午前，午后涨幅明显收窄，<b>科创50与创业板指几乎单边下行</b>，最终仅勉强收红。</p>
+    <p style="margin-top:10px;"><b>📍 量能特征</b>：沪深京三市合计成交<b>3.2363万亿</b>，较昨日大幅放量<b>6612亿</b>，创本月新高。但需注意尾盘多只个股竞价大幅异动"刷"了一波成交额，真实活跃度可能低于表观数据。</p>
+    <p style="margin-top:10px;"><b>📍 涨跌家数</b>：全市场上涨<b>3923家</b>，下跌1511家，平盘89家，逾140只个股涨幅在9%以上。<b>普反行情</b>下赚钱效应显著，但成交额前十的个股涨跌各半，<b>抱团资金内部分歧加大</b>。</p>
+    <p style="margin-top:10px;"><b>📍 风格切换</b>：今日核心矛盾是<b>"高低切换"</b>——前期涨幅过大的高位科技股（CPO、半导体、PCB）开盘冲高后快速跳水，资金流向<b>低估值的有色金属、券商、海运</b>等周期/金融板块，市场进入<b>"再平衡"</b>阶段。</p>
+    <p style="margin-top:10px;"><b>📍 关键催化</b>：① 美伊地缘风险降温，全球风险偏好回升；② SpaceX上市临近，航空航天/低空经济板块起飞；③ 算力金属（钼、锗、钽）题材扩散到铜、铝、黄金等主流金属。</p>
+  </div>
+
+  <div class="market-summary" style="border-left-color:#22c55e;background:linear-gradient(135deg,rgba(34,197,94,0.08),rgba(59,130,246,0.05));">
+    <p><b>🎯 综合判断</b>：沪指跳空站上4000点，技术上日K线<b>圆弧底特征明显</b>，KDJ金叉、MACD绿柱收敛、SAR首次转多，下跌动能减弱。但<b>4079点筹码套牢密集峰</b>与20日均线（4074点）构成强阻力区，反弹能否延续关键看下周能否放量长阳突破。<span class="tag-down">短期警惕</span>：科创50/创业板指"该强不强则为弱"，若双创无法迅速反包今日大阴线，可能面临持续调整。</p>
+  </div>
+
+  <h3 style="font-size:16px;color:#f1f5f9;margin:20px 0 10px;">📊 上证指数日K线（含均线）</h3>
+  <img class="minute-big" src="https://image.sinajs.cn/newchart/daily/n/sh000001.gif" alt="上证指数日K线" onerror="this.style.display='none'">
+</div>
+
+<!-- 热门板块 -->
+<div class="section">
+  <h2>🔥 热门板块详细情况</h2>
+  <p class="section-desc">真实板块涨跌排名 · 红色为强势/绿色为弱势 · 数据来源：申万一级行业</p>
+
+  <div class="sectors-grid">
+
+    <div class="sector-card hot">
+      <div class="sector-head">
+        <h3>🥇 有色金属（领涨）</h3>
+        <span class="sector-pct up">+1.40%</span>
+      </div>
+      <div class="sector-desc">
+        <b>今日最强板块</b>。<b>工业金属</b>主力净流入59.37亿元位居所有板块首位。算力金属（钼/锗/钽/铟）题材向铜、铝、黄金扩散，洛阳钼业涨停，紫金矿业一度涨超8%，盛龙股份2连板，铜陵有色、北方铜业、招金黄金、豫光金铅等近20股涨停或涨超10%。
+      </div>
+      <div class="leader-row">
+        <span class="leader">洛阳钼业 涨停</span>
+        <span class="leader">铜陵有色 涨停</span>
+        <span class="leader">招金黄金 涨停</span>
+        <span class="leader">盛龙股份 2连板</span>
+        <span class="leader">紫金矿业 +8%</span>
+      </div>
+    </div>
+
+    <div class="sector-card hot">
+      <div class="sector-head">
+        <h3>🥈 非银金融/券商</h3>
+        <span class="sector-pct up">+0.93%</span>
+      </div>
+      <div class="sector-desc">
+        早盘大幅拉升带动指数。财达证券、电投产融、中银证券等<b>多股涨停</b>，国金证券、瑞达期货、东北证券涨超5%。东方财富主力净流入6.36亿元位居个股第二。<b>"牛市旗手"信号</b>，但午后涨幅收窄。
+      </div>
+      <div class="leader-row">
+        <span class="leader">财达证券 涨停</span>
+        <span class="leader">中银证券 涨停</span>
+        <span class="leader">电投产融 涨停</span>
+        <span class="leader">国金证券 +5%</span>
+      </div>
+    </div>
+
+    <div class="sector-card hot">
+      <div class="sector-head">
+        <h3>🥉 海运/低空经济</h3>
+        <span class="sector-pct up">--</span>
+      </div>
+      <div class="sector-desc">
+        交通运输板块涨幅居前，<b>中信海直涨停</b>，招商轮船涨超8%，宏川智慧、吉祥航空、华夏航空涨超6%。低空经济概念由<b>宗申动力5天4板</b>带动，万丰奥威涨停，安达维尔、通易航天涨超10%。催化：峰飞航空2吨级eVTOL获颁境外适航证。
+      </div>
+      <div class="leader-row">
+        <span class="leader">中信海直 涨停</span>
+        <span class="leader">宗申动力 5天4板</span>
+        <span class="leader">招商轮船 +8%</span>
+        <span class="leader">万丰奥威 涨停</span>
+      </div>
+    </div>
+
+    <div class="sector-card warm">
+      <div class="sector-head">
+        <h3>📺 传媒/IP经济</h3>
+        <span class="sector-pct up">+1.33%</span>
+      </div>
+      <div class="sector-desc">
+        文化传媒板块主力净流入<b>11.19亿元（行业第一）</b>，光线传媒为代表。IP经济概念掀涨停潮，多股涨停。新消费方向延续强势。
+      </div>
+      <div class="leader-row">
+        <span class="leader">光线传媒</span>
+        <span class="leader">巨人网络 +3.22亿净流入</span>
+      </div>
+    </div>
+
+    <div class="sector-card warm">
+      <div class="sector-head">
+        <h3>💊 医药生物/创新药</h3>
+        <span class="sector-pct up">+1.27%</span>
+      </div>
+      <div class="sector-desc">
+        医药生物主力净流入11.01亿元（行业第二）。化学制药板块涨1.16%，恒瑞医药为代表，主力净流入7.70亿元。<b>创新药概念维持强势</b>，海思科涨停。CXO板块药明康德主力净流入6.13亿元。
+      </div>
+      <div class="leader-row">
+        <span class="leader">恒瑞医药</span>
+        <span class="leader">海思科 涨停</span>
+        <span class="leader">药明康德</span>
+      </div>
+    </div>
+
+    <div class="sector-card cold">
+      <div class="sector-head">
+        <h3>📉 半导体（高开低走）</h3>
+        <span class="sector-pct down">-0.61%</span>
+      </div>
+      <div class="sector-desc">
+        <b>今日最大输家之一</b>。开盘随外围跳空高开后快速跳水，主力净流出<b>22.39亿元</b>居首。中巨芯、有研硅、气派科技、南大光电、沪硅产业、江化微等<b>跌停或跌超10%</b>。CPO板块午后转跌，联特科技大跌9%。<b>高拥挤交易+高估值的兑现压力</b>集中释放。
+      </div>
+      <div class="leader-row">
+        <span class="leader green">江化微 跌停</span>
+        <span class="leader green">南大光电 跌停</span>
+        <span class="leader green">沪硅产业 跌停</span>
+        <span class="leader green">联特科技 -9%</span>
+      </div>
+    </div>
+
+    <div class="sector-card cold">
+      <div class="sector-head">
+        <h3>🍷 酿酒/食品饮料</h3>
+        <span class="sector-pct down">-1.13%</span>
+      </div>
+      <div class="sector-desc">
+        酿酒行业主力净流出<b>17.53亿元</b>居流出第二。五粮液主力净流出4亿+。资金加速从抱团消费撤离，<b>风险偏好抬升下消费防御属性弱化</b>。
+      </div>
+      <div class="leader-row">
+        <span class="leader green">五粮液 -4亿</span>
+        <span class="leader green">贵州茅台 弱势</span>
+      </div>
+    </div>
+
+    <div class="sector-card cold">
+      <div class="sector-head">
+        <h3>🚗 汽车/新能源车</h3>
+        <span class="sector-pct down">--</span>
+      </div>
+      <div class="sector-desc">
+        汽车行业主力净流出<b>22亿元</b>（同居流出榜首）。<b>比亚迪主力净流出6.98亿元</b>居个股流出第一。汽车零部件流出10.04亿。新能源车产业链整体承压。
+      </div>
+      <div class="leader-row">
+        <span class="leader green">比亚迪 -6.98亿</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 资金流向 -->
+<div class="section">
+  <h2>💰 资金流动情况</h2>
+  <p class="section-desc">主力资金、北向资金、行业资金三维透视 · 数据宝/Wind统计</p>
+
+  <div class="flow-grid">
+    <div class="flow-card">
+      <div class="label">两市主力资金</div>
+      <div class="amount out">-92.69亿</div>
+      <div class="note">净流出 · 创业板流出33亿</div>
+    </div>
+    <div class="flow-card">
+      <div class="label">北向资金（近期）</div>
+      <div class="amount in">连续5日</div>
+      <div class="note">累计净买入超150亿 · 外资增配</div>
+    </div>
+    <div class="flow-card">
+      <div class="label">沪深300成份股</div>
+      <div class="amount in">+3.96亿</div>
+      <div class="note">权重股相对抗跌</div>
+    </div>
+    <div class="flow-card">
+      <div class="label">两市成交额</div>
+      <div class="amount in">3.24万亿</div>
+      <div class="note">放量6612亿 · 本月新高</div>
+    </div>
+  </div>
+
+  <div style="margin-top:24px;">
+    <h3 style="font-size:16px;color:#f1f5f9;margin-bottom:14px;">📊 申万一级行业 主力净流入TOP10</h3>
+    <div class="flow-bars">
+      <div class="flow-bar-row">
+        <span class="flow-bar-name">通信</span>
+        <div class="flow-bar-track"><div class="flow-bar-fill in" style="width:67%;"></div></div>
+        <span class="flow-bar-val in">+6.71亿</span>
+      </div>
+      <div class="flow-bar-row">
+        <span class="flow-bar-name">传媒</span>
+        <div class="flow-bar-track"><div class="flow-bar-fill in" style="width:64%;"></div></div>
+        <span class="flow-bar-val in">+6.39亿</span>
+      </div>
+      <div class="flow-bar-row">
+        <span class="flow-bar-name">医药生物</span>
+        <div class="flow-bar-track"><div class="flow-bar-fill in" style="width:100%;"></div></div>
+        <span class="flow-bar-val in">+11.01亿</span>
+      </div>
+      <div class="flow-bar-row">
+        <span class="flow-bar-name">银行</span>
+        <div class="flow-bar-track"><div class="flow-bar-fill in" style="width:90%;"></div></div>
+        <span class="flow-bar-val in">+9.88亿</span>
+      </div>
+      <div class="flow-bar-row">
+        <span class="flow-bar-name">非银金融</span>
+        <div class="flow-bar-track"><div class="flow-bar-fill in" style="width:31%;"></div></div>
+        <span class="flow-bar-val in">+3.13亿</span>
+      </div>
+      <div class="flow-bar-row">
+        <span class="flow-bar-name">石油石化</span>
+        <div class="flow-bar-track"><div class="flow-bar-fill in" style="width:28%;"></div></div>
+        <span class="flow-bar-val in">+2.79亿</span>
+      </div>
+      <div class="flow-bar-row">
+        <span class="flow-bar-name">有色金属</span>
+        <div class="flow-bar-track"><div class="flow-bar-fill in" style="width:24%;"></div></div>
+        <span class="flow-bar-val in">+2.37亿</span>
+      </div>
+    </div>
+
+    <h3 style="font-size:16px;color:#f1f5f9;margin:20px 0 14px;">📊 申万一级行业 主力净流出TOP10</h3>
+    <div class="flow-bars">
+      <div class="flow-bar-row">
+        <span class="flow-bar-name">电子</span>
+        <div class="flow-bar-track"><div class="flow-bar-fill out" style="width:100%;"></div></div>
+        <span class="flow-bar-val out">-22.25亿</span>
+      </div>
+      <div class="flow-bar-row">
+        <span class="flow-bar-name">汽车</span>
+        <div class="flow-bar-track"><div class="flow-bar-fill out" style="width:73%;"></div></div>
+        <span class="flow-bar-val out">-16.25亿</span>
+      </div>
+      <div class="flow-bar-row">
+        <span class="flow-bar-name">国防军工</span>
+        <div class="flow-bar-track"><div class="flow-bar-fill out" style="width:71%;"></div></div>
+        <span class="flow-bar-val out">-15.86亿</span>
+      </div>
+      <div class="flow-bar-row">
+        <span class="flow-bar-name">基础化工</span>
+        <div class="flow-bar-track"><div class="flow-bar-fill out" style="width:50%;"></div></div>
+        <span class="flow-bar-val out">-11.13亿</span>
+      </div>
+      <div class="flow-bar-row">
+        <span class="flow-bar-name">计算机</span>
+        <div class="flow-bar-track"><div class="flow-bar-fill out" style="width:49%;"></div></div>
+        <span class="flow-bar-val out">-10.92亿</span>
+      </div>
+      <div class="flow-bar-row">
+        <span class="flow-bar-name">机械设备</span>
+        <div class="flow-bar-track"><div class="flow-bar-fill out" style="width:47%;"></div></div>
+        <span class="flow-bar-val out">-10.42亿</span>
+      </div>
+      <div class="flow-bar-row">
+        <span class="flow-bar-name">食品饮料</span>
+        <div class="flow-bar-track"><div class="flow-bar-fill out" style="width:45%;"></div></div>
+        <span class="flow-bar-val out">-10.09亿</span>
+      </div>
+      <div class="flow-bar-row">
+        <span class="flow-bar-name">交通运输</span>
+        <div class="flow-bar-track"><div class="flow-bar-fill out" style="width:34%;"></div></div>
+        <span class="flow-bar-val out">-7.58亿</span>
+      </div>
+      <div class="flow-bar-row">
+        <span class="flow-bar-name">公用事业</span>
+        <div class="flow-bar-track"><div class="flow-bar-fill out" style="width:33%;"></div></div>
+        <span class="flow-bar-val out">-7.40亿</span>
+      </div>
+      <div class="flow-bar-row">
+        <span class="flow-bar-name">商贸零售</span>
+        <div class="flow-bar-track"><div class="flow-bar-fill out" style="width:29%;"></div></div>
+        <span class="flow-bar-val out">-6.45亿</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="market-summary" style="margin-top:20px;border-left-color:#a855f7;background:linear-gradient(135deg,rgba(168,85,247,0.08),rgba(59,130,246,0.05));">
+    <p><b>💡 资金信号解读</b>：</p>
+    <p style="margin-top:8px;">① <b>主力净流出92.69亿</b>但指数收红，说明<b>散户与北向接盘了主力撤离的科技股</b>，市场分歧加大。</p>
+    <p style="margin-top:6px;">② <b>北向资金连续5日净流入累计超150亿</b>，外资从低配转为增配A股，重点流向传媒、医药、银行。</p>
+    <p style="margin-top:6px;">③ <b>个股层面剑桥科技获主力9.37亿（CPO逆势）</b>、融发核电8.84亿（核电）、东方财富6.36亿（券商）流入居前。</p>
+    <p style="margin-top:6px;">④ 资金流出方向：<b>电子(-22)+汽车(-22)+军工(-16)+基化(-11)+计算机(-11)+机械(-10)</b>合计撤出近百亿，对应流入医药、银行、通信、传媒。</p>
+    <p style="margin-top:6px;">⑤ 个股流出：比亚迪-6.98亿、五粮液-4亿、姚记科技-4.05亿，<b>消费蓝筹与新能源车遭抛售</b>。</p>
+  </div>
+</div>
+
+<!-- 当日最强TOP3 -->
+<div class="section">
+  <h2>🏆 当日最强板块 TOP 3</h2>
+  <p class="section-desc">综合涨幅、资金、龙头、持续性、催化剂五维评估</p>
+
+  <div class="top3-grid">
+
+    <div class="top-card">
+      <span class="top-rank">🥇 NO.1</span>
+      <h3>有色金属（工业金属/贵金属）</h3>
+      <div class="top-pct">+1.40%</div>
+      <div class="top-reason">
+        <b>核心逻辑</b>：① 工业金属板块<b>主力净流入59.37亿</b>位居所有板块首位；② 算力金属（钼/锗/钽/铟）题材成功向<b>铜、铝、黄金</b>主流金属扩散；③ 板块内15只个股涨停，洛阳钼业、铜陵有色、招金黄金涨停，盛龙股份2连板。
+        <p style="margin-top:8px;"><b>持续性</b>：⭐⭐⭐⭐ AI算力对铜需求+去全球化下战略金属配置逻辑+加息预期回落，<b>具备中期持续性</b>，但短期需防扩散动作缺乏共识导致炸板。</p>
+      </div>
+      <div class="top-stocks">
+        <span class="leader">洛阳钼业 603993</span>
+        <span class="leader">铜陵有色 000630</span>
+        <span class="leader">紫金矿业 601899</span>
+        <span class="leader">招金黄金 000506</span>
+      </div>
+    </div>
+
+    <div class="top-card">
+      <span class="top-rank">🥈 NO.2</span>
+      <h3>传媒/IP经济（文化传媒）</h3>
+      <div class="top-pct">+1.33%</div>
+      <div class="top-reason">
+        <b>核心逻辑</b>：① 文化传媒板块<b>主力净流入11.19亿位居行业第一</b>；② IP经济概念<b>掀涨停潮</b>，多股涨停；③ 光线传媒为板块代表，巨人网络获主力净流入3.22亿；④ 新消费风口延续，资金从硬科技切入文化消费。
+        <p style="margin-top:8px;"><b>持续性</b>：⭐⭐⭐ 题材+情绪驱动为主，<b>需警惕情绪退潮</b>，但暑期档预期+IP衍生品商业化兑现，部分龙头有业绩支撑。</p>
+      </div>
+      <div class="top-stocks">
+        <span class="leader">光线传媒 300251</span>
+        <span class="leader">巨人网络 002558</span>
+      </div>
+    </div>
+
+    <div class="top-card">
+      <span class="top-rank">🥉 NO.3</span>
+      <h3>医药生物（创新药+CXO）</h3>
+      <div class="top-pct">+1.27%</div>
+      <div class="top-reason">
+        <b>核心逻辑</b>：① 医药生物<b>主力净流入11.01亿位居行业第二</b>；② 化学制药板块涨1.16%，恒瑞医药主力净流入7.70亿；③ 海思科涨停带动创新药；④ 医疗服务板块主力净流入6.13亿，药明康德为代表。<b>创新药出海+医保谈判预期</b>双逻辑。
+        <p style="margin-top:8px;"><b>持续性</b>：⭐⭐⭐⭐ 长期赛道，业绩兑现+政策催化双支撑，回调空间小，<b>适合中线配置</b>。</p>
+      </div>
+      <div class="top-stocks">
+        <span class="leader">恒瑞医药 600276</span>
+        <span class="leader">海思科 002653</span>
+        <span class="leader">药明康德 603259</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 操作建议 -->
+<div class="advice-box">
+  <h2>🎯 后市操作建议</h2>
+  <div class="advice-grid">
+    <div class="advice-item">
+      <b>仓位</b>：<b>不宜激进</b>。市场仍处高波左侧过渡期，沪指4079点筹码套牢峰构成强阻力，建议维持中等仓位，等待放量长阳突破压力区后再加仓。
+    </div>
+    <div class="advice-item">
+      <b>方向</b>：<b>哑铃策略</b>——"科技底仓+红利对冲"。科技端去伪存真，留下业绩确定性高的，逐步将其他换成新老能源、金融地产龙头+新消费/互联网龙头。
+    </div>
+    <div class="advice-item">
+      <b>切换</b>：<b>谨慎追高半导体/CPO</b>。高位科技股拥挤交易+估值3倍标准差，已开始走"A字形"，若双创无法迅速反包大阴线，可能持续调整。
+    </div>
+    <div class="advice-item">
+      <b>关注</b>：<b>有色+券商+创新药+低空经济</b>四条主线。有色金属业绩+逻辑双驱动，券商作为牛市旗手有想象空间，创新药基本面扎实，低空经济政策催化持续。
+    </div>
+  </div>
+</div>
+
+<!-- 风险提示 -->
+<div class="risk-box">
+  <p><b>⚠️ 风险提示</b></p>
+  <p style="margin-top:8px;">• <b>高低切换尚未确认</b>：尾盘个股竞价异动"刷"成交额，真实活跃度可能低于表观，下周量能能否维持是关键</p>
+  <p>• <b>科技股估值高位</b>：电子板块超额乖离率3倍标准差，类似贵金属/韩存储已走"A字"，警惕单押单一赛道</p>
+  <p>• <b>4079点压力区</b>：筹码密集峰+20日均线（4074）构成强阻力，反弹能否延续看下周突破力度</p>
+  <p>• <b>申万宏源观点</b>：6-7月可能是快速调整窗口，结构性上涨已接近高位区域，全面上涨需等2026下半年</p>
+  <p>• <b>资金面分歧</b>：主力净流出92亿但指数收红，说明散户/北向接盘，<b>分歧持续放大</b></p>
+  <p style="margin-top:12px;color:#94a3b8;font-size:12px;">📌 本页面所有数据来源：新浪财经/东方财富/数据宝/Wind/网易财经/澎湃新闻（2026-06-12收盘整理），仅供盘面分析参考，<b>不构成任何投资建议</b>。市场有风险，投资需谨慎。</p>
+</div>
+
+<div class="back-btn-wrap">
+  <a href="index.html" class="back-btn">
+    <span style="font-size:20px;">🏠</span> 返回主页面
+  </a>
+</div>
+
+</div>
+
+</body>
+</html>
