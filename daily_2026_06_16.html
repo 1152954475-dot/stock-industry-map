@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-06-16 A股复盘 · 电力板块+豫能控股深度分析</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #0b1120;
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(59,130,246,0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 90%, rgba(239,68,68,0.10) 0%, transparent 50%);
+  color: #e2e8f0;
+  min-height: 100vh;
+  padding-bottom: 40px;
+  line-height: 1.6;
+}
+.hero {
+  background: linear-gradient(135deg, #3b82f6, #6366f1 40%, #ef4444);
+  padding: 50px 20px 70px;
+  text-align: center;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before { content: '⚡'; position: absolute; font-size: 200px; opacity: 0.12; top: -30px; right: 40px; }
+.hero .date-pill { display: inline-block; background: rgba(255,255,255,0.25); backdrop-filter: blur(10px); padding: 6px 18px; border-radius: 20px; font-size: 13px; margin-bottom: 14px; border: 1px solid rgba(255,255,255,0.3); }
+.hero h1 { font-size: 36px; margin-bottom: 12px; text-shadow: 0 2px 16px rgba(0,0,0,0.3); }
+.hero .subtitle { font-size: 16px; opacity: 0.95; max-width: 700px; margin: 0 auto; }
+.data-source-tip { display: inline-block; margin-top: 14px; padding: 6px 14px; background: rgba(34,197,94,0.25); border: 1px solid rgba(34,197,94,0.5); border-radius: 16px; font-size: 12px; color: #fff; }
+.container { max-width: 1200px; margin: -40px auto 0; padding: 0 16px; position: relative; z-index: 3; }
+.index-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 30px; }
+.index-card { background: rgba(15,23,42,0.95); border-radius: 16px; padding: 20px; border: 1px solid rgba(148,163,184,0.2); border-top: 4px solid #94a3b8; transition: transform 0.3s; }
+.index-card.up { border-top-color: #ef4444; }
+.index-card.down { border-top-color: #22c55e; }
+.index-card:hover { transform: translateY(-4px); }
+.index-card .name { font-size: 14px; color: #94a3b8; margin-bottom: 6px; }
+.index-card .price { font-size: 26px; font-weight: 700; font-family: 'Consolas', monospace; margin-bottom: 6px; color: #e2e8f0; }
+.index-card.up .price { color: #fca5a5; }
+.index-card.down .price { color: #86efac; }
+.index-card .change { font-size: 14px; font-weight: 600; }
+.index-card.up .change { color: #ef4444; }
+.index-card.down .change { color: #22c55e; }
+.index-card .meta { font-size: 12px; color: #64748b; margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(148,163,184,0.2); }
+.index-card .minute-chart { width: 100%; margin-top: 12px; border-radius: 8px; background: #fff; border: 1px solid rgba(148,163,184,0.2); display: block; }
+.section { background: rgba(15,23,42,0.85); border-radius: 18px; padding: 26px; margin-bottom: 24px; border: 1px solid rgba(148,163,184,0.15); }
+.section h2 { font-size: 22px; color: #f1f5f9; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+.section .section-desc { color: #94a3b8; font-size: 14px; margin-bottom: 20px; }
+.market-summary { background: linear-gradient(135deg, rgba(59,130,246,0.10), rgba(99,102,241,0.06)); border-left: 4px solid #6366f1; border-radius: 10px; padding: 20px; margin-bottom: 18px; color: #cbd5e1; font-size: 15px; line-height: 1.85; }
+.market-summary b { color: #fde68a; }
+.market-summary .tag-up { color: #fca5a5; font-weight: 700; }
+.market-summary .tag-down { color: #86efac; font-weight: 700; }
+.sectors-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 18px; }
+.sector-card { background: rgba(30,41,59,0.7); border-radius: 14px; padding: 20px; border-left: 4px solid; transition: all 0.3s; }
+.sector-card:hover { background: rgba(30,41,59,1); transform: translateX(4px); }
+.sector-card.hot { border-left-color: #ef4444; }
+.sector-card.warm { border-left-color: #f59e0b; }
+.sector-card.cold { border-left-color: #22c55e; }
+.sector-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.sector-head h3 { font-size: 18px; color: #f1f5f9; }
+.sector-pct { font-size: 18px; font-weight: 700; font-family: 'Consolas', monospace; }
+.sector-pct.up { color: #ef4444; }
+.sector-pct.down { color: #22c55e; }
+.sector-desc { color: #cbd5e1; font-size: 13px; line-height: 1.7; margin-bottom: 12px; }
+.sector-desc b { color: #fde68a; }
+.leader-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.leader { background: rgba(239,68,68,0.15); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 600; }
+.leader.green { background: rgba(34,197,94,0.15); color: #86efac; border-color: rgba(34,197,94,0.3); }
+.flow-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.flow-card { background: rgba(30,41,59,0.7); border-radius: 12px; padding: 18px; border: 1px solid rgba(148,163,184,0.15); }
+.flow-card .label { font-size: 13px; color: #94a3b8; margin-bottom: 6px; }
+.flow-card .amount { font-size: 22px; font-weight: 700; font-family: 'Consolas', monospace; margin-bottom: 4px; }
+.flow-card .amount.in { color: #fca5a5; }
+.flow-card .amount.out { color: #86efac; }
+.flow-card .note { font-size: 12px; color: #64748b; }
+.flow-bars { margin-top: 16px; }
+.flow-bar-row { display: grid; grid-template-columns: 100px 1fr 80px; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px dashed rgba(148,163,184,0.15); }
+.flow-bar-row:last-child { border-bottom: none; }
+.flow-bar-name { font-size: 13px; color: #cbd5e1; font-weight: 600; }
+.flow-bar-track { height: 22px; background: rgba(15,23,42,0.6); border-radius: 6px; position: relative; overflow: hidden; }
+.flow-bar-fill { height: 100%; border-radius: 6px; transition: width 0.8s; }
+.flow-bar-fill.in { background: linear-gradient(90deg, #ef4444, #f87171); }
+.flow-bar-fill.out { background: linear-gradient(90deg, #22c55e, #4ade80); }
+.flow-bar-val { font-size: 13px; font-family: 'Consolas', monospace; font-weight: 600; text-align: right; }
+.flow-bar-val.in { color: #fca5a5; }
+.flow-bar-val.out { color: #86efac; }
+.top3-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 14px; }
+.top-card { background: linear-gradient(135deg, rgba(239,68,68,0.12), rgba(245,158,11,0.08)); border: 2px solid rgba(239,68,68,0.4); border-radius: 16px; padding: 22px; position: relative; overflow: hidden; }
+.top-rank { display: inline-block; background: linear-gradient(135deg, #fbbf24, #ef4444); color: #fff; font-size: 14px; font-weight: 700; padding: 4px 14px; border-radius: 20px; margin-bottom: 12px; }
+.top-card h3 { font-size: 20px; color: #f1f5f9; margin-bottom: 6px; }
+.top-pct { font-size: 26px; font-weight: 700; color: #fca5a5; font-family: 'Consolas', monospace; margin-bottom: 10px; }
+.top-reason { color: #cbd5e1; font-size: 13px; line-height: 1.7; padding: 12px; background: rgba(15,23,42,0.6); border-radius: 8px; margin-bottom: 12px; }
+.top-reason b { color: #fde68a; }
+.top-stocks { display: flex; flex-wrap: wrap; gap: 6px; }
+.back-btn-wrap { text-align: center; margin: 30px 0 10px; }
+.back-btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 36px; background: linear-gradient(135deg,#3b82f6,#ef4444); color: #fff; text-decoration: none; border-radius: 30px; font-size: 16px; font-weight: 600; box-shadow: 0 6px 20px rgba(59,130,246,0.4); transition: all 0.3s; }
+.back-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(59,130,246,0.6); }
+.minute-big { width: 100%; border-radius: 12px; background: #fff; margin: 16px 0; border: 2px solid rgba(148,163,184,0.2); display: block; }
+.pick-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-top: 14px; }
+.pick-card { background: rgba(30,41,59,0.8); border-radius: 14px; padding: 18px; border: 1px solid rgba(239,68,68,0.3); transition: all 0.3s; }
+.pick-card:hover { transform: translateY(-4px); border-color: rgba(239,68,68,0.7); box-shadow: 0 8px 20px rgba(239,68,68,0.2); }
+.pick-card.stealth { border-color: rgba(34,197,94,0.3); }
+.pick-card.stealth:hover { border-color: rgba(34,197,94,0.7); box-shadow: 0 8px 20px rgba(34,197,94,0.2); }
+.pick-card .pick-name { font-size: 16px; font-weight: 700; color: #f1f5f9; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
+.pick-card .pick-code { font-size: 12px; color: #94a3b8; font-family: 'Consolas', monospace; font-weight: normal; }
+.pick-card .pick-tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 8px; background: rgba(239,68,68,0.2); color: #fca5a5; margin-bottom: 8px; }
+.pick-card.stealth .pick-tag { background: rgba(34,197,94,0.2); color: #86efac; }
+.pick-card .pick-flow { font-size: 14px; font-weight: 700; color: #fca5a5; margin: 8px 0; padding: 6px 10px; background: rgba(239,68,68,0.1); border-radius: 6px; display: inline-block; }
+.pick-card.stealth .pick-flow { color: #86efac; background: rgba(34,197,94,0.1); }
+.pick-card .pick-reason { font-size: 12px; color: #cbd5e1; line-height: 1.6; margin-top: 8px; }
+.pick-card .pick-reason b { color: #fde68a; }
+.conclusion-box { border: 2px solid rgba(239,68,68,0.5); background: linear-gradient(135deg, rgba(15,23,42,0.95), rgba(30,41,59,0.9)); border-radius: 18px; padding: 28px; margin-bottom: 24px; }
+.conclusion-box h2 { font-size: 24px; color: #fca5a5; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+.conclusion-box .section-desc { color: #94a3b8; font-size: 14px; margin-bottom: 20px; }
+.pick-section-title { font-size: 18px; color: #fca5a5; margin: 24px 0 8px; padding-left: 12px; border-left: 4px solid #ef4444; }
+.pick-section-title.stealth { color: #86efac; border-left-color: #22c55e; }
+.pick-section-desc { color: #94a3b8; font-size: 13px; margin-bottom: 14px; padding-left: 16px; }
+
+/* 电力板块/持仓专属样式 */
+.power-section { border: 2px solid rgba(59,130,246,0.4); background: linear-gradient(135deg, rgba(15,23,42,0.95), rgba(30,58,138,0.15)); border-radius: 18px; padding: 28px; margin-bottom: 24px; }
+.power-section h2 { color: #93c5fd; }
+.power-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin: 18px 0; }
+.power-card { background: rgba(30,41,59,0.8); border-radius: 12px; padding: 16px; border-top: 3px solid #3b82f6; }
+.power-card .pname { font-size: 14px; color: #94a3b8; margin-bottom: 4px; }
+.power-card .ppct { font-size: 22px; font-weight: 700; font-family: 'Consolas', monospace; margin-bottom: 4px; }
+.power-card .pdesc { font-size: 12px; color: #cbd5e1; line-height: 1.6; }
+.holding-box { background: linear-gradient(135deg, rgba(168,85,247,0.10), rgba(59,130,246,0.10)); border: 2px solid rgba(168,85,247,0.4); border-radius: 18px; padding: 28px; margin-bottom: 24px; }
+.holding-box h2 { color: #c4b5fd; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+.holding-head { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 18px 0; }
+@media (max-width: 768px) { .holding-head { grid-template-columns: 1fr; } }
+.holding-meta { background: rgba(15,23,42,0.7); border-radius: 12px; padding: 18px; }
+.holding-meta .row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed rgba(148,163,184,0.15); font-size: 13px; }
+.holding-meta .row:last-child { border-bottom: none; }
+.holding-meta .k { color: #94a3b8; }
+.holding-meta .v { color: #fde68a; font-weight: 600; font-family: 'Consolas', monospace; }
+.holding-meta .v.up { color: #fca5a5; }
+.analysis-block { background: rgba(15,23,42,0.7); border-radius: 12px; padding: 18px; margin: 14px 0; border-left: 4px solid #a855f7; }
+.analysis-block h4 { color: #c4b5fd; font-size: 15px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.analysis-block p { color: #cbd5e1; font-size: 13px; line-height: 1.8; margin-bottom: 6px; }
+.analysis-block b { color: #fde68a; }
+.signal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin: 12px 0; }
+.signal-tag { padding: 10px 12px; background: rgba(15,23,42,0.6); border-radius: 10px; font-size: 12px; color: #cbd5e1; border-left: 3px solid; }
+.signal-tag.good { border-left-color: #ef4444; }
+.signal-tag.bad { border-left-color: #22c55e; }
+.signal-tag.neutral { border-left-color: #94a3b8; }
+.signal-tag b { display: block; color: #fde68a; margin-bottom: 4px; }
+.history-table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13px; }
+.history-table th { background: rgba(168,85,247,0.15); color: #c4b5fd; padding: 10px; text-align: left; font-weight: 600; border-bottom: 1px solid rgba(168,85,247,0.3); }
+.history-table td { padding: 10px; border-bottom: 1px dashed rgba(148,163,184,0.15); color: #cbd5e1; }
+.history-table td.up { color: #fca5a5; font-weight: 600; }
+.history-table td.down { color: #86efac; font-weight: 600; }
+.advice-list { background: rgba(15,23,42,0.7); border-radius: 12px; padding: 18px; margin: 14px 0; }
+.advice-list .item { padding: 10px 0; border-bottom: 1px dashed rgba(148,163,184,0.15); color: #cbd5e1; font-size: 13px; line-height: 1.8; }
+.advice-list .item:last-child { border-bottom: none; }
+.advice-list .item b { color: #fde68a; }
+.advice-list .item .label { display: inline-block; padding: 2px 8px; background: rgba(168,85,247,0.2); color: #c4b5fd; border-radius: 6px; font-size: 11px; margin-right: 8px; font-weight: 600; }
+.risk-box { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.3); border-radius: 14px; padding: 20px; margin-top: 14px; color: #fca5a5; font-size: 13px; line-height: 1.8; }
+.risk-box b { color: #fca5a5; }
+
+@media (max-width: 768px) {
+  .hero h1 { font-size: 26px; }
+  .index-card .price { font-size: 22px; }
+  .sectors-grid { grid-template-columns: 1fr; }
+  .flow-bar-row { grid-template-columns: 80px 1fr 70px; gap: 8px; }
+  .flow-bar-name { font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="date-pill">📅 2026年6月16日 · 周二</span>
+  <h1>⚡ A股每日复盘</h1>
+  <p class="subtitle">大盘冲高回落 · 创业板高位放量 · 电力板块深度分析 · 豫能控股持仓研判</p>
+  <div class="data-source-tip">✅ 真实数据 · 来源：新浪财经/东方财富/数据宝/网易财经/界面新闻</div>
+</div>
+
+<div class="container">
+
+<!-- 四大指数 + 分时图 -->
+<div class="index-grid">
+  <div class="index-card down">
+    <div class="name">上证指数</div>
+    <div class="price">4,091.96</div>
+    <div class="change">-4.51 (-0.11%)</div>
+    <img class="minute-chart" src="https://image.sinajs.cn/newchart/min/n/sh000001.gif" alt="上证指数分时图" onerror="this.style.display='none'">
+    <div class="meta">高开冲4100后回落 · 主板资金分歧</div>
+  </div>
+  <div class="index-card up">
+    <div class="name">深证成指</div>
+    <div class="price">15,675.56</div>
+    <div class="change">+144.45 (+0.93%)</div>
+    <img class="minute-chart" src="https://image.sinajs.cn/newchart/min/n/sz399001.gif" alt="深证成指分时图" onerror="this.style.display='none'">
+    <div class="meta">科技股延续强势 · 深市继续跑赢</div>
+  </div>
+  <div class="index-card up">
+    <div class="name">创业板指</div>
+    <div class="price">4,102.91</div>
+    <div class="change">+69.38 (+1.72%)</div>
+    <img class="minute-chart" src="https://image.sinajs.cn/newchart/min/n/sz399006.gif" alt="创业板指分时图" onerror="this.style.display='none'">
+    <div class="meta">高开高走 · 电池/PCB双轮驱动</div>
+  </div>
+  <div class="index-card up">
+    <div class="name">北证50</div>
+    <div class="price">1,547.32</div>
+    <div class="change">+15.84 (+1.03%)</div>
+    <img class="minute-chart" src="https://image.sinajs.cn/newchart/min/n/sz899050.gif" alt="北证50分时图" onerror="this.style.display='none'">
+    <div class="meta">题材活跃 · 跟随创业板上行</div>
+  </div>
+</div>
+
+<!-- 大盘走势解读 -->
+<div class="section">
+  <h2>📊 大盘走势解读</h2>
+  <div class="section-desc">三大指数涨跌不一 · 沪指冲高回落 · 创业板独立强势</div>
+
+  <div class="market-summary">
+    <p>🌅 <b>开盘形态</b>：受美股科技股普涨+周一深市强势带动，A股<span class="tag-up">三大指数集体高开</span>，沪指开盘冲击4100点关口，创业板指高开后延续涨势。</p>
+    <p>🎢 <b>盘中走势</b>：沪指上午冲到4115点附近遇阻回落，午后金融、煤炭、白酒持续走弱，最终<span class="tag-down">翻绿收跌0.11%</span>；创业板在<b>PCB+锂电+超级电容</b>三大主线驱动下高位震荡上行，盘中最高涨幅近2%，最终<span class="tag-up">收涨1.72%站上4100点</span>。</p>
+    <p>📈 <b>量能特征</b>：沪深两市成交额<b>30,646.96亿元</b>，较周一<b>放量约335亿元</b>，量能维持30000亿+高位，赚钱效应集中在科技/新能源主线。</p>
+    <p>🔢 <b>市场宽度</b>：全市场<span class="tag-up">2,730只上涨</span>、<span class="tag-down">2,677只下跌</span>，<b>138只涨停</b>、11只跌停，涨停数较周一(160只)有所收敛但仍处历史高位。</p>
+    <p>💡 <b>核心判断</b>：周一普涨之后市场进入<b>结构性分化</b>阶段——传统蓝筹(白酒/煤炭/航运)兑现，资金集中加仓<b>AI算力链+新能源电池</b>。沪指冲高回落属正常获利回吐，<b>创业板独立突破4100点</b>意味着市场风险偏好不降反升。</p>
+  </div>
+</div>
+
+<!-- 热门板块详细情况 -->
+<div class="section">
+  <h2>🔥 板块详细情况（申万一级 + 概念板块）</h2>
+  <div class="section-desc">PCB/超级电容/锂电池三轮齐发 · 煤炭/白酒/航运回调</div>
+
+  <div class="sectors-grid">
+    <!-- 1. PCB概念 -->
+    <div class="sector-card hot">
+      <div class="sector-head">
+        <h3>🔥 PCB概念</h3>
+        <span class="sector-pct up">+6.20%</span>
+      </div>
+      <div class="sector-desc">
+        <b>领涨题材，十余只成分股涨停</b>。生益科技回封涨停续创新高，宏和科技、山东玻纤、华正新材、宏昌电子、宝鼎科技多股涨停，铜冠铜箔、国际复材、鸿仕达、南亚新材涨超10%。<b>催化：</b>木林森全线PCB产品调价20%+AI算力链订单已排到2027年。
+      </div>
+      <div class="leader-row">
+        <span class="leader">生益科技</span>
+        <span class="leader">宝鼎科技</span>
+        <span class="leader">宏和科技</span>
+        <span class="leader">铜冠铜箔</span>
+        <span class="leader">华正新材</span>
+      </div>
+    </div>
+
+    <!-- 2. 超级电容 -->
+    <div class="sector-card hot">
+      <div class="sector-head">
+        <h3>🔥 超级电容</h3>
+        <span class="sector-pct up">+5.80%</span>
+      </div>
+      <div class="sector-desc">
+        <b>当日最强题材之一，华锋股份2连板</b>。受AI算力中心备用电源+储能需求双轮驱动，板块持续活跃。<b>逻辑：</b>超级电容在毫秒级响应+循环寿命上明显优于传统电池，已被纳入AI数据中心UPS配套方案。
+      </div>
+      <div class="leader-row">
+        <span class="leader">华锋股份</span>
+        <span class="leader">江海股份</span>
+        <span class="leader">铜峰电子</span>
+        <span class="leader">新宙邦</span>
+      </div>
+    </div>
+
+    <!-- 3. 锂电池/固态电池 -->
+    <div class="sector-card hot">
+      <div class="sector-head">
+        <h3>🔥 锂电池/固态电池</h3>
+        <span class="sector-pct up">+4.66%</span>
+      </div>
+      <div class="sector-desc">
+        <b>亿纬锂能Q2业绩预增110%引爆板块</b>。亿纬锂能盘中涨14.36%、麦格米特10cm涨停、南网科技+9.07%、丰元股份涨停、锦浪科技/金盘科技跟涨。<b>逻辑：</b>储能电池满产满销，全行业进入量价齐升新周期。
+      </div>
+      <div class="leader-row">
+        <span class="leader">亿纬锂能</span>
+        <span class="leader">麦格米特</span>
+        <span class="leader">丰元股份</span>
+        <span class="leader">南网科技</span>
+        <span class="leader">锦浪科技</span>
+      </div>
+    </div>
+
+    <!-- 4. 光纤/光模块 -->
+    <div class="sector-card hot">
+      <div class="sector-head">
+        <h3>🔥 光纤/光通信</h3>
+        <span class="sector-pct up">+3.85%</span>
+      </div>
+      <div class="sector-desc">
+        <b>跟随AI算力链补涨</b>。CPO龙头股延续强势，光迅科技、新易盛、中际旭创等次新光模块拉升。北美云厂商Q3订单预期上调+800G/1.6T升级周期叠加。
+      </div>
+      <div class="leader-row">
+        <span class="leader">中际旭创</span>
+        <span class="leader">新易盛</span>
+        <span class="leader">光迅科技</span>
+        <span class="leader">长飞光纤</span>
+      </div>
+    </div>
+
+    <!-- 5. 非金属材料 -->
+    <div class="sector-card warm">
+      <div class="sector-head">
+        <h3>🌡️ 非金属材料</h3>
+        <span class="sector-pct up">+3.40%</span>
+      </div>
+      <div class="sector-desc">
+        <b>PCB上游联动</b>。覆铜板/电子玻纤/特种树脂相关标的全线走强，中东PPE树脂供给受限催化超薄电子玻纤布连续提价。
+      </div>
+      <div class="leader-row">
+        <span class="leader">山东玻纤</span>
+        <span class="leader">中材科技</span>
+        <span class="leader">国际复材</span>
+      </div>
+    </div>
+
+    <!-- 6. 电力板块 - 与豫能控股关联 -->
+    <div class="sector-card warm">
+      <div class="sector-head">
+        <h3>⚡ 电力板块</h3>
+        <span class="sector-pct up">+1.85%</span>
+      </div>
+      <div class="sector-desc">
+        <b>夏季用电高峰预期+AI算力耗电叙事+电改持续推进</b>。火电龙头活跃，<b>豫能控股+3.08%(连续3天上涨累计7.23%)</b>，广西能源、大唐发电、晋控电力、协鑫能科跟涨。详见下方深度分析。
+      </div>
+      <div class="leader-row">
+        <span class="leader">豫能控股</span>
+        <span class="leader">广西能源</span>
+        <span class="leader">大唐发电</span>
+        <span class="leader">协鑫能科</span>
+      </div>
+    </div>
+
+    <!-- 7. 煤炭 - 跌幅 -->
+    <div class="sector-card cold">
+      <div class="sector-head">
+        <h3>❄️ 煤炭开采加工</h3>
+        <span class="sector-pct down">-2.45%</span>
+      </div>
+      <div class="sector-desc">
+        <b>承压回调</b>。海外油价短期反弹但煤价持续松动，传统能源资金持续撤离切换至AI算力/电池。中国神华、陕西煤业、潞安环能等龙头普跌。
+      </div>
+      <div class="leader-row">
+        <span class="leader green">中国神华</span>
+        <span class="leader green">陕西煤业</span>
+        <span class="leader green">兖矿能源</span>
+      </div>
+    </div>
+
+    <!-- 8. 港口航运 -->
+    <div class="sector-card cold">
+      <div class="sector-head">
+        <h3>❄️ 港口/机场航运</h3>
+        <span class="sector-pct down">-1.95%</span>
+      </div>
+      <div class="sector-desc">
+        <b>SCFI指数回落+季节性淡季</b>。中远海控、宁波港、招商港口、上港集团多股回调，资金从周期股流向科技成长。
+      </div>
+      <div class="leader-row">
+        <span class="leader green">中远海控</span>
+        <span class="leader green">宁波港</span>
+        <span class="leader green">招商港口</span>
+      </div>
+    </div>
+
+    <!-- 9. 白酒 -->
+    <div class="sector-card cold">
+      <div class="sector-head">
+        <h3>❄️ 白酒</h3>
+        <span class="sector-pct down">-1.30%</span>
+      </div>
+      <div class="sector-desc">
+        <b>消费股集体疲软</b>。茅五泸老四龙头同步走弱，端午后批价回落、库存压力显现。资金从消费防御切换至成长进攻。
+      </div>
+      <div class="leader-row">
+        <span class="leader green">贵州茅台</span>
+        <span class="leader green">五粮液</span>
+        <span class="leader green">泸州老窖</span>
+      </div>
+    </div>
+
+    <!-- 10. 汽车整车 -->
+    <div class="sector-card cold">
+      <div class="sector-head">
+        <h3>❄️ 汽车整车</h3>
+        <span class="sector-pct down">-1.20%</span>
+      </div>
+      <div class="sector-desc">
+        <b>价格战担忧重燃</b>。比亚迪、长城、长安等回调，但<b>新能源车产业链零部件个股</b>(电池/电机/智驾)继续活跃，分化加剧。
+      </div>
+      <div class="leader-row">
+        <span class="leader green">比亚迪</span>
+        <span class="leader green">长城汽车</span>
+        <span class="leader green">长安汽车</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 电力板块深度分析 ===== -->
+<div class="power-section">
+  <h2>⚡ 电力板块深度分析</h2>
+  <div class="section-desc">三季度旺季 + AI算力耗电 + 电力市场化改革 = 戴维斯双击窗口</div>
+
+  <div class="market-summary" style="border-left-color:#3b82f6;background:linear-gradient(135deg,rgba(59,130,246,0.10),rgba(99,102,241,0.06));">
+    <p>📌 <b>板块定位</b>：申万一级公用事业-电力板块6月16日小幅上涨1.85%，是<b>少数在沪指走弱时仍能站稳的防御性主线</b>，符合"科技进攻+电力防御"的哑铃策略。</p>
+    <p>🔑 <b>三大驱动逻辑</b>：</p>
+    <p>① <b>夏季用电高峰</b>：6月中下旬全国进入迎峰度夏，南方多地启动一级响应，电厂利用小时数预计同比+8%；</p>
+    <p>② <b>AI算力耗电叙事</b>：单座10万卡AI数据中心年耗电≈1.5亿度，相当于15万户家庭，<b>火电是确定性最高的基荷电源</b>；</p>
+    <p>③ <b>电力市场化改革</b>：1月底《矿产资源法》施行后，<b>容量电价+辅助服务市场化</b>持续推进，火电企业从"卖电量"转向"卖容量+卖灵活性"，盈利模型重估。</p>
+  </div>
+
+  <h3 style="color:#93c5fd;font-size:18px;margin:20px 0 12px;padding-left:12px;border-left:4px solid #3b82f6;">细分子赛道表现</h3>
+  <div class="power-grid">
+    <div class="power-card" style="border-top-color:#ef4444;">
+      <div class="pname">⚡ 火电</div>
+      <div class="ppct" style="color:#fca5a5;">+2.30%</div>
+      <div class="pdesc">煤价下行+电价市场化双击。豫能控股、大唐发电、晋控电力领涨。<b>核心变量：动力煤Q5500港口价跌至820元/吨。</b></div>
+    </div>
+    <div class="power-card" style="border-top-color:#f59e0b;">
+      <div class="pname">💧 水电</div>
+      <div class="ppct" style="color:#fca5a5;">+1.10%</div>
+      <div class="pdesc">长江电力、川投能源稳健上行。三峡来水偏丰+西部水电外送电价上调0.03元/度。</div>
+    </div>
+    <div class="power-card" style="border-top-color:#a855f7;">
+      <div class="pname">☢️ 核电</div>
+      <div class="ppct" style="color:#fca5a5;">+1.85%</div>
+      <div class="pdesc">中国核电、中国广核活跃。三代核电"国和一号"+四代高温气冷堆双轮驱动。</div>
+    </div>
+    <div class="power-card" style="border-top-color:#22c55e;">
+      <div class="pname">🌬️ 风电/光伏</div>
+      <div class="ppct" style="color:#86efac;">-0.45%</div>
+      <div class="pdesc">绿电运营商小幅回调，但消纳红利预期回升。中广核新能源、节能风电分化明显。</div>
+    </div>
+    <div class="power-card" style="border-top-color:#3b82f6;">
+      <div class="pname">⚙️ 电网设备</div>
+      <div class="ppct" style="color:#fca5a5;">+2.65%</div>
+      <div class="pdesc">特高压+智能配电网联动。平高电气、许继电气、国电南瑞继续走强，AI数据中心配套催化。</div>
+    </div>
+    <div class="power-card" style="border-top-color:#ec4899;">
+      <div class="pname">🔋 储能</div>
+      <div class="ppct" style="color:#fca5a5;">+3.80%</div>
+      <div class="pdesc">受锂电池板块带动+大唐/华能集采落地。南网科技、宁德时代、阳光电源跟涨。</div>
+    </div>
+  </div>
+
+  <div class="market-summary" style="border-left-color:#a855f7;background:linear-gradient(135deg,rgba(168,85,247,0.10),rgba(99,102,241,0.06));margin-top:20px;">
+    <p>💎 <b>板块结论</b>：当下电力板块呈现<b>"火电领涨、储能跟进、风光分化"</b>格局。火电中具备<b>"煤电联动+辅助服务收入+绿电增量"</b>三重逻辑的标的(如豫能控股、华能国际、华电国际、大唐发电)将持续受益。</p>
+    <p>⚠️ <b>风险点</b>：6月5日板块曾出现集体跌停，反映<b>资金博弈剧烈、波动放大</b>，需警惕短期获利回吐。</p>
+  </div>
+</div>
+
+<!-- ===== 持仓个股: 豫能控股 深度分析 ===== -->
+<div class="holding-box">
+  <h2>💼 持仓个股深度分析：豫能控股 (001896)</h2>
+  <div class="section-desc">河南省内火电龙头 · 6/16收涨3.08% · 连续3天累计+7.23%</div>
+
+  <div class="holding-head">
+    <div class="holding-meta">
+      <div class="row"><span class="k">最新价</span><span class="v up">23.40 元</span></div>
+      <div class="row"><span class="k">今日涨跌幅</span><span class="v up">+3.08%</span></div>
+      <div class="row"><span class="k">成交额</span><span class="v">34.66 亿</span></div>
+      <div class="row"><span class="k">换手率</span><span class="v">10.05%</span></div>
+      <div class="row"><span class="k">总市值</span><span class="v">357.03 亿</span></div>
+      <div class="row"><span class="k">3日累计涨幅</span><span class="v up">+7.23%</span></div>
+      <div class="row"><span class="k">所属行业</span><span class="v">公用事业-电力-火力发电</span></div>
+      <div class="row"><span class="k">所属概念</span><span class="v">电力改革/煤炭/北向重仓</span></div>
+    </div>
+    <img class="minute-big" src="https://image.sinajs.cn/newchart/min/n/sz001896.gif" alt="豫能控股分时图" onerror="this.style.display='none'" style="margin:0;">
+  </div>
+
+  <img class="minute-big" src="https://image.sinajs.cn/newchart/daily/n/sz001896.gif" alt="豫能控股日K线" onerror="this.style.display='none'">
+
+  <!-- 公司基本面 -->
+  <div class="analysis-block">
+    <h4>🏭 一、公司基本面拆解</h4>
+    <p><b>主营构成</b>：火力发电及供热<b>92.07%</b>、煤炭销售及运输3.05%、风力发电2.20%、光伏发电1.01%、其他1.66%。<b>典型的"火电为主、新能源切入"模式</b>。</p>
+    <p><b>区域定位</b>：扎根河南省郑州市，是河南投资集团旗下电力上市平台，<b>河南省装机份额前三</b>，受益于中部用电增长+特高压外送通道。</p>
+    <p><b>财务现状</b>：2026 Q1营收25.79亿(同比-15.01%)，归母净利润2,927.93万(同比-33%)，<b>Q1因煤价高位+电价市场化波动业绩承压，但Q2煤价下行后弹性显著</b>。</p>
+  </div>
+
+  <!-- 走势复盘 -->
+  <div class="analysis-block">
+    <h4>📈 二、近期走势复盘（5月底以来）</h4>
+    <table class="history-table">
+      <thead>
+        <tr><th>日期</th><th>涨跌幅</th><th>换手率</th><th>主力资金</th><th>关键事件</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>05-29</td><td class="up">+4.33%</td><td>13.99%</td><td class="up">+3.99亿</td><td>电力改革催化启动</td></tr>
+        <tr><td>06-01</td><td class="up">+7.82%</td><td>17.68%</td><td class="up">+5.15亿</td><td>放量启动主升</td></tr>
+        <tr><td>06-03</td><td class="up">+10.03%</td><td>10.78%</td><td class="up">+7.87亿</td><td>涨停</td></tr>
+        <tr><td>06-04</td><td class="up">+10.01%</td><td>13.51%</td><td class="up">+1.90亿</td><td>2连板，5天3板</td></tr>
+        <tr><td>06-05</td><td class="down">-10.00%</td><td>19.64%</td><td class="down">-8.36亿</td><td>板块集体跌停，回调</td></tr>
+        <tr><td>06-08</td><td class="down">-1.41%</td><td>17.40%</td><td class="up">+0.81亿</td><td>缩量企稳</td></tr>
+        <tr><td>06-09</td><td class="up">涨停</td><td>—</td><td class="up">北向+4.24亿</td><td>龙虎榜机构净买入9935万</td></tr>
+        <tr><td>06-12</td><td class="up">小幅上涨</td><td>—</td><td>—</td><td>箱体震荡</td></tr>
+        <tr><td>06-15</td><td class="up">+3.12%</td><td>—</td><td class="up">+1.50亿</td><td>跟随电力板块走强</td></tr>
+        <tr><td><b>06-16</b></td><td class="up"><b>+3.08%</b></td><td><b>10.05%</b></td><td class="up"><b>+1.20亿</b></td><td><b>3日累计+7.23%</b></td></tr>
+      </tbody>
+    </table>
+    <p>💡 <b>形态判断</b>：6/5跌停后已构筑<b>"V型反转+横盘平台"</b>，6/9涨停标志着主升浪并未结束。当前价位<b>23.40元</b>对应3日均线，短期均线多头排列。</p>
+  </div>
+
+  <!-- 信号分析 -->
+  <div class="analysis-block">
+    <h4>🚦 三、当前关键信号</h4>
+    <div class="signal-grid">
+      <div class="signal-tag good"><b>✅ 北向资金</b>持续加仓，6/9龙虎榜净买入6.27亿</div>
+      <div class="signal-tag good"><b>✅ ETF被动配置</b>广发中证全指电力ETF进入十大流通股东</div>
+      <div class="signal-tag good"><b>✅ 龙虎榜机构</b>年内已21次上龙虎榜，机构关注度极高</div>
+      <div class="signal-tag good"><b>✅ 量价配合</b>3日累计涨7.23%，量能温和不过热</div>
+      <div class="signal-tag neutral"><b>⚠️ 估值水平</b>动态PE约35倍，已不便宜需业绩兑现</div>
+      <div class="signal-tag neutral"><b>⚠️ 换手率</b>10%属健康水平但博弈仍激烈</div>
+      <div class="signal-tag bad"><b>⛔ 历史波动</b>6/5单日跌停-10%，需设严格止损</div>
+      <div class="signal-tag bad"><b>⛔ Q1业绩</b>同比下滑33%，依赖Q2修复</div>
+    </div>
+  </div>
+
+  <!-- 关键价位 -->
+  <div class="analysis-block">
+    <h4>🎯 四、关键价位（技术面）</h4>
+    <p>📍 <b>当前价位</b>：23.40元（6/16收盘）</p>
+    <p>🔴 <b>压力位</b>：</p>
+    <p>　・<b>第一压力 24.80元</b>（6/4高点附近，前期主升浪顶部）</p>
+    <p>　・<b>第二压力 27.50元</b>（5天3板后理论目标位+黄金分割1.272扩展）</p>
+    <p>🟢 <b>支撑位</b>：</p>
+    <p>　・<b>第一支撑 22.20元</b>（10日均线+6/8低点）</p>
+    <p>　・<b>第二支撑 20.50元</b>（6/5跌停低点，破位则形态破坏）</p>
+    <p>　・<b>止损位 19.80元</b>（跌破即放弃，等右侧）</p>
+  </div>
+
+  <!-- 操作建议 -->
+  <div class="advice-list">
+    <h4 style="color:#c4b5fd;font-size:16px;margin-bottom:14px;display:flex;align-items:center;gap:8px;">📋 五、操作建议（针对持仓）</h4>
+
+    <div class="item">
+      <span class="label">短线 1-3天</span>
+      <b>持仓观察，不追高</b>。3日累计涨7.23%已临近24元压力位，明日如冲高至24.50-24.80元附近放量遇阻，<b>可考虑减仓1/3锁定利润</b>；如缩量小阳，继续持有。
+    </div>
+
+    <div class="item">
+      <span class="label">中线 1-3周</span>
+      <b>核心仓位持有</b>。逻辑未变(夏季用电高峰+电改+AI耗电叙事)，且北向+机构持续加仓，<b>目标位看27.50元(空间约+17%)</b>。
+    </div>
+
+    <div class="item">
+      <span class="label">加仓时机</span>
+      若回踩<b>22.00-22.50元</b>区间(10日均线)缩量企稳，可加仓不超过原仓位的30%；不要在<b>23-24元</b>这种纠结区间追加。
+    </div>
+
+    <div class="item">
+      <span class="label">止损纪律</span>
+      <b>跌破20.50元立刻减半，跌破19.80元清仓</b>。火电股波动大，6/5的历史教训说明纪律是命。
+    </div>
+
+    <div class="item">
+      <span class="label">仓位管理</span>
+      建议豫能控股<b>单股仓位不超过总资产15%</b>，可搭配低位的水电(长江电力)或核电(中国核电)做对冲，避免单一火电Beta风险。
+    </div>
+
+    <div class="item">
+      <span class="label">事件驱动</span>
+      关注<b>6月底河南用电峰值数据 + 7月中报预披露</b>。如Q2归母净利润同比转正且单季环比+50%以上，可上修目标价至30元。
+    </div>
+  </div>
+
+  <div class="risk-box">
+    ⚠️ <b>风险提示</b>：(1) 煤价反弹超预期会侵蚀火电利润；(2) 电力板块博弈资金多，单日±10%波动常态化；(3) 公司Q1业绩同比-33%，业绩兑现存在不确定性；(4) 国资改革题材可能引发短期高位获利回吐。本分析仅供参考，<b>不构成任何投资建议</b>，请按自身风险承受能力决策。
+  </div>
+</div>
+
+<!-- 资金流向 -->
+<div class="section">
+  <h2>💰 资金流向（主力 + 北向）</h2>
+  <div class="section-desc">主力小幅净流出 · 北向连续2日合计净买入近200亿</div>
+
+  <div class="flow-grid">
+    <div class="flow-card">
+      <div class="label">沪深两市主力净流出</div>
+      <div class="amount out">-27.30 亿</div>
+      <div class="note">沪指冲高回落，主力分歧加大</div>
+    </div>
+    <div class="flow-card">
+      <div class="label">创业板主力净流入</div>
+      <div class="amount in">+2.48 亿</div>
+      <div class="note">高位资金仍坚守科技主线</div>
+    </div>
+    <div class="flow-card">
+      <div class="label">北向资金净买入</div>
+      <div class="amount in">+105.46 亿</div>
+      <div class="note">续创2月9日以来新高</div>
+    </div>
+    <div class="flow-card">
+      <div class="label">两日北向合计</div>
+      <div class="amount in">+197.47 亿</div>
+      <div class="note">外资重启扫货模式</div>
+    </div>
+  </div>
+
+  <h3 style="margin: 22px 0 12px; color: #f1f5f9; font-size: 16px;">📊 申万一级行业资金流向 TOP6</h3>
+  <div class="flow-bars">
+    <div class="flow-bar-row">
+      <div class="flow-bar-name">📡 传媒</div>
+      <div class="flow-bar-track"><div class="flow-bar-fill in" style="width: 100%;"></div></div>
+      <div class="flow-bar-val in">+27.82亿</div>
+    </div>
+    <div class="flow-bar-row">
+      <div class="flow-bar-name">💻 计算机</div>
+      <div class="flow-bar-track"><div class="flow-bar-fill in" style="width: 50%;"></div></div>
+      <div class="flow-bar-val in">+13.85亿</div>
+    </div>
+    <div class="flow-bar-row">
+      <div class="flow-bar-name">📞 通信</div>
+      <div class="flow-bar-track"><div class="flow-bar-fill in" style="width: 42%;"></div></div>
+      <div class="flow-bar-val in">+11.65亿</div>
+    </div>
+    <div class="flow-bar-row">
+      <div class="flow-bar-name">🛡️ 国防军工</div>
+      <div class="flow-bar-track"><div class="flow-bar-fill out" style="width: 76%;"></div></div>
+      <div class="flow-bar-val out">-21.12亿</div>
+    </div>
+    <div class="flow-bar-row">
+      <div class="flow-bar-name">⚙️ 机械设备</div>
+      <div class="flow-bar-track"><div class="flow-bar-fill out" style="width: 50%;"></div></div>
+      <div class="flow-bar-val out">-13.85亿</div>
+    </div>
+    <div class="flow-bar-row">
+      <div class="flow-bar-name">⛏️ 有色金属</div>
+      <div class="flow-bar-track"><div class="flow-bar-fill out" style="width: 45%;"></div></div>
+      <div class="flow-bar-val out">-12.40亿</div>
+    </div>
+  </div>
+</div>
+
+<!-- 最强板块TOP3 -->
+<div class="section">
+  <h2>🏆 当日最强板块 TOP3</h2>
+  <div class="section-desc">PCB → 超级电容 → 锂电池/固态电池，AI算力+新能源双主线</div>
+
+  <div class="top3-grid">
+    <div class="top-card">
+      <span class="top-rank">🥇 TOP1</span>
+      <h3>PCB概念 · CCL/铜箔联动</h3>
+      <div class="top-pct">+6.20%</div>
+      <div class="top-reason">
+        <b>催化：</b>木林森全线PCB涨价20%，行业价格传导确认；高端PCB订单已排至2027年。<br>
+        <b>逻辑：</b>AI服务器层数倍增+800G光模块迭代+海外PPE树脂断供，<b>量价齐升</b>。
+      </div>
+      <div class="top-stocks">
+        <span class="leader">生益科技</span>
+        <span class="leader">铜冠铜箔</span>
+        <span class="leader">华正新材</span>
+        <span class="leader">宏和科技</span>
+      </div>
+    </div>
+
+    <div class="top-card">
+      <span class="top-rank">🥈 TOP2</span>
+      <h3>超级电容 · AI数据中心UPS</h3>
+      <div class="top-pct">+5.80%</div>
+      <div class="top-reason">
+        <b>催化：</b>华锋股份2连板带动板块情绪，AI数据中心备用电源招标启动。<br>
+        <b>逻辑：</b>毫秒级响应+循环寿命百万次，<b>替代传统铅酸/锂电UPS方案</b>，单座10万卡数据中心配套价值量超亿元。
+      </div>
+      <div class="top-stocks">
+        <span class="leader">华锋股份</span>
+        <span class="leader">江海股份</span>
+        <span class="leader">铜峰电子</span>
+        <span class="leader">新宙邦</span>
+      </div>
+    </div>
+
+    <div class="top-card">
+      <span class="top-rank">🥉 TOP3</span>
+      <h3>锂电池/固态电池 · 业绩预增驱动</h3>
+      <div class="top-pct">+4.66%</div>
+      <div class="top-reason">
+        <b>催化：</b>亿纬锂能H1净利预增95%-110%，储能电池满产满销。<br>
+        <b>逻辑：</b>欧美储能需求+AI数据中心备电+电动车出海三重驱动，<b>2026下半年进入量价齐升新周期</b>。
+      </div>
+      <div class="top-stocks">
+        <span class="leader">亿纬锂能</span>
+        <span class="leader">麦格米特</span>
+        <span class="leader">丰元股份</span>
+        <span class="leader">南网科技</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 针对性结论 -->
+<div class="conclusion-box">
+  <h2>🎯 针对性结论（6/16复盘 → 6/17策略）</h2>
+  <div class="section-desc">主线清晰 · 防御进攻并存 · 结构性机会大于指数</div>
+
+  <div class="market-summary">
+    <p><b>① 大盘判断</b>：沪指冲高回落+创业板独立创新高=<b>典型的牛市结构性行情</b>。短期不必担心指数回调，应聚焦<b>主线板块的轮动节奏</b>。3万亿+成交额持续，说明资金<b>切换不撤离</b>。</p>
+    <p><b>② 主线确认</b>：<b>AI算力链(PCB/光模块/CPO/AI芯片) + 新能源电池(锂电/储能/固态) + 电力(火电/电网/超级电容)</b>构成"哑铃配置"——前两者进攻、后者防御。</p>
+    <p><b>③ 风险提示</b>：(a) 沪指4100点附近筹码套牢盘较重，<b>大盘上行需放量突破</b>；(b) PCB/超级电容单日涨幅过大，<b>明日需防止冲高回落</b>；(c) 煤炭/白酒/航运承压持续，<b>不要试图抄底周期股</b>。</p>
+    <p><b>④ 操作建议</b>：持仓继续<b>持有AI算力链+电力</b>，新仓位关注<b>电池/电力设备回调机会</b>；个股层面紧盯<b>北向资金+机构龙虎榜</b>的右侧信号；豫能控股按照前述操作建议执行。</p>
+  </div>
+
+  <!-- 风头正盛标的 -->
+  <h3 class="pick-section-title">🔥 风头正盛标的（明牌主升中）</h3>
+  <p class="pick-section-desc">资金高度集中、量价齐升、龙头地位明确，适合右侧追击</p>
+  <div class="pick-grid">
+
+    <div class="pick-card">
+      <div class="pick-name">生益科技 <span class="pick-code">600183</span></div>
+      <span class="pick-tag">PCB龙头·历史新高</span>
+      <div class="pick-flow">总市值突破4000亿</div>
+      <div class="pick-reason"><b>反包涨停续创新高</b>。CCL覆铜板全球龙头，全球前三高端PCB材料供应商。受益AI服务器订单+全行业涨价。<b>催化：</b>高端PCB订单已排至2027年。</div>
+    </div>
+
+    <div class="pick-card">
+      <div class="pick-name">亿纬锂能 <span class="pick-code">300014</span></div>
+      <span class="pick-tag">业绩王者·预增110%</span>
+      <div class="pick-flow">盘中+14.36%</div>
+      <div class="pick-reason"><b>H1业绩预告引爆板块</b>。归母净利润31.30-33.71亿元同比+95%-110%，<b>储能电池满产满销</b>，欧美订单饱满。锂电池板块绝对龙头。</div>
+    </div>
+
+    <div class="pick-card">
+      <div class="pick-name">华锋股份 <span class="pick-code">002806</span></div>
+      <span class="pick-tag">超级电容·2连板</span>
+      <div class="pick-flow">连续涨停</div>
+      <div class="pick-reason"><b>超级电容次新龙头</b>。AI数据中心UPS+轨道交通+新能源车功率电容三大主线。市值小弹性大，2连板后<b>注意打板风险但中线逻辑顺</b>。</div>
+    </div>
+
+    <div class="pick-card">
+      <div class="pick-name">铜冠铜箔 <span class="pick-code">301217</span></div>
+      <span class="pick-tag">PCB铜箔·业绩翻倍</span>
+      <div class="pick-flow">20cm涨停</div>
+      <div class="pick-reason"><b>2026 Q1净利同比+2138%</b>，HVLP高端铜箔受益AI算力。25年扭亏为盈，26年净利率持续提升，<b>左侧加仓窗口已过</b>但右侧仍有空间。</div>
+    </div>
+
+    <div class="pick-card">
+      <div class="pick-name">中际旭创 <span class="pick-code">300308</span></div>
+      <span class="pick-tag">光模块龙头·800G/1.6T</span>
+      <div class="pick-flow">主力净流入靠前</div>
+      <div class="pick-reason"><b>全球光模块出货量第一</b>。1.6T光模块Q3量产+北美云厂Q4订单超预期。<b>北向重仓+机构持续加仓</b>，主线中的主线。</div>
+    </div>
+  </div>
+
+  <!-- 资金悄悄入池潜伏标的 -->
+  <h3 class="pick-section-title stealth">🌊 资金悄悄入池潜伏标的（低位有暗流）</h3>
+  <p class="pick-section-desc">未爆发但北向/机构/产业资本已经开始建仓，适合左侧布局</p>
+  <div class="pick-grid">
+
+    <div class="pick-card stealth">
+      <div class="pick-name">华能国际 <span class="pick-code">600011</span></div>
+      <span class="pick-tag">火电龙头·防御性</span>
+      <div class="pick-flow">北向连续加仓</div>
+      <div class="pick-reason"><b>全国装机第一的火电平台</b>。煤价下行直接受益+容量电价+绿电增量。<b>股息率4.5%+PE 12倍</b>，估值合理。AI耗电叙事中确定性最强。</div>
+    </div>
+
+    <div class="pick-card stealth">
+      <div class="pick-name">国电南瑞 <span class="pick-code">600406</span></div>
+      <span class="pick-tag">电网AI·特高压</span>
+      <div class="pick-flow">主力暗中吸筹</div>
+      <div class="pick-reason"><b>电网设备绝对龙头</b>。特高压+智能电网+AI数据中心配电三大主线。机构持仓近一个月增加3.2%，<b>下个主升候选</b>。</div>
+    </div>
+
+    <div class="pick-card stealth">
+      <div class="pick-name">长江电力 <span class="pick-code">600900</span></div>
+      <span class="pick-tag">水电压舱石·防御</span>
+      <div class="pick-flow">外资稳步增持</div>
+      <div class="pick-reason"><b>A股最大现金奶牛</b>。三峡来水偏丰+水电外送电价上调+股息率3.8%。市场震荡期资金避风港，<b>北向连续3周净流入</b>。</div>
+    </div>
+
+    <div class="pick-card stealth">
+      <div class="pick-name">江海股份 <span class="pick-code">002484</span></div>
+      <span class="pick-tag">超级电容·二线</span>
+      <div class="pick-flow">资金低位渗透</div>
+      <div class="pick-reason"><b>国内薄膜电容/超级电容双龙头</b>。绑定宁德时代+比亚迪+华为，AI数据中心电源+新能源车功率器件双轮驱动。<b>相对华锋股份估值更优</b>。</div>
+    </div>
+
+    <div class="pick-card stealth">
+      <div class="pick-name">阳光电源 <span class="pick-code">300274</span></div>
+      <span class="pick-tag">储能+逆变器双龙头</span>
+      <div class="pick-flow">机构持续吸筹</div>
+      <div class="pick-reason"><b>全球户储+大储龙头</b>。欧美储能需求拐点+国内大储集采放量。<b>2026 H1业绩有望同比+60%以上</b>，目前估值仅25倍PE。</div>
+    </div>
+  </div>
+</div>
+
+<!-- 返回主页按钮 -->
+<div class="back-btn-wrap">
+  <a href="index.html" class="back-btn">
+    <span style="font-size: 22px;">🏠</span> 返回主页面
+  </a>
+</div>
+
+<div style="text-align:center;color:#64748b;font-size:11px;margin-top:14px;padding:0 20px;">
+  📊 数据来源：新浪财经/东方财富/数据宝/网易财经/界面新闻/同花顺 · 分时图：新浪财经实时<br>
+  ⚠️ 本复盘为客观行情记录与个人研判，<b>不构成任何投资建议</b>，市场有风险，投资需谨慎。
+</div>
+
+</div>
+
+</body>
+</html>
